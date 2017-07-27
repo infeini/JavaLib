@@ -4,6 +4,11 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * IO工具类
+ *
+ * @author https://github.com/LiuJiangshan
+ */
 public class IOUtil
 {
     /**
@@ -65,31 +70,20 @@ public class IOUtil
     /**
      * 将文件转换为string
      *
-     * @param ofFile 待转换的文件对象
+     * @param ofFile   待转换的文件对象
+     * @param encoding 编码方式
      * @return 转换后的字符串缓存对象, 转换失败返回null
      */
-    public static StringBuffer toString(File ofFile)
+    public static StringBuffer toString(File ofFile, String encoding)
     {
         try
         {
-            return toString(new FileInputStream(ofFile), true);
+            return toString(new FileInputStream(ofFile), encoding, true);
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
             return null;
         }
-    }
-
-    /**
-     * 将IO流转换为string,完成后不关闭流
-     *
-     * @param in 待转换的IO流对象
-     * @return 转换后的字符串缓存对象
-     */
-
-    public static StringBuffer toString(InputStream in)
-    {
-        return toString(in, false);
     }
 
     /**
@@ -99,18 +93,18 @@ public class IOUtil
      * @param close 是否关闭流
      * @return 转换后的字符串缓存对象
      */
-    public static StringBuffer toString(InputStream in, boolean close)
+    public static StringBuffer toString(InputStream in, String encoding, boolean close)
     {
         StringBuffer stringBuffer = new StringBuffer();
 
-        if (in == null)
-            ;
+        if (in == null) ;
         else
         {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            BufferedReader reader = null;
             String str = null;
             try
             {
+                reader = new BufferedReader(new InputStreamReader(in, encoding));
                 while ((str = reader.readLine()) != null)
                 {
                     stringBuffer.append(str);
@@ -131,10 +125,11 @@ public class IOUtil
     /**
      * 读取文本http资源
      *
-     * @param url http url路径
+     * @param url      http url路径
+     * @param encoding 编码方式
      * @return http文本资源, 失败返回null
      */
-    public static StringBuffer toString(URL url)
+    public static StringBuffer toString(URL url, String encoding)
     {
         if (url == null)
             return null;
@@ -145,7 +140,7 @@ public class IOUtil
             try
             {
                 httpURLConnection = (HttpURLConnection) url.openConnection();
-                return IOUtil.toString(httpURLConnection.getInputStream());
+                return IOUtil.toString(httpURLConnection.getInputStream(), "UTF-8", true);
             } catch (Exception e)
             {
                 e.printStackTrace();
@@ -173,5 +168,23 @@ public class IOUtil
             {
                 e.printStackTrace();
             }
+    }
+
+    /**
+     * 将输入流写入输出流
+     *
+     * @param in  输入流
+     * @param out 输出流
+     * @return 成功:true,失败:false
+     */
+    public static void write(InputStream in, OutputStream out) throws IOException
+    {
+        byte[] buffer = new byte[2048];
+        int total;
+        while ((total = in.read(buffer)) != -1)
+        {
+            out.write(buffer, 0, total);
+        }
+        out.flush();
     }
 }

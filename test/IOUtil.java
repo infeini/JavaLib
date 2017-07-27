@@ -1,10 +1,13 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * IO工具类单元测试
+ *
+ * @author https://github.com/LiuJiangshan
+ */
 public class IOUtil
 {
     @Test
@@ -39,7 +42,7 @@ public class IOUtil
     public void toString1()
     {
         File ofFile = new File("test/IOUtil.java");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(ofFile);
+        StringBuffer stringBuffer = ljs.IOUtil.toString(ofFile, "UTF-8");
         System.out.println(stringBuffer.toString());
     }
 
@@ -50,7 +53,7 @@ public class IOUtil
     public void toString2() throws FileNotFoundException
     {
         File ofFile = new File("test/IOUtil.java");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(new FileInputStream(ofFile));
+        StringBuffer stringBuffer = ljs.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }
 
@@ -60,8 +63,8 @@ public class IOUtil
     @Test
     public void toString3() throws Exception
     {
-        URL url = new URL("http://www.baidu.com");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(url);
+        URL url = new URL("http://www.scbz.hrss.gov.cn/index.php/letter-view-id-2178");
+        StringBuffer stringBuffer = ljs.IOUtil.toString(url, "gb2312");
         System.out.println(stringBuffer.toString());
     }
 
