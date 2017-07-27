@@ -18,6 +18,7 @@ public class ZipUtil
      *
      * @param zipFile 需要解压的zip
      * @param toDir   解压到目标目录
+     * @throws IOException 发生IO异常
      */
     public static void unZip(File zipFile, File toDir) throws IOException
     {
@@ -65,6 +66,7 @@ public class ZipUtil
      *
      * @param fileOrDir 待压缩的文件或文件夹
      * @param toZip     压缩数据存储文件
+     * @throws IOException 发生IO异常
      */
     public static void toZip(File fileOrDir, File toZip) throws IOException
     {

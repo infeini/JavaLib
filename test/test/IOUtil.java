@@ -1,3 +1,5 @@
+package test;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -22,9 +24,6 @@ public class IOUtil
         ofFile.delete();
     }
 
-    /**
-     * 将对象写入文件
-     */
     @Test
     public void toFile()
     {
@@ -35,31 +34,22 @@ public class IOUtil
     }
 
 
-    /**
-     * 将文件转换为string
-     */
     @Test
     public void toString1()
     {
-        File ofFile = new File("test/IOUtil.java");
+        File ofFile = new File("test/test.IOUtil.java");
         StringBuffer stringBuffer = ljs.IOUtil.toString(ofFile, "UTF-8");
         System.out.println(stringBuffer.toString());
     }
 
-    /**
-     * 将IO流转换为string
-     */
     @Test
     public void toString2() throws FileNotFoundException
     {
-        File ofFile = new File("test/IOUtil.java");
+        File ofFile = new File("test/test.IOUtil.java");
         StringBuffer stringBuffer = ljs.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }
 
-    /**
-     * 读取http文本资源
-     */
     @Test
     public void toString3() throws Exception
     {
@@ -68,20 +58,8 @@ public class IOUtil
         System.out.println(stringBuffer.toString());
     }
 
-    /**
-     * 关闭资源
-     *
-     * @param closeable 待关闭的资源
-     */
-    public static void close(Closeable closeable)
+    @Test
+    public static void close()
     {
-        if (closeable != null)
-            try
-            {
-                closeable.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
     }
 }

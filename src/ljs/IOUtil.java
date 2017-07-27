@@ -44,7 +44,7 @@ public class IOUtil
      *
      * @param object 待写入的对象
      * @param toFile 写入文件路径
-     * @return 成功返回true, 否则返回false
+     * @return 成功:true,失败:false
      */
     public static boolean toFile(Object object, File toFile)
     {
@@ -89,8 +89,9 @@ public class IOUtil
     /**
      * 将IO流转换为string
      *
-     * @param in    待转换的IO流对象
-     * @param close 是否关闭流
+     * @param in       待转换的IO流对象
+     * @param encoding 编码方式
+     * @param close    是否关闭流
      * @return 转换后的字符串缓存对象
      */
     public static StringBuffer toString(InputStream in, String encoding, boolean close)
@@ -175,7 +176,7 @@ public class IOUtil
      *
      * @param in  输入流
      * @param out 输出流
-     * @return 成功:true,失败:false
+     * @throws IOException 发生IO异常
      */
     public static void write(InputStream in, OutputStream out) throws IOException
     {

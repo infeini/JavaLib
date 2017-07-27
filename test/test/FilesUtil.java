@@ -1,3 +1,5 @@
+package test;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -17,7 +19,7 @@ public class FilesUtil
     public void getRelativePath() throws IOException
     {
         File rootDir = new File(".");
-        File targetPath = new File("src/IOUtil.java");
+        File targetPath = new File("src/test.IOUtil.java");
         String str = ljs.FilesUtil.getRelativePath(rootDir, targetPath);
         System.out.println(str);
     }

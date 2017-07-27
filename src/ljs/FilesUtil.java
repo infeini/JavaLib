@@ -20,6 +20,7 @@ public class FilesUtil
      * @param rootDir    根路径
      * @param targetPath 需要计算的路径
      * @return 返回相对路径
+     * @throws IOException 发生IO异常
      */
     public static String getRelativePath(File rootDir, File targetPath) throws IOException
     {
@@ -44,6 +45,7 @@ public class FilesUtil
      *
      * @param dir 待遍历的路径
      * @return 该路径下所有的文件和空文件夹
+     * @throws IOException 发生IO异常
      */
     public static List<File> list(File dir) throws IOException
     {
