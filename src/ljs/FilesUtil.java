@@ -7,10 +7,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * file工具类
+ *
+ * @author https://github.com/LiuJiangshan
+ */
 public class FilesUtil
 {
     /**
-     * 获取相对路径
+     * 获取一个路径相对于另一个路径的相对路径
      *
      * @param rootDir    根路径
      * @param targetPath 需要计算的路径
@@ -35,13 +40,15 @@ public class FilesUtil
     }
 
     /**
-     * 文件遍历工具
+     * 遍历路径下所有的文件和空文件夹
      *
      * @param dir 待遍历的路径
      * @return 该路径下所有的文件和空文件夹
      */
     public static List<File> list(File dir) throws IOException
     {
+        if (dir.isFile())
+            dir = dir.getParentFile();
         dir = dir.getCanonicalFile();
 
         List<File> files = new ArrayList<>();

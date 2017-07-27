@@ -6,10 +6,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * zip文件工具类
+ *
+ * @author https://github.com/LiuJiangshan
+ */
 public class ZipUtil
 {
     /**
      * 解压zip文件
+     *
+     * @param zipFile 需要解压的zip
+     * @param toDir   解压到目标目录
      */
     public static void unZip(File zipFile, File toDir) throws IOException
     {

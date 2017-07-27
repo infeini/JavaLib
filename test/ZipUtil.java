@@ -10,12 +10,12 @@ public class ZipUtil
     @Test
     public void toZip() throws IOException
     {
-        ljs.ZipUtil.toZip(new File("."), new File("..\\ljslib.zip"));
+        ljs.ZipUtil.toZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\ZIP文件"), new File("D:\\Users\\LiuJiangshan\\Desktop\\ZIP文件.zip"));
     }
 
     @Test
     public void unZip() throws IOException
     {
-        ljs.ZipUtil.unZip(new File("ljslib.zip"), new File("zip"));
+        ljs.ZipUtil.unZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\ZIP文件.zip"), new File("D:\\Users\\LiuJiangshan\\Desktop\\"));
     }
 }
