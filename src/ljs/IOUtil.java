@@ -128,10 +128,13 @@ public class IOUtil
      *
      * @param url      http url路径
      * @param encoding 编码方式
+     * @param timeOut  超时时间(毫秒)
      * @return http文本资源, 失败返回null
      */
-    public static StringBuffer toString(URL url, String encoding)
+    public static StringBuffer toString(URL url, String encoding, Integer timeOut)
     {
+        if (timeOut == null)
+            timeOut = 5000;
         if (url == null)
             return null;
         else
@@ -141,6 +144,7 @@ public class IOUtil
             try
             {
                 httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setConnectTimeout(timeOut);
                 return IOUtil.toString(httpURLConnection.getInputStream(), "UTF-8", true);
             } catch (Exception e)
             {
