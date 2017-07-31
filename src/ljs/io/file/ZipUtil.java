@@ -1,4 +1,6 @@
-package ljs;
+package ljs.io.file;
+
+import ljs.io.IOUtil;
 
 import java.io.*;
 import java.util.List;
@@ -16,24 +18,24 @@ public class ZipUtil
     /**
      * 解压zip文件
      *
-     * @param zipFile 需要解压的zip
-     * @param toDir   解压到目标目录
+     * @param in    需要解压的IO流
+     * @param toDir 解压到目标目录
+     * @param close 是否关闭流
      * @throws IOException 发生IO异常
      */
-    public static void unZip(File zipFile, File toDir) throws IOException
+    public static void unZip(InputStream in, File toDir, boolean close) throws IOException
     {
-        zipFile = zipFile.getCanonicalFile();
         toDir = toDir.getCanonicalFile();
         if (toDir.isFile())
             toDir = toDir.getParentFile();
 
-        ZipInputStream in = null;
+        ZipInputStream zipIn = null;
         OutputStream out = null;
         try
         {
-            in = new ZipInputStream(new FileInputStream(zipFile));
+            zipIn = new ZipInputStream(in);
             ZipEntry zipEntry = null;
-            while ((zipEntry = in.getNextEntry()) != null)
+            while ((zipEntry = zipIn.getNextEntry()) != null)
             {
                 try
                 {
@@ -43,22 +45,38 @@ public class ZipUtil
                     else
                         parentDir.mkdirs();
 
-                    if (in.available() > 0)
+                    if (zipEntry.isDirectory())
+                        unZipFile.mkdirs();
+                    else
                     {
                         out = new FileOutputStream(unZipFile);
                         IOUtil.write(in, out);
-                    } else
-                        unZipFile.mkdirs();
+                    }
+
                 } finally
                 {
                     IOUtil.close(out);
-                    in.closeEntry();
+                    zipIn.closeEntry();
                 }
             }
         } finally
         {
-            IOUtil.close(in);
+            if (close)
+                IOUtil.close(in);
+            IOUtil.close(zipIn);
         }
+    }
+
+    /**
+     * 解压zip文件
+     *
+     * @param zipFile 需要解压的文件
+     * @param toDir   解压到目标目录
+     * @throws IOException 发生IO异常
+     */
+    public static void unZip(File zipFile, File toDir) throws IOException
+    {
+        unZip(new FileInputStream(zipFile), toDir, true);
     }
 
     /**

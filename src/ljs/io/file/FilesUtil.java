@@ -1,4 +1,4 @@
-package ljs;
+package ljs.io.file;
 
 import java.io.File;
 import java.io.IOException;

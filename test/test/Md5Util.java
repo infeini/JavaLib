@@ -1,5 +1,7 @@
 package test;
 
+import ljs.io.IOUtil;
+import ljs.io.file.FilesUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -17,7 +19,7 @@ public class Md5Util
     @Test
     public void test() throws Exception
     {
-        List<File> files = ljs.FilesUtil.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
+        List<File> files = FilesUtil.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
         for (File file : files)
         {
             String md5 = ljs.Md5Util.getMd5(file);
@@ -43,7 +45,7 @@ public class Md5Util
         {
             OutputStream out = new FileOutputStream(new File("1.txt"), false);
             out.write(buffer.toString().getBytes("UTF-8"));
-            ljs.IOUtil.close(out);
+            IOUtil.close(out);
         }
     }
 }

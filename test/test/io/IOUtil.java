@@ -1,4 +1,4 @@
-package test;
+package test.io;
 
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +19,8 @@ public class IOUtil
         Object objectOfFile = null;
 
         File ofFile = new File("obj");
-        if (ljs.IOUtil.toFile(objectOfRam, ofFile))
-            System.out.println(ljs.IOUtil.toObj(ofFile) == null ? "反序列化成功!" : "反序列化成功!");
+        if (ljs.io.IOUtil.toFile(objectOfRam, ofFile))
+            System.out.println(ljs.io.IOUtil.toObj(ofFile) == null ? "反序列化成功!" : "反序列化成功!");
         ofFile.delete();
     }
 
@@ -29,7 +29,7 @@ public class IOUtil
     {
         Object object = "JAVA";
         File toFile = new File("obj");
-        System.out.println(ljs.IOUtil.toFile(object, toFile) ? "序列化成功!" : "序列化失败!");
+        System.out.println(ljs.io.IOUtil.toFile(object, toFile) ? "序列化成功!" : "序列化失败!");
         toFile.delete();
     }
 
@@ -37,16 +37,16 @@ public class IOUtil
     @Test
     public void toString1()
     {
-        File ofFile = new File("test/test.IOUtil.java");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(ofFile, "UTF-8");
+        File ofFile = new File("test/test.io.IOUtil.java");
+        StringBuffer stringBuffer = ljs.io.IOUtil.toString(ofFile, "UTF-8");
         System.out.println(stringBuffer.toString());
     }
 
     @Test
     public void toString2() throws FileNotFoundException
     {
-        File ofFile = new File("test/test.IOUtil.java");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
+        File ofFile = new File("test/test.io.IOUtil.java");
+        StringBuffer stringBuffer = ljs.io.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }
 
@@ -54,7 +54,7 @@ public class IOUtil
     public void toString3() throws Exception
     {
         URL url = new URL("http://www.scbz.hrss.gov.cn/index.php/letter-view-id-2178");
-        StringBuffer stringBuffer = ljs.IOUtil.toString(url, "gb2312");
+        StringBuffer stringBuffer = ljs.io.IOUtil.toString(url, "gb2312", 5000);
         System.out.println(stringBuffer.toString());
     }
 

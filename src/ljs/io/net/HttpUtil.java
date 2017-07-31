@@ -1,4 +1,4 @@
-package ljs;
+package ljs.io.net;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,40 +7,26 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static ljs.IOUtil.close;
+import static ljs.io.IOUtil.close;
 
 /**
  * net工具类
  *
  * @author https://github.com/LiuJiangshan
  */
-public class NetUtil
+public class HttpUtil
 {
     /**
-     * 下载进度监听器
-     */
-    public interface DownloadListener
-    {
-        /**
-         * 进度发生更新
-         *
-         * @param did   已下载字节数
-         * @param total 总字节数
-         */
-        void update(long did, long total);
-    }
-
-    /**
-     * 下载文件,支持进度显示
+     * 通过http协议下载文件,支持进度显示
      *
      * @param url              网络文件url
      * @param saveAs           本地文件存储路径
      * @param downloadListener 下载进度监听器
-     * @return 成功:true,失败:false
      */
-    public static boolean download(String url, File saveAs, DownloadListener downloadListener)
+    public static void downloadHttp(String url, File saveAs, Integer timeOut, DownloadListener downloadListener)
     {
-        boolean result = false;
+        if (timeOut == null || timeOut < 0)
+            timeOut = 5000;
         HttpURLConnection httpConnection = null;
         OutputStream out = null;
         InputStream in = null;
@@ -48,6 +34,12 @@ public class NetUtil
         {
             out = new FileOutputStream(saveAs);
             httpConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpConnection.setConnectTimeout(timeOut);
+            httpConnection.setReadTimeout(timeOut);
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode != 200)
+                if (downloadListener != null)
+                    throw new Exception("服务器返回响应码:" + responseCode);
             in = httpConnection.getInputStream();
             byte[] buffer = new byte[1024];
             long total = httpConnection.getContentLength();
@@ -58,20 +50,24 @@ public class NetUtil
                 out.write(buffer, 0, read);
                 did += read;
                 if (downloadListener != null)
-                    downloadListener.update(did, total);
+                    downloadListener.onUpdate(did, total);
             }
             out.flush();
-            result = true;
+            if (downloadListener != null)
+                downloadListener.onOk();
         } catch (Exception e)
         {
             e.printStackTrace();
+            if (downloadListener != null)
+                downloadListener.onFail(e);
         } finally
         {
             close(out);
             close(in);
             if (httpConnection != null)
                 httpConnection.disconnect();
+            if (downloadListener != null)
+                downloadListener.onEnd();
         }
-        return result;
     }
 }

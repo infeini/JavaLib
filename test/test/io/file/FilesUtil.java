@@ -1,4 +1,4 @@
-package test;
+package test.io.file;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,21 +12,21 @@ public class FilesUtil
     @Test
     public void list() throws IOException
     {
-        List<File> files = ljs.FilesUtil.list(new File("./src"));
+        List<File> files = ljs.io.file.FilesUtil.list(new File("./src"));
     }
 
     @Test
     public void getRelativePath() throws IOException
     {
         File rootDir = new File(".");
-        File targetPath = new File("src/test.IOUtil.java");
-        String str = ljs.FilesUtil.getRelativePath(rootDir, targetPath);
+        File targetPath = new File("src/test.io.IOUtil.java");
+        String str = ljs.io.file.FilesUtil.getRelativePath(rootDir, targetPath);
         System.out.println(str);
     }
 
     @Test
-    public void test()
+    public void test() throws Exception
     {
-        ZipEntry zipEntry = new ZipEntry("/test");
+        List<File> files = ljs.io.file.FilesUtil.list(new File("out", "test"));
     }
 }

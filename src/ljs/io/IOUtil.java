@@ -1,4 +1,4 @@
-package ljs;
+package ljs.io;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -133,7 +133,7 @@ public class IOUtil
      */
     public static StringBuffer toString(URL url, String encoding, Integer timeOut)
     {
-        if (timeOut == null)
+        if (timeOut == null || timeOut < 0)
             timeOut = 5000;
         if (url == null)
             return null;
@@ -145,6 +145,10 @@ public class IOUtil
             {
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setConnectTimeout(timeOut);
+                httpURLConnection.setReadTimeout(timeOut);
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode != 200)
+                    throw new Exception("服务器响应码:" + responseCode);
                 return IOUtil.toString(httpURLConnection.getInputStream(), "UTF-8", true);
             } catch (Exception e)
             {
