@@ -3,6 +3,7 @@ package ljs.io;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeoutException;
 
 /**
  * IO工具类
@@ -130,8 +131,9 @@ public class IOUtil
      * @param encoding 编码方式
      * @param timeOut  超时时间(毫秒)
      * @return http文本资源, 失败返回null
+     * @throws IOException 异常
      */
-    public static StringBuffer toString(URL url, String encoding, Integer timeOut)
+    public static StringBuffer toString(URL url, String encoding, Integer timeOut) throws IOException
     {
         if (timeOut == null || timeOut < 0)
             timeOut = 5000;
@@ -147,13 +149,9 @@ public class IOUtil
                 httpURLConnection.setConnectTimeout(timeOut);
                 httpURLConnection.setReadTimeout(timeOut);
                 int responseCode = httpURLConnection.getResponseCode();
-                if (responseCode != 200)
-                    throw new Exception("服务器响应码:" + responseCode);
+                if (responseCode != HttpURLConnection.HTTP_OK)
+                    throw new IOException("服务器响应码:" + responseCode);
                 return IOUtil.toString(httpURLConnection.getInputStream(), "UTF-8", true);
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-                return null;
             } finally
             {
                 IOUtil.close(reader);

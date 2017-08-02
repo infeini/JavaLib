@@ -37,7 +37,7 @@ public class HttpUtil
             httpConnection.setConnectTimeout(timeOut);
             httpConnection.setReadTimeout(timeOut);
             int responseCode = httpConnection.getResponseCode();
-            if (responseCode != 200)
+            if (responseCode != HttpURLConnection.HTTP_OK)
                 if (downloadListener != null)
                     throw new Exception("服务器返回响应码:" + responseCode);
             in = httpConnection.getInputStream();

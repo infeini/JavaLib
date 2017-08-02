@@ -11,7 +11,7 @@ public class NetUtil
     @Test
     public void test()
     {
-        HttpUtil.downloadHttp("http://192.168.1.88:8080/update.zip", new File("update.zip"), 5000, new DownloadListener()
+        HttpUtil.downloadHttp("http://192.168.1.88:8080/update.zip", new File("update.zip"), 2000, new DownloadListener()
         {
             @Override
             public void onUpdate(long did, long total)
