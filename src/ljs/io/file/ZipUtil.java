@@ -30,13 +30,13 @@ public class ZipUtil
             toDir = toDir.getParentFile();
 
         ZipInputStream zipIn = null;
-        OutputStream out = null;
         try
         {
             zipIn = new ZipInputStream(in);
             ZipEntry zipEntry = null;
             while ((zipEntry = zipIn.getNextEntry()) != null)
             {
+                OutputStream out = null;
                 try
                 {
                     File unZipFile = new File(toDir, zipEntry.getName());
@@ -50,13 +50,12 @@ public class ZipUtil
                     else
                     {
                         out = new FileOutputStream(unZipFile);
-                        IOUtil.write(in, out);
+                        IOUtil.write(zipIn, out);
                     }
 
                 } finally
                 {
                     IOUtil.close(out);
-                    zipIn.closeEntry();
                 }
             }
         } finally
