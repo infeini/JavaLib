@@ -2,40 +2,46 @@ package test.io.net;
 
 import ljs.io.net.DownloadListener;
 import ljs.io.net.HttpUtil;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
 public class NetUtil
 {
-    @Test
-    public void test()
+    public static void main(String[] args)
     {
-        HttpUtil.downloadHttp("http://192.168.1.88:8080/update.zip", new File("update.zip"), 2000, new DownloadListener()
+        DownloadListener downloadListener = new DownloadListener()
         {
             @Override
-            public void onUpdate(long did, long total)
+            public void downloadStart()
+            {
+                System.out.println("准备开始下载文件");
+            }
+
+            @Override
+            public void downloadUpdate(long did, long total)
             {
                 System.out.println("已完成:" + did * 100 / total);
             }
 
             @Override
-            public void onOk()
+            public void downloadSuccess()
             {
                 System.out.println("ok");
             }
 
             @Override
-            public void onFail(Exception e)
+            public void downloadFail(Exception e)
             {
                 System.out.println("fail:" + e.getMessage());
             }
 
             @Override
-            public void onEnd()
+            public void downloadEnd()
             {
                 System.out.println("end");
             }
-        });
+        };
+        HttpUtil.downloadHttp("http://192.168.1.88:8081/update.zip", new File("update.zip"), 2000, true, downloadListener);
+        System.out.println("任务添加完成");
     }
 }

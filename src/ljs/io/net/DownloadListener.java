@@ -6,27 +6,32 @@ package ljs.io.net;
 public interface DownloadListener
 {
     /**
+     * 准备下载
+     */
+    void downloadStart();
+
+    /**
      * 进度发生更新
      *
      * @param did   已下载字节数
      * @param total 总字节数
      */
-    void onUpdate(long did, long total);
+    void downloadUpdate(long did, long total);
 
     /**
      * 下载成功
      */
-    void onOk();
+    void downloadSuccess();
 
     /**
      * 下载失败
      *
      * @param e 异常
      */
-    void onFail(Exception e);
+    void downloadFail(Exception e);
 
     /**
      * 下载结束
      */
-    void onEnd();
+    void downloadEnd();
 }

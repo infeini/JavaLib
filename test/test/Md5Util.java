@@ -2,7 +2,7 @@ package test;
 
 import ljs.io.IOUtil;
 import ljs.io.file.FilesUtil;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileOutputStream;
