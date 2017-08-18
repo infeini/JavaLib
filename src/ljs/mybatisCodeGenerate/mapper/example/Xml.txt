@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="*{mapperClassName}">
+    <!--通过代码生成器生成于*{generateDate}-->
+    <!--https://github.com/LiuJiangshan/LjsJavaLib-->
+    <resultMap id="*{resultMapName}" type="*{pojoClassName}">
+*{resultList}   </resultMap>
+    <!--主键名称-->
+    <sql id="primaryColumnName">*{primaryColumnName}</sql>
+    <sql id="primaryFieldName">*{primaryFieldName}</sql>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+*{queryByExample}    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+*{updateSet}
+    </sql>
+
+    <select id="findById" resultMap="*{resultMapName}">
+        SELECT * FROM *{tableName}
+        WHERE <include refid="primaryColumnName"/>=#{*{primaryFieldName}}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM *{tableName}
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="*{resultMapName}">
+        SELECT * FROM *{tableName}
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="*{primaryColumnName}" keyProperty="pojo.*{primaryFieldName}">
+        INSERT INTO *{tableName}
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE *{tableName}
+        <include refid="updateSet"/>
+        WHERE<include refid="primaryColumnName"/>=#{pojo.*{primaryFieldName}}
+    </update>
+    <delete id="delete">
+        DELETE FROM *{tableName}
+        WHERE <include refid="primaryColumnName"/>=#{*{primaryFieldName}}
+    </delete>
+</mapper>

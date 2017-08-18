@@ -15,14 +15,23 @@ public class DateUtil
         long hour = ofSecond / Hour_Second;
         long minute = (ofSecond % Hour_Second) / 60;
         long second = ofSecond % 60;
-        return patchZero(hour) + ":" + patchZero(minute) + ":" + patchZero(second);
+        return patchZero(hour, 2) + ":" + patchZero(minute, 2) + ":" + patchZero(second, 2);
     }
 
-    private static String patchZero(long number)
+    /**
+     * 用零补全位数
+     */
+    private static String patchZero(long number, int length)
     {
         String addition = "";
-        if (number >= 0 && number <= 9)
-            addition = "0";
-        return addition + number;
+        String result = number + "";
+        if (number < 0)
+        {
+            addition = "-";
+            number = -number;
+        }
+        while (result.length() < length)
+            result = "0" + result;
+        return addition + result;
     }
 }

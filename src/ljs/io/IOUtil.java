@@ -3,7 +3,6 @@ package ljs.io;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.TimeoutException;
 
 /**
  * IO工具类
@@ -193,5 +192,26 @@ public class IOUtil
             out.write(buffer, 0, total);
         }
         out.flush();
+    }
+
+    /**
+     * 将字符写入文件流
+     *
+     * @param stringBuffer 待写入的字符
+     * @param outFile      输出的文件
+     * @throws Exception
+     */
+    public static void write(StringBuffer stringBuffer, File outFile) throws Exception
+    {
+        BufferedWriter writer = null;
+        try
+        {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile)));
+            writer.write(stringBuffer.toString());
+            writer.flush();
+        } finally
+        {
+            close(writer);
+        }
     }
 }
