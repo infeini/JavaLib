@@ -1,6 +1,6 @@
 package ljs.mybatisCodeGenerate;
 
-import ljs.StringUtils;
+import ljs.lib.StringUtils;
 import ljs.io.IOUtil;
 import ljs.mybatisCodeGenerate.annotation.FieldInfo;
 import ljs.mybatisCodeGenerate.annotation.TableInfo;
@@ -108,6 +108,6 @@ public abstract class BaseCodeGenerate
             else
                 StringUtils.replaceAll(tag, val, codeBuffer);
         }
-        IOUtil.write(codeBuffer, outFile);
+        IOUtil.write(codeBuffer, outFile, "UTF-8");
     }
 }

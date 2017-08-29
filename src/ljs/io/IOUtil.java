@@ -199,14 +199,15 @@ public class IOUtil
      *
      * @param stringBuffer 待写入的字符
      * @param outFile      输出的文件
+     * @param encoding     写入文件的编码方式
      * @throws Exception
      */
-    public static void write(StringBuffer stringBuffer, File outFile) throws Exception
+    public static void write(StringBuffer stringBuffer, File outFile, String encoding) throws Exception
     {
         BufferedWriter writer = null;
         try
         {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile)));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding == null ? "UTF-8" : encoding));
             writer.write(stringBuffer.toString());
             writer.flush();
         } finally

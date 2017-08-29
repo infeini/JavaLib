@@ -1,4 +1,4 @@
-package test;
+package test.lib;
 
 import ljs.io.IOUtil;
 import ljs.io.file.FilesUtil;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Md5Util
+public class Md5UtilTest
 {
     Map<String, List<File>> map = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class Md5Util
         List<File> files = FilesUtil.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
         for (File file : files)
         {
-            String md5 = ljs.Md5Util.getMd5(file);
+            String md5 = ljs.lib.Md5Util.getMd5(file);
             List<File> md5Files = map.get(md5);
             if (md5Files == null)
             {

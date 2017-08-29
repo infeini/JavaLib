@@ -91,4 +91,35 @@ public class FilesUtil
         Files.walkFileTree(Paths.get(dir.getAbsolutePath()), finder);
         return files;
     }
+
+    /**
+     * 递归删除文件或文件夹
+     *
+     * @param fileOrDir 要删除的文件或文件夹
+     */
+    public static void delete(File fileOrDir)
+    {
+        if (fileOrDir == null || !fileOrDir.exists())
+            return;
+        if (fileOrDir.isDirectory())
+        {
+            File[] files = fileOrDir.listFiles();
+            for (File f : files)
+                delete(f);
+        }
+        fileOrDir.delete();
+    }
+
+    /**
+     * 清空文件夹
+     *
+     * @param dir 需要清空的文件夹
+     */
+    public static void cleanDir(File dir)
+    {
+        if (dir == null || !dir.exists())
+            return;
+        for (File file : dir.listFiles())
+            delete(file);
+    }
 }

@@ -42,23 +42,22 @@ public class ZipUtil
      */
     private static void unZip(InputStream in, Integer total, File toDir, boolean close, boolean join, UnPackZipListener unPackZipListener) throws IOException
     {
-        File toDir_ = toDir;
-        toDir_ = toDir.getCanonicalFile();
-        if (toDir_.isFile())
-            toDir_ = toDir_.getParentFile();
+        if (toDir.isFile())
+            toDir = toDir.getParentFile();
 
+        File finalToDir = toDir;
         Runnable unZipRunnable = new Runnable()
         {
             @Override
             public void run()
             {
-                if (unPackZipListener != null)
-                    unPackZipListener.unPackStart();
-
                 ZipInputStream zipIn = null;
                 ZipEntry zipEntry = null;
                 try
                 {
+                    if (unPackZipListener != null)
+                        unPackZipListener.unPackStart();
+
                     zipIn = new ZipInputStream(in);
 
                     int did = 0;
@@ -67,12 +66,12 @@ public class ZipUtil
                         if (unPackZipListener != null)
                         {
                             if (total != null)
-                                unPackZipListener.unPackUpdate(zipEntry, did, total);
+                                unPackZipListener.unPackUpdate(zipEntry, did++, total);
                         }
                         OutputStream out = null;
                         try
                         {
-                            File unZipFile = new File(toDir, zipEntry.getName());
+                            File unZipFile = new File(finalToDir, zipEntry.getName());
                             File parentDir = unZipFile.getParentFile();
                             if (parentDir.exists()) ;
                             else
@@ -89,7 +88,6 @@ public class ZipUtil
                         } finally
                         {
                             IOUtil.close(out);
-                            did++;
                         }
                     }
 
@@ -99,13 +97,12 @@ public class ZipUtil
                 {
                     if (unPackZipListener != null)
                         unPackZipListener.unPackFail(zipEntry, e);
-
                     e.printStackTrace();
                 } finally
                 {
+                    IOUtil.close(zipIn);
                     if (close)
                         IOUtil.close(in);
-                    IOUtil.close(zipIn);
 
                     if (unPackZipListener != null)
                         unPackZipListener.unPackEnd();
@@ -127,8 +124,13 @@ public class ZipUtil
      */
     public static void unZip(File zipFile, File toDir, boolean join, UnPackZipListener unPackZipListener) throws IOException
     {
+        if (!toDir.exists())
+            toDir.mkdirs();
         ZipFile zFile = new ZipFile(zipFile);
-        unZip(new FileInputStream(zipFile), zFile.size(), toDir, true, join, unPackZipListener);
+        //关闭，不然流不会关闭，将不能删除该文件
+        zFile.close();
+        int size = zFile.size();
+        unZip(new FileInputStream(zipFile), size, toDir, true, join, unPackZipListener);
     }
 
     /**
@@ -146,8 +148,8 @@ public class ZipUtil
         ZipOutputStream out = null;
         try
         {
-            out = new ZipOutputStream(new FileOutputStream(toZip, false));
             List<File> files = FilesUtil.list(fileOrDir);
+            out = new ZipOutputStream(new FileOutputStream(toZip, false));
             for (File file : files)
             {
                 ZipEntry zipEntry = null;

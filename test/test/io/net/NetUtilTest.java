@@ -5,7 +5,7 @@ import ljs.io.net.HttpUtil;
 
 import java.io.File;
 
-public class NetUtil
+public class NetUtilTest
 {
     public static void main(String[] args)
     {

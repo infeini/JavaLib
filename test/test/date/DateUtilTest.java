@@ -2,7 +2,7 @@ package test.date;
 
 import org.junit.Test;
 
-public class DateUtil
+public class DateUtilTest
 {
     @Test
     public void toHMS()

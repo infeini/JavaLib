@@ -10,7 +10,7 @@ import java.net.URL;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class IOUtil
+public class IOUtilTest
 {
     @Test
     public void toObj()
@@ -37,7 +37,7 @@ public class IOUtil
     @Test
     public void toString1()
     {
-        File ofFile = new File("test/test.io.IOUtil.java");
+        File ofFile = new File("test/test.io.IOUtilTest.java");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(ofFile, "UTF-8");
         System.out.println(stringBuffer.toString());
     }
@@ -45,7 +45,7 @@ public class IOUtil
     @Test
     public void toString2() throws FileNotFoundException
     {
-        File ofFile = new File("test/test.io.IOUtil.java");
+        File ofFile = new File("test/test.io.IOUtilTest.java");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }

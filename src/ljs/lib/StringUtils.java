@@ -1,4 +1,4 @@
-package ljs;
+package ljs.lib;
 
 import java.util.Map;
 
