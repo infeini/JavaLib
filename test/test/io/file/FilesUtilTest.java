@@ -46,4 +46,12 @@ public class FilesUtilTest
     {
         FilesUtil.cleanDir(new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34"));
     }
+
+    @Test
+    public void copyFileOrDir() throws IOException
+    {
+        File copyForm = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\from\\Model.html");
+        File copyTo = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\to\\testd\\Model.html");
+        FilesUtil.copyFileOrDir(copyForm, copyTo);
+    }
 }

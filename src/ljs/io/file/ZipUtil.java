@@ -126,10 +126,16 @@ public class ZipUtil
     {
         if (!toDir.exists())
             toDir.mkdirs();
-        ZipFile zFile = new ZipFile(zipFile);
-        //关闭，不然流不会关闭，将不能删除该文件
-        zFile.close();
-        int size = zFile.size();
+        int size = 0;
+        ZipFile zFile = null;
+        try
+        {
+            zFile = new ZipFile(zipFile);
+        } finally
+        {
+            //关闭，不然流不会关闭，将不能删除该文件
+            zFile.close();
+        }
         unZip(new FileInputStream(zipFile), size, toDir, true, join, unPackZipListener);
     }
 

@@ -122,4 +122,30 @@ public class FilesUtil
         for (File file : dir.listFiles())
             delete(file);
     }
+
+    /**
+     * 递归复制文件或文件夹
+     *
+     * @param from 原文件
+     * @param to   复制目标路径
+     * @throws IOException
+     */
+    public static void copyFileOrDir(File from, File to) throws IOException
+    {
+        if (from == null || !from.exists())
+            return;
+        if (from.isDirectory())
+        {
+            to.mkdirs();
+            File[] files = from.listFiles();
+            for (File f : files)
+                copyFileOrDir(f, new File(to, f.getName()));
+        } else
+        {
+            File toDir = to.getParentFile();
+            if (!toDir.exists())
+                toDir.mkdirs();
+            Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
 }
