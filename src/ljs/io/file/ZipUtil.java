@@ -148,35 +148,81 @@ public class ZipUtil
      */
     public static void toZip(File fileOrDir, File toZip) throws IOException
     {
-        fileOrDir = fileOrDir.getCanonicalFile();
+        toZip(new File[]{fileOrDir}, toZip);
+    }
+    //    {
+//        fileOrDir = fileOrDir.getCanonicalFile();
+//        toZip = toZip.getCanonicalFile();
+//
+//        ZipOutputStream out = null;
+//        try
+//        {
+//            List<File> files = FilesUtil.list(fileOrDir);
+//            out = new ZipOutputStream(new FileOutputStream(toZip, false));
+//            for (File file : files)
+//            {
+//                ZipEntry zipEntry = null;
+//                FileInputStream in = null;
+//                try
+//                {
+//                    zipEntry = new ZipEntry(FilesUtil.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file));
+//                    out.putNextEntry(zipEntry);
+//                    if (file.isFile())
+//                    {
+//                        in = new FileInputStream(file);
+//                        IOUtil.write(in, out);
+//                    }
+//                } finally
+//                {
+//                    if (out != null)
+//                        out.closeEntry();
+//                    IOUtil.close(in);
+//                }
+//            }
+//            out.flush();
+//        } finally
+//        {
+//            IOUtil.close(out);
+//        }
+//    }
+
+    public static void toZip(File[] fileOrDirs, File toZip) throws IOException
+    {
         toZip = toZip.getCanonicalFile();
 
         ZipOutputStream out = null;
         try
         {
-            List<File> files = FilesUtil.list(fileOrDir);
             out = new ZipOutputStream(new FileOutputStream(toZip, false));
-            for (File file : files)
+
+            for (File fileOrDir : fileOrDirs)
             {
-                ZipEntry zipEntry = null;
-                FileInputStream in = null;
-                try
+                fileOrDir = fileOrDir.getCanonicalFile();
+
+
+                List<File> files = FilesUtil.list(fileOrDir);
+                for (File file : files)
                 {
-                    zipEntry = new ZipEntry(FilesUtil.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file));
-                    out.putNextEntry(zipEntry);
-                    if (file.isFile())
+                    ZipEntry zipEntry = null;
+                    FileInputStream in = null;
+                    try
                     {
-                        in = new FileInputStream(file);
-                        IOUtil.write(in, out);
+                        zipEntry = new ZipEntry(FilesUtil.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file).replaceAll("\\\\","/"));
+                        out.putNextEntry(zipEntry);
+                        if (file.isFile())
+                        {
+                            in = new FileInputStream(file);
+                            IOUtil.write(in, out);
+                        }
+                    } finally
+                    {
+                        if (out != null)
+                            out.closeEntry();
+                        IOUtil.close(in);
                     }
-                } finally
-                {
-                    if (out != null)
-                        out.closeEntry();
-                    IOUtil.close(in);
                 }
+                out.flush();
             }
-            out.flush();
         } finally
         {
             IOUtil.close(out);

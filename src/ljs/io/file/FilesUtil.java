@@ -49,11 +49,14 @@ public class FilesUtil
      */
     public static List<File> list(File dir) throws IOException
     {
+        List<File> files = new ArrayList<>();
         if (dir.isFile())
-            dir = dir.getParentFile();
+        {
+            files.add(dir);
+            return files;
+        }
         dir = dir.getCanonicalFile();
 
-        List<File> files = new ArrayList<>();
         FileVisitor finder = new FileVisitor<Path>()
         {
             @Override

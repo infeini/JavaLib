@@ -13,12 +13,20 @@ import java.util.zip.ZipFile;
 public class ZipUtilTest
 {
     @Test
-    public void toZip() throws IOException
+    public void test()
     {
-        ljs.io.file.ZipUtil.toZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1"), new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\MB1.zip"));
+        ZipEntry zipEntry = new ZipEntry("ljs\\");
+        System.out.println(zipEntry.isDirectory());
     }
 
-    public static void main(String[] args) throws IOException
+    @Test
+    public void toZip() throws IOException
+    {
+        ljs.io.file.ZipUtil.toZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\pack\\MB1").listFiles(), new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\pack\\a.zip"));
+    }
+
+    @Test
+    public void unzip() throws Exception
     {
         UnPackZipListener unPackZipListener = new UnPackZipListener()
         {

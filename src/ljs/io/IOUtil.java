@@ -1,5 +1,7 @@
 package ljs.io;
 
+import ljs.lib.StringUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -204,11 +206,26 @@ public class IOUtil
      */
     public static void write(StringBuffer stringBuffer, File outFile, String encoding) throws Exception
     {
+        if (StringUtils.isEmpty(encoding))
+            encoding = "UTF-8";
+        write(stringBuffer.toString(), outFile, encoding);
+    }
+
+    /**
+     * 将字符写入文件流
+     *
+     * @param str      待写入的字符
+     * @param outFile  输出的文件
+     * @param encoding 写入文件的编码方式
+     * @throws Exception
+     */
+    public static void write(String str, File outFile, String encoding) throws IOException
+    {
         BufferedWriter writer = null;
         try
         {
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding == null ? "UTF-8" : encoding));
-            writer.write(stringBuffer.toString());
+            writer.write(str);
             writer.flush();
         } finally
         {
