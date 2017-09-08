@@ -1,4 +1,4 @@
-package ljs.mybatisCodeGenerate;
+package ljs.code.mybatis;
 
 public class BaseTag
 {

@@ -4,11 +4,12 @@ import org.apache.ibatis.annotations.Param;
 
 import *{pojoClassName};
 import java.util.List;
+import ljs.code.mybatis.mapper.example.BaseMapper;
 /**
  * 通过代码生成器生成于*{generateDate}
  * @author https://github.com/LiuJiangshan/LjsJavaLib
  */
-public interface *{simpleMapperClassName}
+public interface *{simpleMapperClassName} extends BaseMapper<*{simplePojoClassName}>
 {
     /**
      * 通过ID查找对象

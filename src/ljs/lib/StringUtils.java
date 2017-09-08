@@ -28,7 +28,13 @@ public class StringUtils
         else
         {
             String str = stringBuffer.toString();
-            str = str.replaceAll(regex, replacement == null ? "" : replacement);
+            try
+            {
+                str = str.replaceAll(regex, replacement == null ? "" : replacement);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
             stringBuffer.setLength(0);
             stringBuffer.append(str);
         }

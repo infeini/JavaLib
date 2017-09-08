@@ -1,14 +1,14 @@
-package ljs.mybatisCodeGenerate.mapper.xml;
+package ljs.code.mybatis.mapper.xml;
 
-import ljs.mybatisCodeGenerate.BaseCodeGenerate;
-import ljs.mybatisCodeGenerate.BaseTag;
+import ljs.code.mybatis.BasePojoCodeGenerate;
+import ljs.code.mybatis.BaseTag;
 
 import java.io.File;
 
 /**
  * mybatis xml 配置文件生成器
  */
-public class MapperXmlCodeGenerate extends BaseCodeGenerate
+public class MapperXmlCodeGenerate extends BasePojoCodeGenerate
 {
     class XmlTag extends BaseTag
     {
@@ -118,6 +118,6 @@ public class MapperXmlCodeGenerate extends BaseCodeGenerate
     public void generate() throws Exception
     {
         File outFile = new File(packageDir, pojoType.getSimpleName() + "Mapper.xml");
-        generate(replaces, ClassLoader.getSystemClassLoader().getResourceAsStream("ljs/mybatisCodeGenerate/mapper/example/Xml.txt"), outFile);
+        generate(replaces, getClass().getResourceAsStream("/ljs/code/mybatis/mapper/example/Xml.txt"), outFile);
     }
 }

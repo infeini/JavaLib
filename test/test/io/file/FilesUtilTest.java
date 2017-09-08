@@ -54,4 +54,14 @@ public class FilesUtilTest
         File copyTo = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\to\\testd\\Model.html");
         FilesUtil.copyFileOrDir(copyForm, copyTo);
     }
+
+    @Test
+    public void getFile() throws Exception
+    {
+        String packageName = getClass().getPackage().getName();
+        System.out.println(packageName);
+        String[] fileNames = packageName.split("\\.");
+        File file = FilesUtil.getFile(new File("."), fileNames);
+        System.out.println(file.getAbsolutePath());
+    }
 }

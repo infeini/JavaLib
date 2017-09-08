@@ -151,4 +151,23 @@ public class FilesUtil
             Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
+    /**
+     * 拼接文件路径
+     *
+     * @param preFixFile 前缀文件路径
+     * @param fileNames  拼接路径数组
+     */
+    public static File getFile(File preFixFile, String... fileNames)
+    {
+        File file = preFixFile == null ? new File(".") : preFixFile;
+        if (fileNames.length == 0) ;
+        else
+        {
+            file = new File(fileNames[0]);
+            for (String fileName : fileNames)
+                file = new File(file, fileName);
+        }
+        return file;
+    }
 }

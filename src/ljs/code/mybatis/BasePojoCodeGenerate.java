@@ -1,9 +1,9 @@
-package ljs.mybatisCodeGenerate;
+package ljs.code.mybatis;
 
-import ljs.lib.StringUtils;
+import ljs.code.mybatis.annotation.FixName;
+import ljs.code.mybatis.annotation.PrimaryKey;
 import ljs.io.IOUtil;
-import ljs.mybatisCodeGenerate.annotation.FieldInfo;
-import ljs.mybatisCodeGenerate.annotation.TableInfo;
+import ljs.lib.StringUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * mybatis java 代码生成器
  */
-public abstract class BaseCodeGenerate
+public abstract class BasePojoCodeGenerate
 {
     public BaseTag val;
 
@@ -42,29 +42,31 @@ public abstract class BaseCodeGenerate
     //生成mapper项目相对路径
     public File packageDir;
 
-    public BaseCodeGenerate(Class pojoType, String packageName, File packageDir) throws Exception
+    public BasePojoCodeGenerate(Class pojoType, String packageName, File packageDir) throws Exception
     {
         this.packageName = packageName;
         this.packageDir = packageDir;
 
         this.pojoType = pojoType;
-        TableInfo tableInfo = (TableInfo) pojoType.getAnnotation(TableInfo.class);
-        if (tableInfo == null)
-            throw new Exception(pojoType.getName() + "不包含注解@TableInfo,无法获取该实体对应的表信息");
-        tableInfo = (TableInfo) pojoType.getAnnotation(TableInfo.class);
-        this.tableName = tableInfo.tableName();
+        FixName fixTableName = (FixName) pojoType.getAnnotation(FixName.class);
+        if (fixTableName != null)
+            this.tableName = fixTableName.name();
+        else
+            this.tableName = pojoType.getSimpleName();
         if (StringUtils.isEmpty(tableName))
             throw new Exception("表名不能为空");
         this.myFields = new ArrayList<>();
         for (Field field : pojoType.getDeclaredFields())
         {
-            FieldInfo fieldInfo = field.getAnnotation(FieldInfo.class);
-            if (fieldInfo == null)
-                continue;
             MyField myField = new MyField();
             myField.field = field;
-            myField.tableFieldName = fieldInfo.tableFieldName();
-            if (fieldInfo.isPrimaryKey())
+            FixName fixFieldName = field.getAnnotation(FixName.class);
+            if (fixFieldName == null)
+                myField.tableFieldName = field.getName();
+            else
+                myField.tableFieldName = fixFieldName.name();
+            PrimaryKey primary = field.getAnnotation(PrimaryKey.class);
+            if (primary != null)
             {
                 if (primaryKeyField != null)
                     throw new Exception("不能有两个主键字段:" + primaryKeyField.field.getName() + "和" + field.getName());

@@ -1,14 +1,14 @@
-package ljs.mybatisCodeGenerate.mapper.java;
+package ljs.code.mybatis.mapper.java;
 
-import ljs.mybatisCodeGenerate.BaseCodeGenerate;
-import ljs.mybatisCodeGenerate.BaseTag;
+import ljs.code.mybatis.BasePojoCodeGenerate;
+import ljs.code.mybatis.BaseTag;
 
 import java.io.File;
 
 /**
  * mybatis java 代码生成器
  */
-public class MapperJavaCodeGenerate extends BaseCodeGenerate
+public class MapperJavaCodeGenerate extends BasePojoCodeGenerate
 {
     /**
      * 占位符名称
@@ -74,6 +74,6 @@ public class MapperJavaCodeGenerate extends BaseCodeGenerate
     public void generate() throws Exception
     {
         File outFile = new File(Config.mapperPackageLocation + pojoType.getSimpleName() + "Mapper.java");
-        generate(replaces, ClassLoader.getSystemClassLoader().getResourceAsStream("ljs/mybatisCodeGenerate/mapper/example/Java.txt"), outFile);
+        generate(replaces, getClass().getResourceAsStream("/ljs/code/mybatis/mapper/example/Java.txt"), outFile);
     }
 }
