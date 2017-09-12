@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.JobMapper">
+    <!--xml config form table job-->
+    <resultMap id="jobResult" type="pojo.Job">
+    <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="premise" column="premise"/>
+        <result property="responsibility" column="responsibility"/>
+        <result property="info" column="info"/>
+        <result property="number" column="number"/>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <where>
+            <if test="pojo.id!=null">AND id=#{pojo.id}</if>
+            <if test="pojo.name!=null">AND name LIKE '%${pojo.name}%'</if>
+            <if test="pojo.departmentId!=null">AND department_id=#{pojo.departmentId}</if>
+            <if test="pojo.premise!=null">AND premise LIKE '%${pojo.premise}%'</if>
+            <if test="pojo.responsibility!=null">AND responsibility LIKE '%${pojo.responsibility}%'</if>
+            <if test="pojo.info!=null">AND info LIKE '%${pojo.info}%'</if>
+            <if test="pojo.number!=null">AND number=#{pojo.number}</if>
+    </where>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <if test="pojo.name!=null">name=#{pojo.name},</if>
+        <if test="pojo.departmentId!=null">department_id=#{pojo.departmentId},</if>
+        <if test="pojo.premise!=null">premise=#{pojo.premise},</if>
+        <if test="pojo.responsibility!=null">responsibility=#{pojo.responsibility},</if>
+        <if test="pojo.info!=null">info=#{pojo.info},</if>
+        <if test="pojo.number!=null">number=#{pojo.number},</if>
+    </sql>
+
+    <select id="findById" resultMap="jobResult">
+        SELECT * FROM job
+        WHERE id=#{id}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM job
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="jobResult">
+        SELECT * FROM job
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="pojo.id">
+        INSERT INTO job
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE job
+        <include refid="updateSet"/>
+        WHERE id=pojo.id
+    </update>
+    <delete id="delete">
+        DELETE FROM job WHERE id=#{id}
+    </delete>
+</mapper>

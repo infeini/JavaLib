@@ -1,0 +1,7 @@
+    /**
+     * *{comment} Getter方法
+     */
+    public *{fieldType} *{getMethodName}()
+    {
+        return this.*{fieldName};
+    }

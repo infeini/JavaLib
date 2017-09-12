@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FunctionMapper">
+    <!--xml config form table function-->
+    <resultMap id="functionResult" type="pojo.Function">
+    <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="info" column="info"/>
+        <result property="productVersionId" column="product_version_id"/>
+        <result property="feature" column="feature"/>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <where>
+            <if test="pojo.id!=null">AND id=#{pojo.id}</if>
+            <if test="pojo.name!=null">AND name LIKE '%${pojo.name}%'</if>
+            <if test="pojo.createDate!=null">AND create_date=#{pojo.createDate}</if>
+            <if test="pojo.info!=null">AND info LIKE '%${pojo.info}%'</if>
+            <if test="pojo.productVersionId!=null">AND product_version_id=#{pojo.productVersionId}</if>
+            <if test="pojo.feature!=null">AND feature LIKE '%${pojo.feature}%'</if>
+    </where>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <if test="pojo.name!=null">name=#{pojo.name},</if>
+        <if test="pojo.createDate!=null">create_date=#{pojo.createDate},</if>
+        <if test="pojo.info!=null">info=#{pojo.info},</if>
+        <if test="pojo.productVersionId!=null">product_version_id=#{pojo.productVersionId},</if>
+        <if test="pojo.feature!=null">feature=#{pojo.feature},</if>
+    </sql>
+
+    <select id="findById" resultMap="functionResult">
+        SELECT * FROM function
+        WHERE id=#{id}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM function
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="functionResult">
+        SELECT * FROM function
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="pojo.id">
+        INSERT INTO function
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE function
+        <include refid="updateSet"/>
+        WHERE id=pojo.id
+    </update>
+    <delete id="delete">
+        DELETE FROM function WHERE id=#{id}
+    </delete>
+</mapper>

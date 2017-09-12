@@ -1,0 +1,7 @@
+    /**
+     * *{comment} Setter方法
+     */
+    public void *{setMethodName}(*{fieldType} *{fieldName})
+    {
+        this.*{fieldName} = *{fieldName};
+    }

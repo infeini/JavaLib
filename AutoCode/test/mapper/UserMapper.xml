@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+    <!--xml config form table user-->
+    <resultMap id="userResult" type="pojo.User">
+    <result property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="passWord" column="pass_word"/>
+        <result property="orgId" column="org_id"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="jobId" column="job_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="userFullName" column="user_full_name"/>
+        <result property="email" column="email"/>
+        <result property="sex" column="sex"/>
+        <result property="profession" column="profession"/>
+        <result property="education" column="education"/>
+        <result property="politicalStatus" column="political_status"/>
+        <result property="photoHash" column="photo_hash"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="telephone" column="telephone"/>
+        <result property="contact" column="contact"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="officePhone" column="office_phone"/>
+        <result property="officeAddress" column="office_address"/>
+        <result property="resume" column="resume"/>
+        <result property="remark" column="remark"/>
+        <result property="enabled" column="enabled"/>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <where>
+            <if test="pojo.id!=null">AND id=#{pojo.id}</if>
+            <if test="pojo.userName!=null">AND user_name LIKE '%${pojo.userName}%'</if>
+            <if test="pojo.passWord!=null">AND pass_word LIKE '%${pojo.passWord}%'</if>
+            <if test="pojo.orgId!=null">AND org_id=#{pojo.orgId}</if>
+            <if test="pojo.departmentId!=null">AND department_id=#{pojo.departmentId}</if>
+            <if test="pojo.jobId!=null">AND job_id=#{pojo.jobId}</if>
+            <if test="pojo.roleId!=null">AND role_id=#{pojo.roleId}</if>
+            <if test="pojo.userFullName!=null">AND user_full_name LIKE '%${pojo.userFullName}%'</if>
+            <if test="pojo.email!=null">AND email LIKE '%${pojo.email}%'</if>
+            <if test="pojo.sex!=null">AND sex LIKE '%${pojo.sex}%'</if>
+            <if test="pojo.profession!=null">AND profession LIKE '%${pojo.profession}%'</if>
+            <if test="pojo.education!=null">AND education LIKE '%${pojo.education}%'</if>
+            <if test="pojo.politicalStatus!=null">AND political_status LIKE '%${pojo.politicalStatus}%'</if>
+            <if test="pojo.photoHash!=null">AND photo_hash LIKE '%${pojo.photoHash}%'</if>
+            <if test="pojo.phone!=null">AND phone LIKE '%${pojo.phone}%'</if>
+            <if test="pojo.address!=null">AND address LIKE '%${pojo.address}%'</if>
+            <if test="pojo.telephone!=null">AND telephone LIKE '%${pojo.telephone}%'</if>
+            <if test="pojo.contact!=null">AND contact LIKE '%${pojo.contact}%'</if>
+            <if test="pojo.contactPhone!=null">AND contact_phone LIKE '%${pojo.contactPhone}%'</if>
+            <if test="pojo.officePhone!=null">AND office_phone LIKE '%${pojo.officePhone}%'</if>
+            <if test="pojo.officeAddress!=null">AND office_address LIKE '%${pojo.officeAddress}%'</if>
+            <if test="pojo.resume!=null">AND resume LIKE '%${pojo.resume}%'</if>
+            <if test="pojo.remark!=null">AND remark LIKE '%${pojo.remark}%'</if>
+            <if test="pojo.enabled!=null">AND enabled=#{pojo.enabled}</if>
+    </where>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <if test="pojo.userName!=null">user_name=#{pojo.userName},</if>
+        <if test="pojo.passWord!=null">pass_word=#{pojo.passWord},</if>
+        <if test="pojo.orgId!=null">org_id=#{pojo.orgId},</if>
+        <if test="pojo.departmentId!=null">department_id=#{pojo.departmentId},</if>
+        <if test="pojo.jobId!=null">job_id=#{pojo.jobId},</if>
+        <if test="pojo.roleId!=null">role_id=#{pojo.roleId},</if>
+        <if test="pojo.userFullName!=null">user_full_name=#{pojo.userFullName},</if>
+        <if test="pojo.email!=null">email=#{pojo.email},</if>
+        <if test="pojo.sex!=null">sex=#{pojo.sex},</if>
+        <if test="pojo.profession!=null">profession=#{pojo.profession},</if>
+        <if test="pojo.education!=null">education=#{pojo.education},</if>
+        <if test="pojo.politicalStatus!=null">political_status=#{pojo.politicalStatus},</if>
+        <if test="pojo.photoHash!=null">photo_hash=#{pojo.photoHash},</if>
+        <if test="pojo.phone!=null">phone=#{pojo.phone},</if>
+        <if test="pojo.address!=null">address=#{pojo.address},</if>
+        <if test="pojo.telephone!=null">telephone=#{pojo.telephone},</if>
+        <if test="pojo.contact!=null">contact=#{pojo.contact},</if>
+        <if test="pojo.contactPhone!=null">contact_phone=#{pojo.contactPhone},</if>
+        <if test="pojo.officePhone!=null">office_phone=#{pojo.officePhone},</if>
+        <if test="pojo.officeAddress!=null">office_address=#{pojo.officeAddress},</if>
+        <if test="pojo.resume!=null">resume=#{pojo.resume},</if>
+        <if test="pojo.remark!=null">remark=#{pojo.remark},</if>
+        <if test="pojo.enabled!=null">enabled=#{pojo.enabled},</if>
+    </sql>
+
+    <select id="findById" resultMap="userResult">
+        SELECT * FROM user
+        WHERE id=#{id}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="userResult">
+        SELECT * FROM user
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="pojo.id">
+        INSERT INTO user
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE user
+        <include refid="updateSet"/>
+        WHERE id=pojo.id
+    </update>
+    <delete id="delete">
+        DELETE FROM user WHERE id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.TablePermissionMapper">
+    <!--xml config form table table_permission-->
+    <resultMap id="tablePermissionResult" type="pojo.TablePermission">
+    <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="tableName" column="table_name"/>
+        <result property="create" column="create"/>
+        <result property="read" column="read"/>
+        <result property="update" column="update"/>
+        <result property="delete" column="delete"/>
+        <result property="info" column="info"/>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <where>
+            <if test="pojo.id!=null">AND id=#{pojo.id}</if>
+            <if test="pojo.name!=null">AND name LIKE '%${pojo.name}%'</if>
+            <if test="pojo.tableName!=null">AND table_name LIKE '%${pojo.tableName}%'</if>
+            <if test="pojo.create!=null">AND create=#{pojo.create}</if>
+            <if test="pojo.read!=null">AND read=#{pojo.read}</if>
+            <if test="pojo.update!=null">AND update=#{pojo.update}</if>
+            <if test="pojo.delete!=null">AND delete=#{pojo.delete}</if>
+            <if test="pojo.info!=null">AND info LIKE '%${pojo.info}%'</if>
+    </where>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <if test="pojo.name!=null">name=#{pojo.name},</if>
+        <if test="pojo.tableName!=null">table_name=#{pojo.tableName},</if>
+        <if test="pojo.create!=null">create=#{pojo.create},</if>
+        <if test="pojo.read!=null">read=#{pojo.read},</if>
+        <if test="pojo.update!=null">update=#{pojo.update},</if>
+        <if test="pojo.delete!=null">delete=#{pojo.delete},</if>
+        <if test="pojo.info!=null">info=#{pojo.info},</if>
+    </sql>
+
+    <select id="findById" resultMap="tablePermissionResult">
+        SELECT * FROM table_permission
+        WHERE id=#{id}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM table_permission
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="tablePermissionResult">
+        SELECT * FROM table_permission
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="pojo.id">
+        INSERT INTO table_permission
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE table_permission
+        <include refid="updateSet"/>
+        WHERE id=pojo.id
+    </update>
+    <delete id="delete">
+        DELETE FROM table_permission WHERE id=#{id}
+    </delete>
+</mapper>

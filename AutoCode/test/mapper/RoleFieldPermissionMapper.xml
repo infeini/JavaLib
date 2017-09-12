@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.RoleFieldPermissionMapper">
+    <!--xml config form table role_field_permission-->
+    <resultMap id="roleFieldPermissionResult" type="pojo.RoleFieldPermission">
+    <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="fieldPermissionId" column="field_permission_id"/>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <where>
+            <if test="pojo.id!=null">AND id=#{pojo.id}</if>
+            <if test="pojo.roleId!=null">AND role_id=#{pojo.roleId}</if>
+            <if test="pojo.fieldPermissionId!=null">AND field_permission_id=#{pojo.fieldPermissionId}</if>
+    </where>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <if test="pojo.roleId!=null">role_id=#{pojo.roleId},</if>
+        <if test="pojo.fieldPermissionId!=null">field_permission_id=#{pojo.fieldPermissionId},</if>
+    </sql>
+
+    <select id="findById" resultMap="roleFieldPermissionResult">
+        SELECT * FROM role_field_permission
+        WHERE id=#{id}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM role_field_permission
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="roleFieldPermissionResult">
+        SELECT * FROM role_field_permission
+        <include refid="queryByExample"/>
+        LIMIT #{start},#{length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="pojo.id">
+        INSERT INTO role_field_permission
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE role_field_permission
+        <include refid="updateSet"/>
+        WHERE id=pojo.id
+    </update>
+    <delete id="delete">
+        DELETE FROM role_field_permission WHERE id=#{id}
+    </delete>
+</mapper>
