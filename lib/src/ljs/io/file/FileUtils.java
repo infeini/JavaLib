@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class FilesUtil
+public class FileUtils
 {
     /**
      * 获取一个路径相对于另一个路径的相对路径
@@ -169,5 +169,20 @@ public class FilesUtil
                 file = new File(file, fileName);
         }
         return file;
+    }
+
+    /**
+     * 获取文件不含后缀的名称
+     *
+     * @param file 文件
+     * @return 不含后缀的文件名
+     */
+    public static String getNameNoSuffix(File file)
+    {
+        String name = file.getName();
+        int index = name.lastIndexOf(".");
+        if (index != -1)
+            name = name.substring(0, index);
+        return name;
     }
 }

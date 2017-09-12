@@ -1,7 +1,7 @@
 package test.io.file;
 
 
-import ljs.io.file.FilesUtil;
+import ljs.io.file.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,7 +13,7 @@ public class FilesUtilTest
     @Test
     public void list() throws IOException
     {
-        List<File> files = ljs.io.file.FilesUtil.list(new File("./src"));
+        List<File> files = FileUtils.list(new File("./src"));
         for (File file : files)
             System.out.println(file.getAbsolutePath());
     }
@@ -22,8 +22,8 @@ public class FilesUtilTest
     public void getRelativePath() throws IOException
     {
         File rootDir = new File(".");
-        File targetPath = new File("src/test.io.IOUtil.java");
-        String str = ljs.io.file.FilesUtil.getRelativePath(rootDir, targetPath);
+        File targetPath = new File("src/test.ljs.io.IOUtil.java");
+        String str = FileUtils.getRelativePath(rootDir, targetPath);
         System.out.println(str);
     }
 
@@ -32,19 +32,19 @@ public class FilesUtilTest
     {
         File testZip = new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34");
         System.out.println(testZip.exists());
-        FilesUtil.cleanDir(testZip);
+        FileUtils.cleanDir(testZip);
     }
 
     @Test
     public void delete() throws Exception
     {
-        ljs.io.file.FilesUtil.delete(new File("D:\\Users\\LiuJiangshan\\Desktop\\a.zip"));
+        FileUtils.delete(new File("D:\\Users\\LiuJiangshan\\Desktop\\a.zip"));
     }
 
     @Test
     public void cleanDir() throws Exception
     {
-        FilesUtil.cleanDir(new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34"));
+        FileUtils.cleanDir(new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34"));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class FilesUtilTest
     {
         File copyForm = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\from\\Model.html");
         File copyTo = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\to\\testd\\Model.html");
-        FilesUtil.copyFileOrDir(copyForm, copyTo);
+        FileUtils.copyFileOrDir(copyForm, copyTo);
     }
 
     @Test
@@ -61,7 +61,14 @@ public class FilesUtilTest
         String packageName = getClass().getPackage().getName();
         System.out.println(packageName);
         String[] fileNames = packageName.split("\\.");
-        File file = FilesUtil.getFile(new File("."), fileNames);
+        File file = FileUtils.getFile(new File("."), fileNames);
         System.out.println(file.getAbsolutePath());
+    }
+
+    @Test
+    public void getNameNoSuffix() throws Exception
+    {
+        File file = new File("IOUtil.java");
+        System.out.println(FileUtils.getNameNoSuffix(file));
     }
 }

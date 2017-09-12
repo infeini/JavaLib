@@ -157,7 +157,7 @@ public class ZipUtil
 //        ZipOutputStream out = null;
 //        try
 //        {
-//            List<File> files = FilesUtil.list(fileOrDir);
+//            List<File> files = FileUtils.list(fileOrDir);
 //            out = new ZipOutputStream(new FileOutputStream(toZip, false));
 //            for (File file : files)
 //            {
@@ -165,7 +165,7 @@ public class ZipUtil
 //                FileInputStream in = null;
 //                try
 //                {
-//                    zipEntry = new ZipEntry(FilesUtil.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file));
+//                    zipEntry = new ZipEntry(FileUtils.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file));
 //                    out.putNextEntry(zipEntry);
 //                    if (file.isFile())
 //                    {
@@ -200,14 +200,14 @@ public class ZipUtil
                 fileOrDir = fileOrDir.getCanonicalFile();
 
 
-                List<File> files = FilesUtil.list(fileOrDir);
+                List<File> files = FileUtils.list(fileOrDir);
                 for (File file : files)
                 {
                     ZipEntry zipEntry = null;
                     FileInputStream in = null;
                     try
                     {
-                        zipEntry = new ZipEntry(FilesUtil.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file).replaceAll("\\\\","/"));
+                        zipEntry = new ZipEntry(FileUtils.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file).replaceAll("\\\\","/"));
                         out.putNextEntry(zipEntry);
                         if (file.isFile())
                         {

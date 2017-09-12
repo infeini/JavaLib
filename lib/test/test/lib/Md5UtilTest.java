@@ -1,7 +1,7 @@
 package test.lib;
 
 import ljs.io.IOUtil;
-import ljs.io.file.FilesUtil;
+import ljs.io.file.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public class Md5UtilTest
     @Test
     public void test() throws Exception
     {
-        List<File> files = FilesUtil.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
+        List<File> files = FileUtils.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
         for (File file : files)
         {
             String md5 = ljs.lib.Md5Util.getMd5(file);
