@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class Auto
 {
     @Test
-    public void autoPojo() throws Exception
+    public void autoCode() throws Exception
     {
         DataBase dataBase = new DataBase("plm", "localhost", 3306, "root", "123456");
         for (Table table : dataBase.tables)

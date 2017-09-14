@@ -28,9 +28,11 @@
     </sql>
     <!--更新赋值条件语句-->
     <sql id="updateSet">
-    <#list table.fields as field>
-        <if test="pojo.${field.name.field()}!=null">${field.name.table()}=#${'{'}pojo.${field.name.field()}},</if>
-    </#list>
+        <set>
+            <#list table.fields as field>
+            <if test="pojo.${field.name.field()}!=null">${field.name.table()}=#${'{'}pojo.${field.name.field()}},</if>
+            </#list>
+        </set>
     </sql>
 
     <select id="findById" resultMap="${table.name.field()}Result">
@@ -57,7 +59,7 @@
     <update id="update">
         UPDATE ${table.name.table()}
         <include refid="updateSet"/>
-        WHERE ${table.keyField.name.table()}=pojo.${table.keyField.name.field()}
+        WHERE ${table.keyField.name.table()}=${'#{'}pojo.${table.keyField.name.field()}}
     </update>
     <delete id="delete">
         DELETE FROM ${table.name.table()} WHERE ${table.keyField.name.table()}=#${'{'}${table.keyField.name.field()}}
