@@ -11,6 +11,23 @@ public class Table
     public MyString name;
     public Field keyField;
     public ArrayList<Field> fields;
+    public String info;
+
+    public void setInfo(String info)
+    {
+        this.info = info;
+    }
+
+    public String getInfo()
+    {
+        if (info == null)
+        {
+            info = keyField.info;
+            if (info.endsWith("id"))
+                info = info.substring(0, info.length() - 2);
+        }
+        return info;
+    }
 
     public MyString getName()
     {

@@ -32,6 +32,11 @@ public class MyString
         return this.str;
     }
 
+    public String sql()
+    {
+        return "`" + this.str + "`";
+    }
+
     public String getMethod()
     {
         return "get" + formatToClass(str);

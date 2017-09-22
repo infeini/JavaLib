@@ -5,15 +5,17 @@ import ljs.lib.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import pojo.${config.pojoName};
+import ${config.pojoPackage}.${config.pojoName};
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * ${table.info} service
+ **/
 @Service
 public class ${config.serviceName} extends BaseService
 {
-    //添加
+    //添加${table.info}
     @Transactional(propagation = Propagation.REQUIRED)
     public Map<String, Object> add(${config.pojoName} ${table.name.field()}) throws Exception
     {
@@ -21,7 +23,7 @@ public class ${config.serviceName} extends BaseService
         return success(ADD_OK);
     }
 
-    //修改
+    //修改${table.info}
     @Transactional(propagation = Propagation.REQUIRED)
     public void update(${config.pojoName} ${table.name.field()}) throws Exception
     {
@@ -30,7 +32,7 @@ public class ${config.serviceName} extends BaseService
         ${table.name.field()}Mapper.update(${table.name.field()});
     }
 
-    //查询
+    //查询${table.info}
     @Transactional(readOnly = true)
     public HashMap<String, Object> search(${config.pojoName} ${table.name.field()}) throws Exception
     {

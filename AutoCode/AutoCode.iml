@@ -9,9 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="lib" />
-    <orderEntry type="library" name="locallib" level="project" />
-    <orderEntry type="library" name="commons-jexl3-3.1" level="project" />
-    <orderEntry type="library" name="freemarker" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
@@ -22,5 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

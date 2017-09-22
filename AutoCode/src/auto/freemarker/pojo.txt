@@ -3,15 +3,18 @@
 <#--table:Table对象-->
 package ${config.pojoPackage};
 
-import base.BasePojo;
+import aop.TableName;
 <#if table.haveDate()>
 import java.util.Date;
-
 </#if>
+
 /**
- * @author 刘江山
+ * ${table.info}
+ *
+ * @author Robot
  */
-public class ${config.pojoName} extends BasePojo
+@TableName(name = ${"\""+table.name.table()+"\""})
+public class ${config.pojoName} extends ${config.supperPojoClassName}
 {
 <#--字段声明-->
     /**

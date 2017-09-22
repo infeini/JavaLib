@@ -6,17 +6,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pojo.${config.pojoName};
+import ${config.pojoPackage}.${config.pojoName};
 
 import java.util.Map;
 
 @Controller
 @RequestMapping("/api/${config.pojoName?lower_case}")
-public class ${config.controllerName} extends BaseController
+public class ${config.controllerName} extends BaseController<${config.pojoName}>
 {
-
     /**
-     * 产品线添加
+     * ${table.info}添加
      */
     @RequestMapping(value = "/add", method = RequestMethod.PUT)
     @ResponseBody
@@ -32,7 +31,7 @@ public class ${config.controllerName} extends BaseController
     }
 
     /**
-     * 产品线删除
+     * ${table.info}删除
      */
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
@@ -49,7 +48,7 @@ public class ${config.controllerName} extends BaseController
     }
 
     /**
-     * 产品线信息修改
+     * ${table.info}修改
      */
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
@@ -66,7 +65,7 @@ public class ${config.controllerName} extends BaseController
     }
 
     /**
-     * 浏览产品线信息
+     * 浏览${table.info}
      */
     @RequestMapping(value = "/search", method = RequestMethod.PUT)
     @ResponseBody

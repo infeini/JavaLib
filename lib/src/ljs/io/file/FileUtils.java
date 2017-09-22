@@ -164,7 +164,6 @@ public class FileUtils
         if (fileNames.length == 0) ;
         else
         {
-            file = new File(fileNames[0]);
             for (String fileName : fileNames)
                 file = new File(file, fileName);
         }
@@ -184,5 +183,21 @@ public class FileUtils
         if (index != -1)
             name = name.substring(0, index);
         return name;
+    }
+
+    /**
+     * 获取文件后缀名,不包括.
+     *
+     * @param fileName 文件名称
+     * @return 后缀名, 不存在返回null
+     */
+    public static String getSuffix(String fileName)
+    {
+        String suffix = null;
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) ;
+        else
+            suffix = fileName.substring(index + 1, fileName.length());
+        return suffix;
     }
 }

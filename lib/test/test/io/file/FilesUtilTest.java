@@ -58,11 +58,9 @@ public class FilesUtilTest
     @Test
     public void getFile() throws Exception
     {
-        String packageName = getClass().getPackage().getName();
-        System.out.println(packageName);
-        String[] fileNames = packageName.split("\\.");
-        File file = FileUtils.getFile(new File("."), fileNames);
-        System.out.println(file.getAbsolutePath());
+        String[] ary = getClass().getPackage().getName().split("\\.");
+        File file = FileUtils.getFile(new File("./test"), ary);
+        System.out.println(file);
     }
 
     @Test
@@ -70,5 +68,13 @@ public class FilesUtilTest
     {
         File file = new File("IOUtil.java");
         System.out.println(FileUtils.getNameNoSuffix(file));
+    }
+
+    @Test
+    public void getSuffix() throws Exception
+    {
+        System.out.println(FileUtils.getSuffix(".sdasm.mp4"));
+        System.out.println(FileUtils.getSuffix(".sdasm.mp4.doc"));
+        System.out.println(FileUtils.getSuffix(".sdasm....ps"));
     }
 }
