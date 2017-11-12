@@ -1,9 +1,0 @@
-package *{packageName};
-*{import}
-/**
- * @author 刘江山
- */
-public class *{fileName}
-{
-*{code}
-}
