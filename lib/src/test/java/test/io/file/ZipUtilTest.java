@@ -11,53 +11,43 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ZipUtilTest
-{
+public class ZipUtilTest {
     @Test
-    public void test()
-    {
+    public void test() {
         ZipEntry zipEntry = new ZipEntry("ljs\\");
         System.out.println(zipEntry.isDirectory());
     }
 
     @Test
-    public void toZip() throws IOException
-    {
+    public void toZip() throws IOException {
         ljs.io.file.ZipUtil.toZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\测试").listFiles(), new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\a.zip"));
     }
 
     @Test
-    public void unzip() throws Exception
-    {
-        UnPackZipListener unPackZipListener = new UnPackZipListener()
-        {
+    public void unzip() throws Exception {
+        UnPackZipListener unPackZipListener = new UnPackZipListener() {
             @Override
-            public void unPackStart()
-            {
+            public void unPackStart() {
                 System.out.println("准备解压");
             }
 
             @Override
-            public void unPackUpdate(ZipEntry zipEntry, int did, int total)
-            {
+            public void unPackUpdate(ZipEntry zipEntry, int did, int total) {
                 System.out.println("正在解压:" + zipEntry.getName());
             }
 
             @Override
-            public void unPackFail(ZipEntry zipEntry, Exception e)
-            {
+            public void unPackFail(ZipEntry zipEntry, Exception e) {
                 System.out.println("解压文件:" + zipEntry.getName() + "失败>" + e.getMessage());
             }
 
             @Override
-            public void unPackSuccess()
-            {
+            public void unPackSuccess() {
                 System.out.println("解压成功");
             }
 
             @Override
-            public void unPackEnd()
-            {
+            public void unPackEnd() {
                 System.out.println("任务结束");
             }
         };
@@ -66,52 +56,43 @@ public class ZipUtilTest
     }
 
     @Test
-    public void unzipStream() throws Exception
-    {
+    public void unzipStream() throws Exception {
         ZipUtil.unZip(new FileInputStream(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\a.zip")), 1, new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板"), true, true, null);
     }
 
     @Test
-    public void getPackFileNumber() throws Exception
-    {
+    public void getPackFileNumber() throws Exception {
         ZipFile zipFile = new ZipFile(new File("update.zip"));
         int size = zipFile.size();
         System.out.println("size:" + size);
     }
 
     @Test
-    public void unZip() throws Exception
-    {
+    public void unZip() throws Exception {
         File zipFile = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\MB1.zip");
-        ZipUtil.unZip(zipFile, zipFile.getParentFile(), true, new UnPackZipListener()
-        {
+        ZipUtil.unZip(zipFile, zipFile.getParentFile(), true, new UnPackZipListener() {
             @Override
-            public void unPackStart()
-            {
+            public void unPackStart() {
                 System.out.println("开始解压");
             }
 
             @Override
-            public void unPackUpdate(ZipEntry zipEntry, int did, int total)
-            {
+            public void unPackUpdate(ZipEntry zipEntry, int did, int total) {
                 System.out.println("正在解压文件:" + zipEntry.getName() + ",完成:" + did + ",总共:" + total);
             }
 
             @Override
-            public void unPackFail(ZipEntry zipEntry, Exception e)
-            {
+            public void unPackFail(ZipEntry zipEntry, Exception e) {
                 System.out.println("解压文件:" + zipEntry.getName() + "失败:" + e.toString());
             }
 
             @Override
-            public void unPackSuccess()
-            {
+            public void unPackSuccess() {
                 System.out.println("解压成功");
             }
 
             @Override
-            public void unPackEnd()
-            {
+            public void unPackEnd() {
                 System.out.println("解压结束");
             }
         });

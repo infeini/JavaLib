@@ -15,8 +15,7 @@ import java.util.zip.ZipOutputStream;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class ZipUtil
-{
+public class ZipUtil {
     /**
      * 解压zip文件
      *
@@ -26,8 +25,7 @@ public class ZipUtil
      * @param join  是否堵塞当前线程
      * @throws IOException 发生IO异常
      */
-    public static void unZip(InputStream in, File toDir, boolean close, boolean join, UnPackZipListener unPackZipListener) throws IOException
-    {
+    public static void unZip(InputStream in, File toDir, boolean close, boolean join, UnPackZipListener unPackZipListener) throws IOException {
         unZip(in, null, toDir, close, join, unPackZipListener);
     }
 
@@ -42,8 +40,7 @@ public class ZipUtil
      * @throws IOException 发生IO异常
      * @deprecated 不建议使用, 从IO流中读取zip不支持中文文件名
      */
-    public static void unZip(InputStream in, Integer total, File toDir, boolean close, boolean join, UnPackZipListener unPackZipListener) throws IOException
-    {
+    public static void unZip(InputStream in, Integer total, File toDir, boolean close, boolean join, UnPackZipListener unPackZipListener) throws IOException {
         if (toDir.isFile())
             toDir = toDir.getParentFile();
 
@@ -52,24 +49,20 @@ public class ZipUtil
         {
             ZipInputStream zipIn = null;
             ZipEntry zipEntry = null;
-            try
-            {
+            try {
                 if (unPackZipListener != null)
                     unPackZipListener.unPackStart();
 
                 zipIn = new ZipInputStream(in);
 
                 int did = 0;
-                while ((zipEntry = zipIn.getNextEntry()) != null)
-                {
-                    if (unPackZipListener != null)
-                    {
+                while ((zipEntry = zipIn.getNextEntry()) != null) {
+                    if (unPackZipListener != null) {
                         if (total != null)
                             unPackZipListener.unPackUpdate(zipEntry, did++, total);
                     }
                     OutputStream out = null;
-                    try
-                    {
+                    try {
                         File unZipFile = new File(finalToDir, zipEntry.getName());
                         File parentDir = unZipFile.getParentFile();
                         if (parentDir.exists()) ;
@@ -78,27 +71,23 @@ public class ZipUtil
 
                         if (zipEntry.isDirectory())
                             unZipFile.mkdirs();
-                        else
-                        {
+                        else {
                             out = new FileOutputStream(unZipFile);
                             IOUtil.write(zipIn, out);
                         }
 
-                    } finally
-                    {
+                    } finally {
                         IOUtil.close(out);
                     }
                 }
 
                 if (unPackZipListener != null)
                     unPackZipListener.unPackSuccess();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 if (unPackZipListener != null)
                     unPackZipListener.unPackFail(zipEntry, e);
                 e.printStackTrace();
-            } finally
-            {
+            } finally {
                 IOUtil.close(zipIn);
                 if (close)
                     IOUtil.close(in);
@@ -120,40 +109,33 @@ public class ZipUtil
      * @param toDir   解压到目标目录
      * @throws IOException 发生IO异常
      */
-    public static void unZip(File zipFile, File toDir, boolean join, UnPackZipListener unPackZipListener) throws IOException
-    {
+    public static void unZip(File zipFile, File toDir, boolean join, UnPackZipListener unPackZipListener) throws IOException {
         if (!toDir.exists())
             toDir.mkdirs();
         int size = 0;
         ZipFile zFile = null;
-        try
-        {
+        try {
             zFile = new ZipFile(zipFile, "GBK");
             Enumeration<org.apache.tools.zip.ZipEntry> entryEnumeration = zFile.getEntries();
-            while (entryEnumeration.hasMoreElements())
-            {
+            while (entryEnumeration.hasMoreElements()) {
                 org.apache.tools.zip.ZipEntry zipEntry = entryEnumeration.nextElement();
                 String entryName = zipEntry.getName();
                 File toFile = new File(toDir, entryName);
                 toFile.getParentFile().mkdirs();
                 if (zipEntry.isDirectory())
                     toFile.mkdirs();
-                else
-                {
+                else {
                     InputStream in = zFile.getInputStream(zipEntry);
                     OutputStream out = new FileOutputStream(toFile);
-                    try
-                    {
+                    try {
                         IOUtil.write(in, out);
-                    } finally
-                    {
+                    } finally {
                         IOUtil.close(in);
                         IOUtil.close(out);
                     }
                 }
             }
-        } finally
-        {
+        } finally {
             //关闭，不然流不会关闭，将不能删除该文件
             zFile.close();
         }
@@ -166,8 +148,7 @@ public class ZipUtil
      * @param toZip     压缩数据存储文件
      * @throws IOException 发生IO异常
      */
-    public static void toZip(File fileOrDir, File toZip) throws IOException
-    {
+    public static void toZip(File fileOrDir, File toZip) throws IOException {
         toZip(new File[]{fileOrDir}, toZip);
     }
     //    {
@@ -206,34 +187,27 @@ public class ZipUtil
 //        }
 //    }
 
-    public static void toZip(File[] fileOrDirs, File toZip) throws IOException
-    {
+    public static void toZip(File[] fileOrDirs, File toZip) throws IOException {
         toZip = toZip.getCanonicalFile();
 
         ZipOutputStream out = null;
-        try
-        {
+        try {
             out = new ZipOutputStream(new FileOutputStream(toZip, false));
-            for (File fileOrDir : fileOrDirs)
-            {
+            for (File fileOrDir : fileOrDirs) {
                 fileOrDir = fileOrDir.getCanonicalFile();
 
                 List<File> files = FileUtils.list(fileOrDir);
-                for (File file : files)
-                {
+                for (File file : files) {
                     ZipEntry zipEntry;
                     FileInputStream in = null;
-                    try
-                    {
+                    try {
                         zipEntry = new ZipEntry(FileUtils.getRelativePath(new File(fileOrDir.getAbsolutePath()).getParentFile(), file).replaceAll("\\\\", "/"));
                         out.putNextEntry(zipEntry);
-                        if (file.isFile())
-                        {
+                        if (file.isFile()) {
                             in = new FileInputStream(file);
                             IOUtil.write(in, out);
                         }
-                    } finally
-                    {
+                    } finally {
                         if (out != null)
                             out.closeEntry();
                         IOUtil.close(in);
@@ -241,8 +215,7 @@ public class ZipUtil
                 }
                 out.flush();
             }
-        } finally
-        {
+        } finally {
             IOUtil.close(out);
         }
     }

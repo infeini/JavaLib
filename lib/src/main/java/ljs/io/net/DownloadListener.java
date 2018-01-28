@@ -3,8 +3,7 @@ package ljs.io.net;
 /**
  * 下载进度监听器
  */
-public interface DownloadListener
-{
+public interface DownloadListener {
     /**
      * 准备下载
      */

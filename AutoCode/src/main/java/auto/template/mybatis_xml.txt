@@ -1,0 +1,70 @@
+<#--提供-->
+<#--config:Config对象-->
+<#--table:Table对象-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
+        "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${config.mapperPackage}.${config.mapperName}">
+    <!--xml config form table ${table.name.table()}-->
+    <resultMap id="${table.name.field()}Result" type="${config.pojoPackage}.${config.pojoName}">
+        <result property="${table.keyField.name.field()}" column="${table.keyField.name.table()}"/>
+    <#list table.fields as field>
+        <result property="${field.name.field()}" column="${field.name.table()}"/>
+    </#list>
+    </resultMap>
+    <!--查询条件语句-->
+    <sql id="queryByExample">
+        <if test="pojo!=null">
+            <where>
+                <if test="pojo.${table.keyField.name.field()}!=null">AND ${table.keyField.name.sql()}=#${'{'}pojo.${table.keyField.name.field()}}</if>
+            <#list table.fields as field>
+            <#if field.type.type.name == 'java.lang.String'>
+                <if test="pojo.${field.name.field()}!=null">AND ${field.name.sql()} LIKE '${'%${'}pojo.${field.name.field()}${'}%'}'</if>
+            <#else>
+                <if test="pojo.${field.name.field()}!=null">AND ${field.name.sql()}=#${'{'}pojo.${field.name.field()}}</if>
+            </#if>
+            </#list>
+            </where>
+        </if>
+    </sql>
+    <!--更新赋值条件语句-->
+    <sql id="updateSet">
+        <set>
+            <#list table.fields as field>
+            <if test="pojo.${field.name.field()}!=null">${field.name.sql()}=#${'{'}pojo.${field.name.field()}},</if>
+            </#list>
+        </set>
+    </sql>
+
+    <select id="findById" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()}
+        WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}}
+    </select>
+
+    <select id="getExampleCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM ${table.name.sql()}
+        <include refid="queryByExample"/>
+    </select>
+
+    <select id="findByExample" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()}
+        <include refid="queryByExample"/>
+        LIMIT #${'{'}start},#${'{'}length}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="${table.keyField.name.table()}" keyProperty="pojo.${table.keyField.name.field()}">
+        INSERT INTO ${table.name.sql()}
+        <include refid="updateSet"/>
+    </insert>
+
+    <update id="update">
+        UPDATE ${table.name.sql()}
+        <include refid="updateSet"/>
+        WHERE ${table.keyField.name.sql()}=${'#{'}pojo.${table.keyField.name.field()}};
+    </update>
+
+    <delete id="delete">
+        DELETE FROM ${table.name.sql()} WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}};
+    </delete>
+</mapper>

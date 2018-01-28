@@ -12,28 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Md5UtilTest
-{
+public class Md5UtilTest {
     Map<String, List<File>> map = new HashMap<>();
 
     @Test
-    public void test() throws Exception
-    {
-        List<File> files = FileUtils.list(new File("D:\\"));
-        for (File file : files)
-        {
+    public void test() throws Exception {
+        List<File> files = FileUtils.list(new File("H:\\Other\\192.168.70.250\\15软件技术班C语言"));
+        for (File file : files) {
             String md5 = ljs.lib.Md5Util.getMd5(file);
             List<File> md5Files = map.get(md5);
-            if (md5Files == null)
-            {
+            if (md5Files == null) {
                 md5Files = new ArrayList<>();
                 map.put(md5, md5Files);
             }
             md5Files.add(file);
         }
         StringBuffer buffer = new StringBuffer();
-        for (String key : map.keySet())
-        {
+        for (String key : map.keySet()) {
             List<File> filesTemp = map.get(key);
             if (filesTemp.size() == 1)
                 continue;

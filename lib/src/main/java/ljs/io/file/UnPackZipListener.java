@@ -2,8 +2,7 @@ package ljs.io.file;
 
 import java.util.zip.ZipEntry;
 
-public interface UnPackZipListener
-{
+public interface UnPackZipListener {
     /**
      * 准备开始解压
      */

@@ -2,7 +2,9 @@ package test.io;
 
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 /**
@@ -10,11 +12,9 @@ import java.net.URL;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class IOUtilTest
-{
+public class IOUtilTest {
     @Test
-    public void toObj()
-    {
+    public void toObj() {
         Object objectOfRam = "JAVA";
         Object objectOfFile = null;
 
@@ -25,8 +25,7 @@ public class IOUtilTest
     }
 
     @Test
-    public void toFile()
-    {
+    public void toFile() {
         Object object = "JAVA";
         File toFile = new File("obj");
         System.out.println(ljs.io.IOUtil.toFile(object, toFile) ? "序列化成功!" : "序列化失败!");
@@ -35,31 +34,23 @@ public class IOUtilTest
 
 
     @Test
-    public void toString1()
-    {
-        File ofFile = new File("test/test.ljs.io.IOUtilTest.java");
+    public void toString1() {
+        File ofFile = new File("D:\\Users\\LiuJiangshan\\Desktop\\a.txt");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(ofFile, "UTF-8");
         System.out.println(stringBuffer.toString());
     }
 
     @Test
-    public void toString2() throws FileNotFoundException
-    {
+    public void toString2() throws FileNotFoundException {
         File ofFile = new File("test/test.ljs.io.IOUtilTest.java");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }
 
     @Test
-    public void toString3() throws Exception
-    {
+    public void toString3() throws Exception {
         URL url = new URL("http://www.scbz.hrss.gov.cn/index.php/letter-view-id-2178");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(url, "gb2312", 5000);
         System.out.println(stringBuffer.toString());
-    }
-
-    @Test
-    public static void close()
-    {
     }
 }

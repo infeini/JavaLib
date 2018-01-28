@@ -1,15 +1,13 @@
 package ljs.lib;
 
-public class IpUtils
-{
+public class IpUtils {
     /**
      * 检查IP格式是否正确
      *
      * @param ip ip地址
      * @return true, false
      */
-    public static boolean isIp(String ip)
-    {
+    public static boolean isIp(String ip) {
         if (ip == null || ip.isEmpty())
             return false;
         else
@@ -23,20 +21,15 @@ public class IpUtils
      * @param ipStr 字符串格式ip
      * @return
      */
-    public static byte[] toByte(String ipStr)
-    {
+    public static byte[] toByte(String ipStr) {
         byte[] ipByte = null;
-        if (isIp(ipStr))
-        {
+        if (isIp(ipStr)) {
             ipByte = new byte[4];
             String[] splits = ipStr.split("\\.");
-            for (int i = 0; i < ipByte.length; i++)
-            {
-                try
-                {
+            for (int i = 0; i < ipByte.length; i++) {
+                try {
                     ipByte[i] = (byte) Integer.parseInt(splits[i]);
-                } catch (NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                 }
             }
         }
@@ -47,8 +40,7 @@ public class IpUtils
      * @param ipBytes byte数组形式ip
      * @return string形式ip
      */
-    public static String paseIp(byte[] ipBytes)
-    {
+    public static String paseIp(byte[] ipBytes) {
         String ip = "";
         if (ipBytes != null && ipBytes.length == 4)
             for (int i = 0; i < ipBytes.length; i++)

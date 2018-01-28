@@ -1,109 +1,59 @@
 package ljs.reflect;
 
-import java.io.File;
+import ljs.exception.KnowException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
+
 import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
-public class ClassUtils
-{
-    /**
-     * 通过类文件路径获取类
-     */
-    public static Class getClass(File classFile)
-    {
-        if (classFile.getName().endsWith(".class"))
-        {
-            String classPath = ClassUtils.class.getResource("/").getPath();
-            String className = classFile.getAbsolutePath().substring(0, classPath.length());
-            try
-            {
-                return Class.forName(className);
-            } catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-                return null;
-            }
-        } else
-            return null;
-    }
+public class ClassUtils {
+    //包名校验正则表达式
+    static Pattern packageCheck = Pattern.compile("^[A-Za-z][A-Za-z0-9]*(\\.[A-Za-z][A-Za-z0-9]*)*$");
 
     /**
-     * 获取当前classPath路径
+     * 校验包名格式是否正确
+     *
+     * @param packageName
      */
-    public String getClassPath()
-    {
-        return getClass().getResource("/").getPath();
+    public static boolean checkPackage(String packageName) {
+        return packageCheck.matcher(packageName).find();
     }
 
     /**
      * 获取包下所有类
      *
-     * @param packageName 包名
-     * @param scanSub     是否扫描子包
+     * @param packageName <p>包路径,支持正则
+     *                    eg:ljs.** 递归扫描包ljs下的类
+     *                    ljs 仅扫描ljs下的类,不递归扫描
      */
-    public static List<Class> getAllClass(String packageName, boolean scanSub)
-    {
+    public static List<Class> getAllClass(String packageName) throws KnowException {
+        String path = packageName.replaceAll("\\.", "/");
         List<Class> classes = new ArrayList<>();
-        String packagePath = ClassLoader.getSystemClassLoader().getResource(packageName.replaceAll("\\.", "/")).getFile();
-
-        if (scanSub)
-            try
-            {
-                Files.walkFileTree(Paths.get(packagePath), new FileVisitor<Path>()
-                {
-                    @Override
-                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException
-                    {
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    @Override
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
-                    {
-                        Class clasz = ClassUtils.getClass(file.toFile());
-                        if (clasz != null)
-                            classes.add(clasz);
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    @Override
-                    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException
-                    {
-                        exc.printStackTrace();
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    @Override
-                    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException
-                    {
-                        exc.printStackTrace();
-                        return FileVisitResult.CONTINUE;
-                    }
-                });
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        else
-            for (File file : new File(packagePath).listFiles())
-            {
-                String fileName = file.getName();
-                if (fileName.endsWith(".class"))
-                {
-                    String simpleclassName = fileName.substring(0, fileName.length() - 6);
-                    String className = packageName + "." + simpleclassName;
-                    try
-                    {
-                        classes.add(Class.forName(className));
-                    } catch (ClassNotFoundException e)
-                    {
-                        e.printStackTrace();
-                    }
+        PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
+        MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(patternResolver);
+        Resource[] resources;
+        try {
+            resources = patternResolver.getResources(PathMatchingResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + path + "/*.class");
+        } catch (IOException e) {
+            throw new KnowException("读取类路径失败:" + e.getMessage());
+        }
+        for (Resource resource : resources) {
+            if (resource.isReadable()) {
+                MetadataReader metadataReader;
+                try {
+                    metadataReader = metadataReaderFactory.getMetadataReader(resource);
+                    classes.add(Class.forName(metadataReader.getClassMetadata().getClassName()));
+                } catch (Exception e) {
+                    throw new KnowException("读取类文件信息失败:" + e.getMessage());
                 }
             }
+        }
         return classes;
     }
 }

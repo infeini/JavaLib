@@ -1,5 +1,7 @@
 package ljs.io.net;
 
+import ljs.exception.KnowException;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -14,8 +16,7 @@ import static ljs.io.IOUtil.close;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class HttpUtil
-{
+public class HttpUtil {
     /**
      * 通过http协议下载文件,支持进度显示
      *
@@ -25,23 +26,19 @@ public class HttpUtil
      * @param downloadListener 下载进度监听器
      * @param join             是否堵塞当前线程
      */
-    public static void downloadHttp(String url, File saveAs, int timeOut, boolean join, DownloadListener downloadListener)
-    {
+    public static void downloadHttp(String url, File saveAs, int timeOut, boolean join, DownloadListener downloadListener) {
         if (timeOut < 0)
             timeOut = 5000;
         int finalTimeOut = timeOut;
-        Runnable downloadRunnable = new Runnable()
-        {
+        Runnable downloadRunnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 if (downloadListener != null)
                     downloadListener.downloadStart();
                 HttpURLConnection httpConnection = null;
                 OutputStream out = null;
                 InputStream in = null;
-                try
-                {
+                try {
                     out = new FileOutputStream(saveAs);
                     httpConnection = (HttpURLConnection) new URL(url).openConnection();
                     httpConnection.setConnectTimeout(finalTimeOut);
@@ -49,14 +46,13 @@ public class HttpUtil
                     int responseCode = httpConnection.getResponseCode();
                     if (responseCode != HttpURLConnection.HTTP_OK)
                         if (downloadListener != null)
-                            throw new Exception("服务器返回响应码:" + responseCode);
+                            throw new KnowException("服务器返回响应码:" + responseCode);
                     in = httpConnection.getInputStream();
                     byte[] buffer = new byte[1024];
                     long total = httpConnection.getContentLength();
                     long did = 0L;
                     int read;
-                    while ((read = in.read(buffer)) != -1)
-                    {
+                    while ((read = in.read(buffer)) != -1) {
                         out.write(buffer, 0, read);
                         did += read;
                         if (downloadListener != null)
@@ -65,13 +61,11 @@ public class HttpUtil
                     out.flush();
                     if (downloadListener != null)
                         downloadListener.downloadSuccess();
-                } catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                     if (downloadListener != null)
                         downloadListener.downloadFail(e);
-                } finally
-                {
+                } finally {
                     close(out);
                     close(in);
                     if (httpConnection != null)

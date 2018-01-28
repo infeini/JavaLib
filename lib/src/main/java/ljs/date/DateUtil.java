@@ -1,10 +1,6 @@
 package ljs.date;
 
-import java.util.Calendar;
-import java.util.Date;
-
-public class DateUtil
-{
+public class DateUtil {
     static final long Hour_Second = 60 * 60;
 
     /**
@@ -13,8 +9,7 @@ public class DateUtil
      * @param ofSecond 秒钟数
      * @return 计时格式字符串
      */
-    public static String toHMS(long ofSecond)
-    {
+    public static String toHMS(long ofSecond) {
         long hour = ofSecond / Hour_Second;
         long minute = (ofSecond % Hour_Second) / 60;
         long second = ofSecond % 60;
@@ -24,12 +19,10 @@ public class DateUtil
     /**
      * 用零补全位数
      */
-    private static String patchZero(long number, int length)
-    {
+    private static String patchZero(long number, int length) {
         String addition = "";
         String result = number + "";
-        if (number < 0)
-        {
+        if (number < 0) {
             addition = "-";
             number = -number;
         }

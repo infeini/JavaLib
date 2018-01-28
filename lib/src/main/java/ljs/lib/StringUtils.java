@@ -3,15 +3,13 @@ package ljs.lib;
 import java.util.Map;
 import java.util.Random;
 
-public class StringUtils
-{
+public class StringUtils {
     /**
      * 判断字符串是否非空
      *
      * @param str 需要判断的字符串
      */
-    public static boolean isEmpty(Object str)
-    {
+    public static boolean isEmpty(Object str) {
         return str == null || "".equals(str);
     }
 
@@ -22,17 +20,13 @@ public class StringUtils
      * @param replacement  替换目标
      * @param stringBuffer 字符串缓存
      */
-    public static void replaceAll(String regex, String replacement, StringBuffer stringBuffer)
-    {
+    public static void replaceAll(String regex, String replacement, StringBuffer stringBuffer) {
         if (regex == null || replacement == null) ;
-        else
-        {
+        else {
             String str = stringBuffer.toString();
-            try
-            {
+            try {
                 str = str.replaceAll(regex, replacement == null ? "" : replacement);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             stringBuffer.setLength(0);
@@ -46,13 +40,10 @@ public class StringUtils
      * @param map          替换目标、替换内容的map集合
      * @param stringBuffer 需要替换的字符串
      */
-    public static void replaceAll(Map map, StringBuffer stringBuffer)
-    {
+    public static void replaceAll(Map map, StringBuffer stringBuffer) {
         if (map == null) ;
-        else
-        {
-            for (Object key : map.keySet())
-            {
+        else {
+            for (Object key : map.keySet()) {
                 Object value = map.get(key);
                 replaceAll(key == null ? "" : key.toString(), value == null ? "" : value.toString(), stringBuffer);
             }
@@ -67,8 +58,7 @@ public class StringUtils
      * @param count 字符串数量
      * @return 随机字符串
      */
-    public static String getRandString(int count)
-    {
+    public static String getRandString(int count) {
         String str = "";
         for (int i = 1; i <= count; i++)
             str += (getRandChar() + "");
@@ -80,8 +70,7 @@ public class StringUtils
      *
      * @return 随机a-z、A-Z、0-9的字符
      */
-    public static char getRandChar()
-    {
+    public static char getRandChar() {
         int c = random.nextInt(62);
         if (c <= 9)// 0-9>>[0-9]
         {
@@ -102,14 +91,11 @@ public class StringUtils
      * @param checkStr 需要校验的字符串
      * @return 数字:true,非数字:false
      */
-    public static boolean isNumber(String checkStr)
-    {
-        try
-        {
+    public static boolean isNumber(String checkStr) {
+        try {
             Integer.parseInt(checkStr);
             return true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
     }

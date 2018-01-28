@@ -1,18 +1,20 @@
 package test.reflect;
 
+import ljs.exception.KnowException;
 import ljs.reflect.ClassUtils;
 import org.junit.Test;
 
-import java.io.File;
+import java.util.List;
 
-public class ClassUtilsTest
-{
+public class ClassUtilsTest {
     @Test
-    public void getAllClassTest()
-    {
-        //Object obj = ClassUtils.getAllClass("test.date");
-//        String path = getClass().getResource("/").getPath();
-//        System.out.println("path = " + path);
-        Class clasz = ClassUtils.getClass(new File("test/date/DateUtil.class"));
+    public void getAllClassTest() throws KnowException {
+        List<Class> classes1 = ClassUtils.getAllClass("ljs");
+        List<Class> classes2 = ClassUtils.getAllClass("ljs.date.**");
+    }
+
+    @Test
+    public void checkPackageTest() {
+        System.out.println(ClassUtils.checkPackage("zlx.sasaA777"));
     }
 }

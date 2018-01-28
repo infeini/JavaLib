@@ -5,39 +5,31 @@ import ljs.io.net.HttpUtil;
 
 import java.io.File;
 
-public class NetUtilTest
-{
-    public static void main(String[] args)
-    {
-        DownloadListener downloadListener = new DownloadListener()
-        {
+public class NetUtilTest {
+    public static void main(String[] args) {
+        DownloadListener downloadListener = new DownloadListener() {
             @Override
-            public void downloadStart()
-            {
+            public void downloadStart() {
                 System.out.println("准备开始下载文件");
             }
 
             @Override
-            public void downloadUpdate(long did, long total)
-            {
+            public void downloadUpdate(long did, long total) {
                 System.out.println("已完成:" + did * 100 / total);
             }
 
             @Override
-            public void downloadSuccess()
-            {
+            public void downloadSuccess() {
                 System.out.println("ok");
             }
 
             @Override
-            public void downloadFail(Exception e)
-            {
+            public void downloadFail(Exception e) {
                 System.out.println("fail:" + e.getMessage());
             }
 
             @Override
-            public void downloadEnd()
-            {
+            public void downloadEnd() {
                 System.out.println("end");
             }
         };

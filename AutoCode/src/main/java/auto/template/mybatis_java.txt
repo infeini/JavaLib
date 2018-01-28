@@ -1,0 +1,49 @@
+<#--提供-->
+<#--config:Config对象-->
+<#--table:Table对象-->
+package ${config.mapperPackage};
+
+import zlx.base.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import zlx.aop.Pojo;
+import ${config.pojoPackage}.${config.pojoName};
+
+import java.util.List;
+
+/**
+ * @author 刘江山
+ */
+@Pojo(${config.pojoName}.class)
+public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
+{
+    /**
+     * 通过ID查找对象
+     */
+    ${config.pojoName} findById(@Param("${table.keyField.name.field()}") long ${table.keyField.name.field()});
+
+    /**
+     * 获取与其相似的数据数量
+     */
+    int getExampleCount(@Param("pojo") ${config.pojoName} pojo);
+
+    /**
+     * 获取与其相似的数据
+     */
+    List<${config.pojoName}> findByExample(@Param("pojo") ${config.pojoName} pojo, @Param("start") int start, @Param("length") int length);
+
+    /**
+     * 插入数据
+     */
+    void insert(@Param("pojo") ${config.pojoName} pojo);
+
+    /**
+     * 更新数据
+     */
+    void update(@Param("pojo") ${config.pojoName} pojo);
+
+    /**
+     * 删除数据
+     */
+    void delete(@Param("${table.keyField.name.field()}") long ${table.keyField.name.field()});
+}
+

@@ -11,30 +11,24 @@ import java.net.URL;
  *
  * @author https://github.com/LiuJiangshan
  */
-public class IOUtil
-{
+public class IOUtil {
     /**
      * 从文件读取对象
      *
      * @param ofFile 读取目标文件路径
      * @return 反序列化后的对象, 失败返回null
      */
-    public static Object toObj(File ofFile)
-    {
+    public static Object toObj(File ofFile) {
         Object result = null;
         if (ofFile == null) ;
-        else
-        {
+        else {
             ObjectInputStream in = null;
-            try
-            {
+            try {
                 in = new ObjectInputStream(new FileInputStream(ofFile));
                 result = in.readObject();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } finally
-            {
+            } finally {
                 close(in);
             }
         }
@@ -48,21 +42,17 @@ public class IOUtil
      * @param toFile 写入文件路径
      * @return 成功:true,失败:false
      */
-    public static boolean toFile(Object object, File toFile)
-    {
+    public static boolean toFile(Object object, File toFile) {
         boolean result = false;
         ObjectOutputStream out = null;
-        try
-        {
+        try {
             out = new ObjectOutputStream(new FileOutputStream(toFile));
             out.writeObject(object);
             out.flush();
             result = true;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally
-        {
+        } finally {
             close(out);
         }
         return result;
@@ -76,13 +66,10 @@ public class IOUtil
      * @param encoding 编码方式
      * @return 转换后的字符串缓存对象, 转换失败返回null
      */
-    public static StringBuffer toString(File ofFile, String encoding)
-    {
-        try
-        {
+    public static StringBuffer toString(File ofFile, String encoding) {
+        try {
             return toString(new FileInputStream(ofFile), encoding, true);
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
         }
@@ -96,28 +83,22 @@ public class IOUtil
      * @param close    是否关闭流
      * @return 转换后的字符串缓存对象
      */
-    public static StringBuffer toString(InputStream in, String encoding, boolean close)
-    {
+    public static StringBuffer toString(InputStream in, String encoding, boolean close) {
         StringBuffer stringBuffer = new StringBuffer();
 
         if (in == null) ;
-        else
-        {
+        else {
             BufferedReader reader = null;
             String str = null;
-            try
-            {
+            try {
                 reader = new BufferedReader(new InputStreamReader(in, encoding));
-                while ((str = reader.readLine()) != null)
-                {
+                while ((str = reader.readLine()) != null) {
                     stringBuffer.append(str);
                     stringBuffer.append("\n");
                 }
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } finally
-            {
+            } finally {
                 if (close)
                     close(reader);
             }
@@ -134,18 +115,15 @@ public class IOUtil
      * @return http文本资源, 失败返回null
      * @throws IOException 异常
      */
-    public static StringBuffer toString(URL url, String encoding, Integer timeOut) throws IOException
-    {
+    public static StringBuffer toString(URL url, String encoding, Integer timeOut) throws IOException {
         if (timeOut == null || timeOut < 0)
             timeOut = 5000;
         if (url == null)
             return null;
-        else
-        {
+        else {
             HttpURLConnection httpURLConnection = null;
             BufferedReader reader = null;
-            try
-            {
+            try {
                 httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setConnectTimeout(timeOut);
                 httpURLConnection.setReadTimeout(timeOut);
@@ -153,8 +131,7 @@ public class IOUtil
                 if (responseCode != HttpURLConnection.HTTP_OK)
                     throw new IOException("服务器响应码:" + responseCode);
                 return IOUtil.toString(httpURLConnection.getInputStream(), "UTF-8", true);
-            } finally
-            {
+            } finally {
                 IOUtil.close(reader);
                 httpURLConnection.disconnect();
             }
@@ -166,14 +143,11 @@ public class IOUtil
      *
      * @param closeable 待关闭的资源
      */
-    public static void close(Closeable closeable)
-    {
+    public static void close(Closeable closeable) {
         if (closeable != null)
-            try
-            {
+            try {
                 closeable.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
     }
@@ -185,12 +159,10 @@ public class IOUtil
      * @param out 输出流
      * @throws IOException 发生IO异常
      */
-    public static void write(InputStream in, OutputStream out) throws IOException
-    {
+    public static void write(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[2048];
         int total;
-        while ((total = in.read(buffer)) != -1)
-        {
+        while ((total = in.read(buffer)) != -1) {
             out.write(buffer, 0, total);
         }
         out.flush();
@@ -202,10 +174,9 @@ public class IOUtil
      * @param stringBuffer 待写入的字符
      * @param outFile      输出的文件
      * @param encoding     写入文件的编码方式
-     * @throws Exception
+     * @throws IOException
      */
-    public static void write(StringBuffer stringBuffer, File outFile, String encoding) throws Exception
-    {
+    public static void write(StringBuffer stringBuffer, File outFile, String encoding) throws IOException {
         if (StringUtils.isEmpty(encoding))
             encoding = "UTF-8";
         write(stringBuffer.toString(), outFile, encoding);
@@ -217,19 +188,32 @@ public class IOUtil
      * @param str      待写入的字符
      * @param outFile  输出的文件
      * @param encoding 写入文件的编码方式
-     * @throws Exception
+     * @throws IOException
      */
-    public static void write(String str, File outFile, String encoding) throws IOException
-    {
+    public static void write(String str, File outFile, String encoding) throws IOException {
         BufferedWriter writer = null;
-        try
-        {
+        try {
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding == null ? "UTF-8" : encoding));
             writer.write(str);
             writer.flush();
-        } finally
-        {
+        } finally {
             close(writer);
+        }
+    }
+
+    /**
+     * 将IO流转换为字节数组
+     *
+     * @param in 输入流
+     * @return 读取后的byte数组
+     */
+    public static byte[] read(InputStream in) throws IOException {
+        if (in == null)
+            return new byte[]{};
+        else {
+            byte[] bs = new byte[in.available()];
+            in.read(bs);
+            return bs;
         }
     }
 }
