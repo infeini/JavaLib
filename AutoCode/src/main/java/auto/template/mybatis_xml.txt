@@ -37,6 +37,16 @@
         </set>
     </sql>
 
+    <!--插入赋值语句-->
+    <sql id="insertSet">
+        <set>
+            <#list table.fields as field>
+            <if test="pojo.${field.name.field()}!=null">${field.name.sql()}=#${'{'}pojo.${field.name.field()}},</if>
+            </#list>
+            <if test="pojo.${table.keyField.name.field()}!=null">${table.keyField.name.sql()}=#${'{'}pojo.${table.keyField.name.field()}},</if>
+        </set>
+    </sql>
+
     <select id="findById" resultMap="${table.name.field()}Result">
         SELECT * FROM ${table.name.sql()}
         WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}}
@@ -56,6 +66,11 @@
     <insert id="insert" useGeneratedKeys="true" keyColumn="${table.keyField.name.table()}" keyProperty="pojo.${table.keyField.name.field()}">
         INSERT INTO ${table.name.sql()}
         <include refid="updateSet"/>
+    </insert>
+
+    <insert id="insertWithId">
+        INSERT INTO ${table.name.sql()}
+        <include refid="insertSet"/>
     </insert>
 
     <update id="update">

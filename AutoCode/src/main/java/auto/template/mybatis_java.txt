@@ -37,6 +37,11 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
     void insert(@Param("pojo") ${config.pojoName} pojo);
 
     /**
+      * 插入数据(不忽略id)
+      */
+    void insertWithId(@Param("pojo") ${config.pojoName} pojo);
+
+    /**
      * 更新数据
      */
     void update(@Param("pojo") ${config.pojoName} pojo);
