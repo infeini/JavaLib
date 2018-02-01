@@ -1,0 +1,5 @@
+${tableInfo}:所有字段详情如下
+${keyField.name.field()}:-->(${keyField.info})
+<#list fields as field>
+${field.name.field()}:-->(${field.info})
+</#list>

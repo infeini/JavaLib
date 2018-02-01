@@ -19,6 +19,10 @@ public class Config {
     //实体模板文件
     public File pojoModel = new File("./src/main/java/auto/template/pojo.txt");
 
+    public File pojoInfoSaveAs;
+    //实体介绍模板文件
+    public File pojoInfoModel = new File("./src/main/java/auto/template/pojoInfo.txt");
+
     //mapper包名
     public String mapperPackage;
     //mapper名称
@@ -68,6 +72,12 @@ public class Config {
         if (pojoSaveAs == null)
             pojoSaveAs = new File(FileUtils.getFile(outDir, pojoPackage.split("\\.")), pojoName + ".java");
         return pojoSaveAs;
+    }
+
+    public File getPojoInfoSaveAs() {
+        if (pojoInfoSaveAs == null)
+            pojoInfoSaveAs = new File(FileUtils.getFile(outDir, "pojoInfo"), pojoName + ".txt");
+        return pojoInfoSaveAs;
     }
 
     public File getMapperJavaSaveAs() {
