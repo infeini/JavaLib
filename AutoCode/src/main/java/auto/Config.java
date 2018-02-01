@@ -72,14 +72,14 @@ public class Config {
 
     public File getMapperJavaSaveAs() {
         if (mapperJavaSaveAs == null)
-            mapperJavaSaveAs = new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), mapperName + ".java");
+            mapperJavaSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), "java"), mapperName + ".java");
         return mapperJavaSaveAs;
     }
 
     public File getMapperXmlSaveAs() {
 
         if (mapperXmlSaveAs == null)
-            mapperXmlSaveAs = new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), mapperName + ".xml");
+            mapperXmlSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), "xml"), mapperName + ".xml");
         return mapperXmlSaveAs;
     }
 
