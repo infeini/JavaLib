@@ -50,5 +50,10 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
      * 删除数据
      */
     void delete(@Param("${table.keyField.name.field()}") long ${table.keyField.name.field()});
+
+    /**
+     * 删除匹配数据
+     */
+     void deleteByExample(@Param("pojo") ${config.pojoName} pojo);
 }
 

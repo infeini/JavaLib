@@ -82,4 +82,9 @@
     <delete id="delete">
         DELETE FROM ${table.name.sql()} WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}};
     </delete>
+
+    <delete id="deleteByExample">
+        DELETE FROM ${table.name.sql()}
+        <include refid="queryByExample"/>
+    </delete>
 </mapper>

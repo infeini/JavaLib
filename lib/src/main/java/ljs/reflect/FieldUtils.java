@@ -12,20 +12,35 @@ public class FieldUtils {
     /**
      * 通过反射获取对象的字段及字段值，以键值对方式返回
      *
-     * @param prefix 键前缀
-     * @param suffix 键后缀
-     * @param obj    目标对象
+     * @param prefix    键前缀
+     * @param suffix    键后缀
+     * @param obj       目标对象
+     * @param fieldType 是否过滤类型
      * @return 字段键值对map集合
      */
-    public static Map<String, Object> getFieldNameAndValues(Object obj, String prefix, String suffix) {
+    public static <T> Map<String, T> getFieldNameAndValues(Object obj, Class<T> fieldType, String prefix, String suffix) {
         HashMap<String, Object> map = new HashMap<>();
         if (obj != null) {
             for (Field field : getFields(obj.getClass())) {
+                //过滤类型
+                if (fieldType != null && fieldType != field.getType())
+                    continue;
                 String key = prefix + field.getName() + suffix;
                 map.put(key, getValue(obj, field));
             }
         }
-        return map;
+        return (Map<String, T>) map;
+    }
+
+    /**
+     * 通过反射获取对象的字段及字段值，以键值对方式返回
+     *
+     * @param obj       目标对象
+     * @param fieldType 是否过滤类型
+     * @return 字段键值对map集合
+     */
+    public static <T> Map<String, T> getFieldNameAndValues(Object obj, Class<T> fieldType) {
+        return getFieldNameAndValues(obj, fieldType, "", "");
     }
 
     /**
@@ -35,8 +50,9 @@ public class FieldUtils {
      * @return 字段键值对map集合
      */
     public static Map<String, Object> getFieldNameAndValues(Object obj) {
-        return getFieldNameAndValues(obj, "", "");
+        return getFieldNameAndValues(obj, null, "", "");
     }
+
 
     public static Map<Field, Object> getFieldsAndValues(Object obj) {
         Map<Field, Object> map = new HashMap<>();

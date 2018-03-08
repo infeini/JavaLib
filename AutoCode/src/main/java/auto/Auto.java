@@ -29,6 +29,11 @@ public class Auto {
         run("training");
     }
 
+    @Test
+    public void autoSpringSecurity() throws Exception {
+        run("spring_security");
+    }
+
     void run(String dbName) throws Exception {
         DataBase dataBase = new DataBase(dbName, "localhost", 3306, "root", "123456");
         File outDir = new File("./test").getCanonicalFile();

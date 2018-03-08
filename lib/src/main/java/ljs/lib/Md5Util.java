@@ -1,5 +1,7 @@
 package ljs.lib;
 
+import ljs.SingletonHolder;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -61,5 +63,24 @@ public class Md5Util {
         }
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
+    }
+
+    public static String getRandMd5() {
+        return getMd5(SingletonHolder.Random.INSTANCE.nextInt() + "");
+    }
+
+    public static String getMd5(String string) {
+        String result = "";
+        if (string != null && !string.isEmpty()) {
+            byte[] bytes = SingletonHolder.MD5.INSTAT.digest(string.getBytes());
+            for (byte b : bytes) {
+                String temp = Integer.toHexString(b & 0xff);
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                result += temp;
+            }
+        }
+        return result;
     }
 }
