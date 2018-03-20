@@ -24,12 +24,10 @@ public class MyType {
 
     public MyType(String jdbcType, boolean isKeyField, MyString name) {
         this.jdbcType = jdbcType;
-        if (jdbcType.startsWith("int"))
-            //外键、以id结尾的字段java类型为Long
-            if (isKeyField || name.table().toLowerCase().endsWith("id"))
-                this.type = Long.class;
-            else
-                this.type = Integer.class;
+        if (isKeyField)
+            this.type = Long.class;
+        else if (jdbcType.startsWith("int"))
+            this.type = Integer.class;
         else if (jdbcType.startsWith("varchar") || jdbcType.startsWith("text"))
             this.type = String.class;
         else if (jdbcType.startsWith("tinyint"))

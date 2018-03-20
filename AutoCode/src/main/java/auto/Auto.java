@@ -25,6 +25,11 @@ public class Auto {
     }
 
     @Test
+    public void autoCodeBaoCheHui() throws Exception {
+        run("baochehui");
+    }
+
+    @Test
     public void autoCodeTraining() throws Exception {
         run("training");
     }

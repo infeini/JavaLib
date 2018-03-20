@@ -1,5 +1,7 @@
 package ljs;
 
+import org.simpleframework.xml.core.Persister;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,5 +22,9 @@ public class SingletonHolder {
             }
             return messageDigest;
         }
+    }
+
+    public static class SimpleXml {
+        public final static Persister INSTANCE = new Persister();
     }
 }

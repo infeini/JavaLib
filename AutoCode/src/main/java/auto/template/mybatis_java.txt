@@ -19,7 +19,7 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
     /**
      * 通过ID查找对象
      */
-    ${config.pojoName} findById(@Param("${table.keyField.name.field()}") long ${table.keyField.name.field()});
+    ${config.pojoName} findById(@Param("${table.keyField.name.field()}") Long ${table.keyField.name.field()});
 
     /**
      * 获取与其相似的数据数量
@@ -49,7 +49,7 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
     /**
      * 删除数据
      */
-    void delete(@Param("${table.keyField.name.field()}") long ${table.keyField.name.field()});
+    void delete(@Param("${table.keyField.name.field()}") Long ${table.keyField.name.field()});
 
     /**
      * 删除匹配数据
