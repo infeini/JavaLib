@@ -5,6 +5,7 @@ import ljs.SingletonHolder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -70,17 +71,22 @@ public class Md5Util {
     }
 
     public static String getMd5(String string) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         if (string != null && !string.isEmpty()) {
-            byte[] bytes = SingletonHolder.MD5.INSTAT.digest(string.getBytes());
-            for (byte b : bytes) {
-                String temp = Integer.toHexString(b & 0xff);
-                if (temp.length() == 1) {
-                    temp = "0" + temp;
+            byte[] bytes;
+            try {
+                bytes = SingletonHolder.MD5.INSTAT.digest(string.getBytes("UTF-8"));
+                for (byte b : bytes) {
+                    String temp = Integer.toHexString(b & 0xff);
+                    if (temp.length() == 1) {
+                        temp = "0" + temp;
+                    }
+                    result.append(temp);
                 }
-                result += temp;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
         }
-        return result;
+        return result.toString();
     }
 }

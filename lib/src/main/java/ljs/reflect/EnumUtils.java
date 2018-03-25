@@ -63,7 +63,7 @@ public class EnumUtils {
             enumType.getField(valueFieldName);
             re = true;
         } catch (NoSuchFieldException e) {
-            throw new KnowException("获取字段:" + valueFieldName + "失败");
+            throw new KnowException("获取字段:" + valueFieldName + "失败:" + enumType.getName() + ",不存在value字段或字段修饰符不是public");
         }
         return re;
     }
