@@ -99,4 +99,17 @@ public class StringUtils {
             return false;
         }
     }
+
+    /**
+     * 校验是否存在空字符
+     *
+     * @param strs
+     * @return boolean
+     */
+    public static boolean haveEmpty(String... strs) {
+        for (String str : strs)
+            if (isEmpty(str))
+                return true;
+        return false;
+    }
 }

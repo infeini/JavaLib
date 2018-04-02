@@ -31,65 +31,34 @@
         </exec>
         <echo message="清理完成"/>
     </target>
-    <target name="package" depends="clean">
-        <echo message="正在打包"/>
-        <exec dir="base" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="autocode" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="fastjson" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="poi" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="shell" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="spring" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="web" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="weixin" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <exec dir="zip" executable="cmd">
-            <arg line="/c mvn install"/>
-        </exec>
-        <echo message="打包完成"/>
-    </target>
-    <target name="install" depends="package">
+    <target name="install" depends="clean">
         <echo message="正在安装"/>
         <exec dir="base" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="autocode" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="fastjson" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="poi" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="shell" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="spring" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="web" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="weixin" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="zip" executable="cmd">
-            <arg line="/c mvn package"/>
+            <arg line="/c mvn source:jar install"/>
         </exec>
         <echo message="安装完成"/>
     </target>
