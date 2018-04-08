@@ -1,4 +1,4 @@
-package auto;
+package ljs.autocode;
 
 import java.util.regex.Pattern;
 

@@ -11,11 +11,12 @@ import ${config.pojoPackage}.${config.pojoName};
 import java.util.List;
 
 /**
- * @author 刘江山
+ * ${table.info} mybatis mapper接口
+ *
+ * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
  */
 @Pojo(${config.pojoName}.class)
-public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
-{
+public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
     /**
      * 通过ID查找对象
      */
@@ -37,8 +38,8 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
     void insert(@Param("pojo") ${config.pojoName} pojo);
 
     /**
-      * 插入数据(不忽略id)
-      */
+     * 插入数据(不忽略id)
+     */
     void insertWithId(@Param("pojo") ${config.pojoName} pojo);
 
     /**
@@ -54,6 +55,6 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}>
     /**
      * 删除匹配数据
      */
-     void deleteByExample(@Param("pojo") ${config.pojoName} pojo);
+    void deleteByExample(@Param("pojo") ${config.pojoName} pojo);
 }
 

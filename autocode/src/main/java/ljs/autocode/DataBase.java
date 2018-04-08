@@ -1,4 +1,4 @@
-package auto;
+package ljs.autocode;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class DataBase {
 
     private Connection getConnect(String userName, String password) throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + name + "", userName, password);
+        return DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + name + "?useSSL=true", userName, password);
     }
 
     public DataBase(String name, String ip, int port, String userName, String password) throws Exception {

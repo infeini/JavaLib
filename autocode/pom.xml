@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ljs</groupId>
-    <artifactId>AutoCode</artifactId>
+    <artifactId>autocode</artifactId>
     <version>1.0</version>
     <build>
         <plugins>
@@ -36,6 +36,11 @@
             <groupId>ljs</groupId>
             <artifactId>base</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.45</version>
         </dependency>
     </dependencies>
 </project>

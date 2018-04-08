@@ -1,47 +1,20 @@
-package auto;
+package ljs.autocode;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import ljs.io.IOUtil;
-import ljs.io.file.FileUtils;
-import org.junit.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
-public class Auto {
-    @Test
-    public void test() throws IOException {
-        File dir = new File("/home/ljs/IdeaProjects/PLM/src/main/java/zlx/pojo");
-        for (File file : FileUtils.list(dir)) {
-            System.out.println("<value>zlx.pojo." + file.getName() + "</value>");
-        }
-    }
-
-    @Test
-    public void autoCodePLM() throws Exception {
-        run("plm");
-    }
-
-    @Test
-    public void autoCodeBaoCheHui() throws Exception {
-        run("baochehui");
-    }
-
-    @Test
-    public void autoCodeTraining() throws Exception {
-        run("training");
-    }
-
-    @Test
-    public void autoSpringSecurity() throws Exception {
-        run("spring_security");
-    }
-
+public class AutoCode {
     public void run(String dbName) throws Exception {
         DataBase dataBase = new DataBase(dbName, "localhost", 3306, "root", "123456");
-        File outDir = new File("./test").getCanonicalFile();
+        File outDir = new File("./code").getCanonicalFile();
         for (Table table : dataBase.tables) {
             Config config = new Config();
             config.init(outDir, table, "zlx.base.BasePojo", "zlx.pojo", "zlx.mapper", "zlx.service", "zlx.controller");
@@ -69,17 +42,17 @@ public class Auto {
         }
     }
 
-    public void write(Object model, File view, File out) throws Exception {
+    public void write(Object model, String view, File out) throws Exception {
         if (out.exists())
             throw new RuntimeException(out.getCanonicalPath() + "已存在,为保护你的文件,中断操作");
         if (!out.getParentFile().exists())
             out.getParentFile().mkdirs();
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_25);
-        cfg.setDirectoryForTemplateLoading(view.getParentFile());
+        cfg.setClassForTemplateLoading(getClass(), "/");
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setLogTemplateExceptions(false);
-        Template temp = cfg.getTemplate(view.getName());
+        Template temp = cfg.getTemplate(view);
         if (!out.getParentFile().exists())
             out.getParentFile().mkdirs();
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out, false)));

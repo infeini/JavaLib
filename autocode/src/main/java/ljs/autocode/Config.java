@@ -1,4 +1,4 @@
-package auto;
+package ljs.autocode;
 
 import ljs.io.file.FileUtils;
 
@@ -16,12 +16,13 @@ public class Config {
     public String pojoName;
     //实体存储路径
     public File pojoSaveAs;
+    private String templatePackage = "template/";
     //实体模板文件
-    public File pojoModel = new File("./src/main/java/auto/template/pojo.txt");
+    public String pojoModel = templatePackage + "pojo.txt";
 
     public File pojoInfoSaveAs;
     //实体介绍模板文件
-    public File pojoInfoModel = new File("./src/main/java/auto/template/pojoInfo.txt");
+    public String pojoInfoModel = templatePackage + "pojoInfo.txt";
 
     //mapper包名
     public String mapperPackage;
@@ -30,11 +31,11 @@ public class Config {
     //mapper java接口存储路径
     public File mapperJavaSaveAs;
     //mapper 接口模板文件
-    public File mapperJavaModel = new File("./src/main/java/auto/template/mybatis_java.txt");
+    public String mapperJavaModel = templatePackage + "mybatis_java.txt";
     //mapper xml存储路径
     public File mapperXmlSaveAs;
     //mapper xml模板文件
-    public File mapperXmlModel = new File("./src/main/java/auto/template/mybatis_xml.txt");
+    public String mapperXmlModel = templatePackage + "mybatis_xml.txt";
 
     //service包名
     public String servicePackage;
@@ -43,7 +44,7 @@ public class Config {
     //service存储路径
     public File serviceSaveAs;
     //service模板文件
-    public File serviceModel = new File("./src/main/java/auto/template/service.txt");
+    public String serviceModel = templatePackage + "service.txt";
 
     //controller包名
     public String controllerPackage;
@@ -52,7 +53,7 @@ public class Config {
     //controller存储路径
     public File controllerSaveAs;
     //controller模板文件
-    public File controllerModel = new File("./src/main/java/auto/template/controller.txt");
+    public String controllerModel = templatePackage + "controller.txt";
 
     public void init(File outDir, Table table, String supperPojoClassName, String pojoPackage, String mapperPackage, String servicePackage, String controllerPackage) {
         this.outDir = outDir;

@@ -6,7 +6,8 @@
         PUBLIC "-//auto.mybatis.org//DTD Mapper 3.0//EN"
         "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${config.mapperPackage}.${config.mapperName}">
-    <!--xml config form table ${table.name.table()}-->
+    <!--mybatis xml config form table ${table.name.table()}-->
+    <!--author:代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode-->
     <resultMap id="${table.name.field()}Result" type="${config.pojoPackage}.${config.pojoName}">
         <result property="${table.keyField.name.field()}" column="${table.keyField.name.table()}"/>
     <#list table.fields as field>

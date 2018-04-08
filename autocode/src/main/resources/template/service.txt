@@ -9,21 +9,21 @@ import zlx.aop.Pojo;
 import ${config.pojoPackage}.${config.pojoName};
 
 import java.util.Map;
+
 /**
  * ${table.info} service
+ *
+ * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
  **/
 @Service
 @Pojo(${config.pojoName}.class)
-public class ${config.serviceName} extends BaseService
-{
+public class ${config.serviceName} extends BaseService {
     //添加${table.info}
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public Map<String, Object> add(${config.pojoName} ${table.name.field()}) throws KnowException
-    {
+    public Map<String, Object> add(${config.pojoName} ${table.name.field()}) throws KnowException {
 <#list fields as field>
 <#if field.nullable == false>
-        if(${table.name.field()}.${field.name.getMethod()}() == null)
-                    throw new KnowException("${field.info}不能为空");
+        <#if field_index == 0>if <#else>else if </#if>(${table.name.field()}.${field.name.getMethod()}() == null) throw new KnowException("${field.info}不能为空");
 </#if>
 </#list>
         ${table.name.field()}Mapper.insert(${table.name.field()});
@@ -32,17 +32,14 @@ public class ${config.serviceName} extends BaseService
 
     //修改${table.info}
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void update(${config.pojoName} ${table.name.field()}) throws KnowException
-    {
-        if (${table.name.field()}.${keyField.name.getMethod()}() == null)
-                    throw new KnowException("${table.keyField.info}不能为空");
+    public void update(${config.pojoName} ${table.name.field()}) throws KnowException {
+        if (${table.name.field()}.${keyField.name.getMethod()}() == null) throw new KnowException("${table.keyField.info}不能为空");
         ${table.name.field()}Mapper.update(${table.name.field()});
     }
 
     //查询${table.info}
     @Transactional(readOnly = true)
-    public Map<String, Object> search(${config.pojoName} ${table.name.field()}) throws KnowException
-    {
+    public Map<String, Object> search(${config.pojoName} ${table.name.field()}) throws KnowException {
         return search(${table.name.field()}, ${table.name.field()}Mapper);
     }
 }
