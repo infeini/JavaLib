@@ -1,5 +1,7 @@
 package ljs.lib;
 
+import ljs.SingletonHolder;
+
 import java.util.Map;
 import java.util.Random;
 
@@ -111,5 +113,53 @@ public class StringUtils {
             if (isEmpty(str))
                 return true;
         return false;
+    }
+
+    /**
+     * 获取单个随机小写字母
+     *
+     * @return 单个小写字母
+     */
+    public static char getRandLowerCaseLetter() {
+        return (char) (SingletonHolder.Random.INSTANCE.nextInt('z' - 'a') + 'a');
+    }
+
+    /**
+     * 获取单个随机大写字母
+     *
+     * @return 单个大写字母
+     */
+    public static char getRandUpperCaseLetter() {
+        return (char) (SingletonHolder.Random.INSTANCE.nextInt('Z' - 'A') + 'A');
+    }
+
+    /**
+     * 获取指定个数的随机小写字母
+     *
+     * @return 指定位数的小写字符串
+     */
+    public static String getRandLowerCaseString(int size) {
+        char[] chars = new char[size];
+        for (int i = 0; i < chars.length; i++) chars[i] = getRandLowerCaseLetter();
+        return new String(chars);
+    }
+
+    /**
+     * 获取指定个数的随机大写字符串
+     *
+     * @return 指定位数的大写字符串
+     */
+    public static String getRandUpperCaseString(int size) {
+        char[] chars = new char[size];
+        for (int i = 0; i < chars.length; i++) chars[i] = getRandUpperCaseLetter();
+        return new String(chars);
+    }
+
+    public static boolean isLowerCase(char c) {
+        return c <= 'z' && c >= 'a';
+    }
+
+    public static boolean isUpperCase(char c) {
+        return c <= 'Z' && c >= 'A';
     }
 }

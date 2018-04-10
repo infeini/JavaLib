@@ -29,6 +29,8 @@ public class AutoCode {
             model.put("tableInfo", table.getInfo());
             //生成pojo
             write(model, config.pojoModel, config.getPojoSaveAs());
+            //生成simplePojo
+            write(model, config.simplePojoModel, config.getSimplePojoSaveAs());
             //生成pojo介绍
             write(model, config.pojoInfoModel, config.getPojoInfoSaveAs());
             //生成mybatis mapper接口

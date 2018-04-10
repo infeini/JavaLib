@@ -1,4 +1,5 @@
-import ljs.autocode.AutoCode;
+package ljs.autocode;
+
 import org.junit.Test;
 
 public class AutoCodeTest {

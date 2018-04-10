@@ -16,7 +16,11 @@ public class Config {
     public String pojoName;
     //实体存储路径
     public File pojoSaveAs;
+    //简单实体存储路径
+    public File simplePojoSaveAs;
     private String templatePackage = "template/";
+    //简单实体模板文件
+    public String simplePojoModel = templatePackage + "simplePojo.txt";
     //实体模板文件
     public String pojoModel = templatePackage + "pojo.txt";
 
@@ -73,6 +77,12 @@ public class Config {
         if (pojoSaveAs == null)
             pojoSaveAs = new File(FileUtils.getFile(outDir, pojoPackage.split("\\.")), pojoName + ".java");
         return pojoSaveAs;
+    }
+
+    public File getSimplePojoSaveAs() {
+        if (simplePojoSaveAs == null)
+            simplePojoSaveAs = new File(FileUtils.getFile(outDir, "simplePojo"), pojoName + ".java");
+        return simplePojoSaveAs;
     }
 
     public File getPojoInfoSaveAs() {

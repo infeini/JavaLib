@@ -3,9 +3,6 @@
 <#--table:Table对象-->
 package ${config.pojoPackage};
 
-import zlx.aop.Table;
-import zlx.aop.Field;
-import zlx.aop.MapperType;
 <#if table.haveDate()>
 import java.util.Date;
 </#if>
@@ -15,21 +12,17 @@ import java.util.Date;
  *
  * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
  */
-@Table(name = ${"\""+tableName+"\""}, info = ${"\""+tableInfo+"\""})
-@MapperType(${config.mapperPackage}.${config.mapperName}.class)
 public class ${config.pojoName} extends ${config.supperPojoClassName} {
 <#--主键字段声明-->
     /**
      * ${keyField.info}
      */
-    @Field(length = ${keyField.length}, nullable = ${keyField.nullable?c}, key = ${keyField.key?c})
     private ${keyField.type.javaSimpleName()} ${keyField.name.field()};
 <#--非主键字段声明-->
 <#list fields as field>
     /**
      * ${field.info}
      */
-    @Field(length = ${field.length}, nullable = ${field.nullable?c})
     private ${field.type.javaSimpleName()} ${field.name.field()};
 </#list>
 <#--主键Getter、Setter声明代码-->
@@ -38,14 +31,14 @@ public class ${config.pojoName} extends ${config.supperPojoClassName} {
      * ${keyField.info} Getter
      */
     public ${keyField.type.javaSimpleName()} ${keyField.name.getMethod()}() {
-        return (${keyField.type.javaSimpleName()}) this.get("${keyField.name.field()}");
+        return this.${keyField.name.field()};
     }
 
     /**
      * ${keyField.info} Setter
      */
     public void ${keyField.name.setMethod()}(${keyField.type.javaSimpleName()} ${keyField.name.field()}) {
-        this.put("${keyField.name.field()}", ${keyField.name.field()});
+        this.${keyField.name.field()} = ${keyField.name.field()};
     }
 <#list fields as field>
 
@@ -54,14 +47,14 @@ public class ${config.pojoName} extends ${config.supperPojoClassName} {
      * ${field.info} Getter
      */
     public ${field.type.javaSimpleName()} ${field.name.getMethod()}() {
-        return (${field.type.javaSimpleName()}) this.get("${field.name.field()}");
+        return this.${field.name.field()};
     }
 
     /**
      * ${field.info} Setter
      */
     public void ${field.name.setMethod()}(${field.type.javaSimpleName()} ${field.name.field()}) {
-        this.put("${field.name.field()}", ${field.name.field()});
+        this.${field.name.field()} = ${field.name.field()};
     }
 </#list>
 }
