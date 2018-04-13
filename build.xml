@@ -29,6 +29,9 @@
         <exec dir="zip" executable="cmd">
             <arg line="/c mvn clean"/>
         </exec>
+        <exec dir="gson" executable="cmd">
+            <arg line="/c mvn clean"/>
+        </exec>
         <echo message="清理完成"/>
     </target>
     <target name="install" depends="clean">
@@ -58,6 +61,9 @@
             <arg line="/c mvn source:jar install"/>
         </exec>
         <exec dir="zip" executable="cmd">
+            <arg line="/c mvn source:jar install"/>
+        </exec>
+        <exec dir="gson" executable="cmd">
             <arg line="/c mvn source:jar install"/>
         </exec>
         <echo message="安装完成"/>
