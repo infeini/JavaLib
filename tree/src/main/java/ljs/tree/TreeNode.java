@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class TreeNode<T> {
     private List<TreeNode<T>> childs = new ArrayList<>();
-    private boolean expand = true;
+    private boolean expand;
     private T data;
     private int level;
 
@@ -17,9 +17,30 @@ public class TreeNode<T> {
         this.data = data;
     }
 
+    public TreeNode(boolean expand) {
+        this.expand = expand;
+    }
+
+    public TreeNode(T data, boolean expand) {
+        this.data = data;
+        this.expand = expand;
+    }
+
     public TreeNode addChild(TreeNode<T> treeNode) {
         childs.add(treeNode);
         return this;
+    }
+
+    public boolean isChildsEmpty() {
+        return this.childs.isEmpty();
+    }
+
+    public boolean isExpand() {
+        return expand;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
     public T getData() {
@@ -42,9 +63,6 @@ public class TreeNode<T> {
         return childs;
     }
 
-    public List<TreeNode<T>> getExpandChilds() {
-        return childs.stream().filter(treeNode -> treeNode.expand).collect(Collectors.toList());
-    }
 
     public List<TreeNode<T>> getExpands() {
         return getExpands(level);
@@ -54,7 +72,8 @@ public class TreeNode<T> {
         List<TreeNode<T>> expands = new ArrayList<>();
         this.level = level;
         expands.add(this);
-        getExpandChilds().stream().forEach(treeNode -> expands.addAll(treeNode.getExpands(level + 1)));
+        if (expand)
+            getChilds().stream().forEach(treeNode -> expands.addAll(treeNode.getExpands(level + 1)));
         return expands;
     }
 
