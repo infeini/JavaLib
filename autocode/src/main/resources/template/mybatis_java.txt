@@ -33,6 +33,12 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
     List<${config.pojoName}> findByExample(@Param("pojo") ${config.pojoName} pojo, @Param("start") int start, @Param("length") int length);
 
     /**
+     * 获取与其相似的数据
+     * @param sort 排序方式
+     */
+    List<${config.pojoName}> findByExampleSorted(@Param("pojo") ${config.pojoName} pojo, @Param("start") int start, @Param("length") int length, @Param("sortField") String sortField, @Param("desc") boolean desc);
+
+    /**
      * 插入数据
      */
     void insert(@Param("pojo") ${config.pojoName} pojo);

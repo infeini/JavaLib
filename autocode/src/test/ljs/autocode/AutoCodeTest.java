@@ -12,7 +12,7 @@ public class AutoCodeTest {
 
     @Test
     public void autoCodeBaoCheHui() throws Exception {
-        autoCode.run("baochehui");
+        autoCode.run("baochehui", "192.168.1.91");
     }
 
     @Test

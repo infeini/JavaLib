@@ -64,6 +64,13 @@
         LIMIT #${'{'}start},#${'{'}length}
     </select>
 
+    <select id="findByExampleSorted" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()}
+        <include refid="queryByExample"/>
+        ORDER BY #${'{'}sortField} <if test="desc">desc</if>
+        LIMIT #${'{'}start},#${'{'}length}
+    </select>
+
     <insert id="insert" useGeneratedKeys="true" keyColumn="${table.keyField.name.table()}" keyProperty="pojo.${table.keyField.name.field()}">
         INSERT INTO ${table.name.sql()}
         <include refid="updateSet"/>
