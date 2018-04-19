@@ -67,7 +67,7 @@
     <select id="findByExampleSorted" resultMap="${table.name.field()}Result">
         SELECT * FROM ${table.name.sql()}
         <include refid="queryByExample"/>
-        ORDER BY #${'{'}sortField} <if test="desc">desc</if>
+        ORDER BY $${'{'}sortField} <if test="desc">desc</if>
         LIMIT #${'{'}start},#${'{'}length}
     </select>
 
