@@ -10,6 +10,8 @@ public class TreeNode<T> {
     private T data;
     private int level;
 
+    public List<TreeNode<T>> expands = new ArrayList<>();
+
     public TreeNode() {
     }
 
@@ -63,9 +65,10 @@ public class TreeNode<T> {
         return childs;
     }
 
-
     public List<TreeNode<T>> getExpands() {
-        return getExpands(level);
+        expands.clear();
+        expands.addAll(getExpands(level));
+        return expands;
     }
 
     private List<TreeNode<T>> getExpands(int level) {

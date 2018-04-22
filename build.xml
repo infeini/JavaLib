@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project name="clean">
-    <target name="clean">
+<project name="Build Tool">
+    <target name="Clean Build Cache">
         <echo message="正在清理"/>
         <exec dir="base" executable="cmd">
             <arg line="/c mvn clean"/>
@@ -37,7 +37,7 @@
         </exec>
         <echo message="清理完成"/>
     </target>
-    <target name="install" depends="clean">
+    <target name="Install Lib To Local Maven Repository" depends="clean">
         <echo message="正在安装"/>
         <exec dir="base" executable="cmd">
             <arg line="/c mvn source:jar install"/>
