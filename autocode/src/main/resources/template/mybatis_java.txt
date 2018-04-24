@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * ${table.info} mybatis mapper接口
  *
- * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
+ * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
  */
 @Pojo(${config.pojoName}.class)
 public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {

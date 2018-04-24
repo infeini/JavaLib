@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * ${table.info} service
  *
- * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
+ * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
  **/
 @Service
 @Pojo(${config.pojoName}.class)

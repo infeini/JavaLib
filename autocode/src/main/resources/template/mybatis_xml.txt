@@ -7,7 +7,7 @@
         "http://auto.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${config.mapperPackage}.${config.mapperName}">
     <!--mybatis xml config form table ${table.name.table()}-->
-    <!--author:代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode-->
+    <!--author:代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>-->
     <resultMap id="${table.name.field()}Result" type="${config.pojoPackage}.${config.pojoName}">
         <result property="${table.keyField.name.field()}" column="${table.keyField.name.table()}"/>
     <#list table.fields as field>

@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * ${table.info}实体
  *
- * @author 代码生成器https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode
+ * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode<p/>
  */
 @Table(name = ${"\""+tableName+"\""}, info = ${"\""+tableInfo+"\""})
 @MapperType(${config.mapperPackage}.${config.mapperName}.class)
