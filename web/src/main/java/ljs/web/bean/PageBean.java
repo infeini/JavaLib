@@ -67,8 +67,10 @@ public class PageBean {
             this.nowPage = 1;
         else
             this.nowPage = nowPage;
+        if (onePageShow != null)
+            this.onePageShow = onePageShow;
 
-        this.start = onePageShow * (this.nowPage - 1);
+        this.start = this.onePageShow * (this.nowPage - 1);
 
         if (onePageShow == null)
             this.onePageShow = 10;
