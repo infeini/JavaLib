@@ -37,7 +37,7 @@
         </exec>
         <echo message="清理完成"/>
     </target>
-    <target name="Install Lib To Local Maven Repository" depends="clean">
+    <target name="Install Lib To Local Maven Repository" depends="Clean Build Cache">
         <echo message="正在安装"/>
         <exec dir="base" executable="cmd">
             <arg line="/c mvn source:jar install"/>
