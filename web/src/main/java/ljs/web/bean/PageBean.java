@@ -72,17 +72,8 @@ public class PageBean {
 
         this.start = this.onePageShow * (this.nowPage - 1);
 
-        if (onePageShow == null)
-            this.onePageShow = 10;
-        else
-            this.onePageShow = onePageShow;
-
         this.path = path;
         this.total = total;
-        if (onePageShow == null)
-            this.onePageShow = 10;
-        else
-            this.onePageShow = onePageShow;
 
         totalPage = (this.total / this.onePageShow) + (this.total % this.onePageShow == 0 ? 0 : 1);
     }
