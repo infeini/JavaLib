@@ -13,8 +13,8 @@ public class DataBase {
     public ArrayList<Table> tables;
 
     private Connection getConnect(String userName, String password) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + name + "?useSSL=true", userName, password);
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + name + "?serverTimezone=GMT%2B8&useSSL=false", userName, password);
     }
 
     public DataBase(String name, String ip, int port, String userName, String password) throws Exception {

@@ -54,7 +54,7 @@ public class Table {
     public static Table load(Connection jdbc, String tableName, String tableInfo) throws Exception {
         Statement statement;
         statement = jdbc.createStatement();
-        String sql = "SHOW FULL COLUMNS FROM " + tableName;
+        String sql = "SHOW FULL COLUMNS FROM `" + tableName + "`";
         statement.execute(sql);
         ResultSet resultSet = statement.getResultSet();
 

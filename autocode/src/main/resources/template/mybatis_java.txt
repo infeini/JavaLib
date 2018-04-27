@@ -34,7 +34,8 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
 
     /**
      * 获取与其相似的数据
-     * @param sort 排序方式
+     * @param sortField 排序方式
+     * @param desc 是否降序
      */
     List<${config.pojoName}> findByExampleSorted(@Param("pojo") ${config.pojoName} pojo, @Param("start") int start, @Param("length") int length, @Param("sortField") String sortField, @Param("desc") boolean desc);
 
