@@ -2,7 +2,6 @@ package ljs.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TreeNode<T> {
     private List<TreeNode<T>> childs = new ArrayList<>();
@@ -75,8 +74,13 @@ public class TreeNode<T> {
         List<TreeNode<T>> expands = new ArrayList<>();
         this.level = level;
         expands.add(this);
-        if (expand)
-            getChilds().stream().forEach(treeNode -> expands.addAll(treeNode.getExpands(level + 1)));
+        if (expand) {
+            List<TreeNode<T>> childs = getChilds();
+            for (int i = 0; i < childs.size(); i++) {
+                TreeNode child = childs.get(i);
+                expands.addAll(child.getExpands(level + 1));
+            }
+        }
         return expands;
     }
 
