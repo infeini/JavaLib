@@ -1,6 +1,5 @@
-package test.io.net;
+package ljs.io.net;
 
-import ljs.io.net.SocketUtils;
 import org.junit.Test;
 
 import java.net.InetAddress;

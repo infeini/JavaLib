@@ -1,4 +1,4 @@
-package test.date;
+package ljs.date;
 
 import org.junit.Test;
 

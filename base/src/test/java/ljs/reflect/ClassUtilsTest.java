@@ -1,6 +1,5 @@
-package test.reflect;
+package ljs.reflect;
 
-import ljs.reflect.ClassUtils;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;

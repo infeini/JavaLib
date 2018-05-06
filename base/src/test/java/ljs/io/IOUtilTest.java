@@ -1,4 +1,4 @@
-package test.io;
+package ljs.io;
 
 import org.junit.Test;
 
@@ -42,7 +42,7 @@ public class IOUtilTest {
 
     @Test
     public void toString2() throws FileNotFoundException {
-        File ofFile = new File("test/test.ljs.io.IOUtilTest.java");
+        File ofFile = new File("ljs/test.ljs.io.IOUtilTest.java");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }

@@ -1,6 +1,5 @@
-package test.reflect;
+package ljs.reflect;
 
-import ljs.reflect.FieldUtils;
 import org.junit.Test;
 
 public class FieldUtilsTest {

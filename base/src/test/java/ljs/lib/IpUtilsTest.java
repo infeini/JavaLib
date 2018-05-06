@@ -1,6 +1,5 @@
-package test.lib;
+package ljs.lib;
 
-import ljs.lib.IpUtils;
 import org.junit.Test;
 
 public class IpUtilsTest {

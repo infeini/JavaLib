@@ -1,6 +1,5 @@
-package test.lib;
+package ljs.lib;
 
-import ljs.lib.ObjectUtils;
 import org.junit.Test;
 
 public class ObjectUtilsTest {

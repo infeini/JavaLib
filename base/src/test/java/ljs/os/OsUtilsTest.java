@@ -1,6 +1,5 @@
-package test.os;
+package ljs.os;
 
-import ljs.os.OsUtils;
 import org.junit.Test;
 
 public class OsUtilsTest {

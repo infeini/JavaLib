@@ -1,8 +1,6 @@
-package test.reflect;
+package ljs.reflect;
 
 import ljs.exception.KnowException;
-import ljs.reflect.EnumType;
-import ljs.reflect.EnumUtils;
 import org.junit.Test;
 
 public class EnumUtilsTest {

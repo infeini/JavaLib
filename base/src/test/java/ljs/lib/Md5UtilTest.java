@@ -1,4 +1,4 @@
-package test.lib;
+package ljs.lib;
 
 import ljs.io.IOUtil;
 import ljs.io.file.FileUtils;

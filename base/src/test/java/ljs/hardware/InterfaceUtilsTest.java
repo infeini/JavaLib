@@ -1,6 +1,5 @@
-package test.hardware;
+package ljs.hardware;
 
-import ljs.hardware.InterfaceUtils;
 import org.junit.Test;
 
 public class InterfaceUtilsTest {

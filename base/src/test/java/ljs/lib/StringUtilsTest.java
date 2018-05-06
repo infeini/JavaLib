@@ -1,7 +1,6 @@
-package test.lib;
+package ljs.lib;
 
 import ljs.exception.KnowException;
-import ljs.lib.StringUtils;
 import org.junit.Test;
 
 public class StringUtilsTest {

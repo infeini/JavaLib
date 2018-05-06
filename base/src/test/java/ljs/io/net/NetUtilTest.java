@@ -1,7 +1,4 @@
-package test.io.net;
-
-import ljs.io.net.DownloadListener;
-import ljs.io.net.HttpUtil;
+package ljs.io.net;
 
 import java.io.File;
 

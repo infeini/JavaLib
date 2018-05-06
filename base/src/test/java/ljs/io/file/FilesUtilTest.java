@@ -1,7 +1,6 @@
-package test.io.file;
+package ljs.io.file;
 
 
-import ljs.io.file.FileUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -51,7 +50,7 @@ public class FilesUtilTest {
     @Test
     public void getFile() throws Exception {
         String[] ary = getClass().getPackage().getName().split("\\.");
-        File file = FileUtils.getFile(new File("test"), ary);
+        File file = FileUtils.getFile(new File("ljs"), ary);
         System.out.println(file);
     }
 
