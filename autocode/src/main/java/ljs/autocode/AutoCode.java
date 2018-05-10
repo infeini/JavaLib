@@ -13,11 +13,11 @@ import java.util.HashMap;
 
 public class AutoCode {
     public void run(String dbName) throws Exception {
-        run(dbName, "localhost");
+        run(dbName, "localhost", "root", "123456");
     }
 
-    public void run(String dbName, String host) throws Exception {
-        DataBase dataBase = new DataBase(dbName, host, 3306, "root", "123456");
+    public void run(String dbName, String host, String user, String password) throws Exception {
+        DataBase dataBase = new DataBase(dbName, host, 3306, user, password);
         File outDir = new File("./code").getCanonicalFile();
         for (Table table : dataBase.tables) {
             Config config = new Config();

@@ -7,12 +7,12 @@ public class AutoCodeTest {
 
     @Test
     public void autoCodePLM() throws Exception {
-        autoCode.run("plm");
+        autoCode.run("plm", "192.168.1.91", "root", "123456");
     }
 
     @Test
     public void autoCodeBaoCheHui() throws Exception {
-        autoCode.run("baochehui", "192.168.1.91");
+        autoCode.run("baochehui", "192.168.1.91", "root", "123456");
     }
 
     @Test
