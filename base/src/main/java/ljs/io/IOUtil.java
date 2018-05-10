@@ -191,13 +191,25 @@ public class IOUtil {
      * @throws IOException
      */
     public static void write(String str, File outFile, String encoding) throws IOException {
+        write(str, new FileOutputStream(outFile), encoding, true);
+    }
+
+    /**
+     * 将字符写入流
+     *
+     * @param str
+     * @param out
+     * @param encoding
+     */
+    public static void write(String str, OutputStream out, String encoding, boolean close) throws IOException {
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile), encoding == null ? "UTF-8" : encoding));
+            writer = new BufferedWriter(new OutputStreamWriter(out, encoding == null ? "UTF-8" : encoding));
             writer.write(str);
             writer.flush();
         } finally {
-            close(writer);
+            if (close)
+                close(writer);
         }
     }
 

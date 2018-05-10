@@ -46,6 +46,10 @@
             <arg line="-c"/>
             <arg line="clean"/>
         </exec>
+        <exec dir="ddos" executable="mvn">
+            <arg line="-c"/>
+            <arg line="clean"/>
+        </exec>
         <echo message="清理完成"/>
     </target>
     <target name="Install Lib To Local Maven Repository" depends="Clean Build Cache">
@@ -91,6 +95,10 @@
             <arg line="source:jar install"/>
         </exec>
         <exec dir="tree" executable="mvn">
+            <arg line="-c"/>
+            <arg line="source:jar install"/>
+        </exec>
+        <exec dir="ddos" executable="mvn">
             <arg line="-c"/>
             <arg line="source:jar install"/>
         </exec>
