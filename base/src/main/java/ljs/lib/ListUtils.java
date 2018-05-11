@@ -32,7 +32,9 @@ public class ListUtils {
             return null;
         //调用对象to+toType名称的方法转换
         Class targetType = target.getClass();
-        Method convertMethod = null;
+        if (targetType == toType)
+            return (T) target;
+        Method convertMethod;
         try {
             convertMethod = targetType.getMethod("to" + toType.getSimpleName());
             convertMethod.setAccessible(true);
