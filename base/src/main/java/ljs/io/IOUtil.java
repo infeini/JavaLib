@@ -88,19 +88,13 @@ public class IOUtil {
 
         if (in == null) ;
         else {
-            BufferedReader reader = null;
-            String str = null;
             try {
-                reader = new BufferedReader(new InputStreamReader(in, encoding));
-                while ((str = reader.readLine()) != null) {
-                    stringBuffer.append(str);
-                    stringBuffer.append("\n");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                byte[] buffer = new byte[1024];
+                int read = in.read(buffer);
+                if (read != -1) stringBuffer.append(new String(buffer, 0, read, encoding));
+            } catch (IOException e) {
             } finally {
-                if (close)
-                    close(reader);
+                if (close) close(in);
             }
         }
         return stringBuffer;
@@ -200,32 +194,27 @@ public class IOUtil {
      * @param str
      * @param out
      * @param encoding
+     * @param close
      */
     public static void write(String str, OutputStream out, String encoding, boolean close) throws IOException {
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(out, encoding == null ? "UTF-8" : encoding));
-            writer.write(str);
-            writer.flush();
-        } finally {
-            if (close)
-                close(writer);
-        }
+        if (StringUtils.isEmpty(encoding)) encoding = "UTF-8";
+        write(str.getBytes(encoding), out, close);
     }
 
     /**
-     * 将IO流转换为字节数组
+     * 将字符写入流
      *
-     * @param in 输入流
-     * @return 读取后的byte数组
+     * @param data
+     * @param out
+     * @param close
      */
-    public static byte[] read(InputStream in) throws IOException {
-        if (in == null)
-            return new byte[]{};
-        else {
-            byte[] bs = new byte[in.available()];
-            in.read(bs);
-            return bs;
+    public static void write(byte[] data, OutputStream out, boolean close) throws IOException {
+        try {
+            out.write(data);
+            out.flush();
+        } finally {
+            if (close)
+                close(out);
         }
     }
 }
