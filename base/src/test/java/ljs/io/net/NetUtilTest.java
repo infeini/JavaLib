@@ -1,9 +1,12 @@
 package ljs.io.net;
 
+import org.junit.Test;
+
 import java.io.File;
 
 public class NetUtilTest {
-    public static void main(String[] args) {
+    @Test
+    public void downloadTest() {
         DownloadListener downloadListener = new DownloadListener() {
             @Override
             public void downloadStart() {
@@ -12,7 +15,7 @@ public class NetUtilTest {
 
             @Override
             public void downloadUpdate(long did, long total) {
-                System.out.println("已完成:" + did * 100 / total);
+                System.out.println("已下载:" + did / 1024 + " KB,剩余:" + (total - did) / 1024 + " KB");
             }
 
             @Override
@@ -30,7 +33,7 @@ public class NetUtilTest {
                 System.out.println("end");
             }
         };
-        HttpUtil.downloadHttp("http://192.168.1.88:8081/update.zip", new File("update.zip"), 2000, true, downloadListener);
+        HttpUtil.downloadHttp("https://github.com/LiuJiangshan/hex/raw/master/ls/0/arm64-v8a/ls", new File("update.zip"), downloadListener);
         System.out.println("任务添加完成");
     }
 }

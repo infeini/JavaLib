@@ -1,6 +1,7 @@
 package ljs.io.net;
 
 import ljs.exception.KnowException;
+import ljs.task.ThreadUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,67 +18,72 @@ import static ljs.io.IOUtil.close;
  * @author https://github.com/LiuJiangshan
  */
 public class HttpUtil {
+
     /**
-     * 通过http协议下载文件,支持进度显示
+     * 通过http协议下载文件,支持进度监听
+     *
+     * @param url              网络文件url
+     * @param saveAs           本地文件存储路径
+     * @param downloadListener 下载进度监听器
+     */
+    public static void downloadHttp(String url, File saveAs, DownloadListener downloadListener) {
+        downloadHttp(url, saveAs, 5000, downloadListener);
+    }
+
+    /**
+     * 通过http协议下载文件,支持进度监听
      *
      * @param url              网络文件url
      * @param saveAs           本地文件存储路径
      * @param timeOut          超时时间
      * @param downloadListener 下载进度监听器
-     * @param join             是否堵塞当前线程
      */
-    public static void downloadHttp(String url, File saveAs, int timeOut, boolean join, DownloadListener downloadListener) {
-        if (timeOut < 0)
-            timeOut = 5000;
+    public static void downloadHttp(String url, File saveAs, int timeOut, DownloadListener
+            downloadListener) {
+        if (timeOut < 0) timeOut = 5000;
         int finalTimeOut = timeOut;
-        Runnable downloadRunnable = new Runnable() {
-            @Override
-            public void run() {
+
+        if (downloadListener != null)
+            downloadListener.downloadStart();
+        HttpURLConnection httpConnection = null;
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            out = new FileOutputStream(saveAs);
+            httpConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpConnection.setConnectTimeout(finalTimeOut);
+            httpConnection.setReadTimeout(finalTimeOut);
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK)
                 if (downloadListener != null)
-                    downloadListener.downloadStart();
-                HttpURLConnection httpConnection = null;
-                OutputStream out = null;
-                InputStream in = null;
-                try {
-                    out = new FileOutputStream(saveAs);
-                    httpConnection = (HttpURLConnection) new URL(url).openConnection();
-                    httpConnection.setConnectTimeout(finalTimeOut);
-                    httpConnection.setReadTimeout(finalTimeOut);
-                    int responseCode = httpConnection.getResponseCode();
-                    if (responseCode != HttpURLConnection.HTTP_OK)
-                        if (downloadListener != null)
-                            throw new KnowException("服务器返回响应码:" + responseCode);
-                    in = httpConnection.getInputStream();
-                    byte[] buffer = new byte[1024];
-                    long total = httpConnection.getContentLength();
-                    long did = 0L;
-                    int read;
-                    while ((read = in.read(buffer)) != -1) {
-                        out.write(buffer, 0, read);
-                        did += read;
-                        if (downloadListener != null)
-                            downloadListener.downloadUpdate(did, total);
-                    }
-                    out.flush();
-                    if (downloadListener != null)
-                        downloadListener.downloadSuccess();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (downloadListener != null)
-                        downloadListener.downloadFail(e);
-                } finally {
-                    close(out);
-                    close(in);
-                    if (httpConnection != null)
-                        httpConnection.disconnect();
-                    if (downloadListener != null)
-                        downloadListener.downloadEnd();
+                    throw new KnowException("服务器返回响应码:" + responseCode);
+            in = httpConnection.getInputStream();
+            byte[] buffer = new byte[2048];
+            long[] progress = {httpConnection.getContentLength(), 0};
+            final int total = 0;
+            final int did = 1;
+            int read;
+            Thread progressThread = new Thread(() -> {
+                while (true) {
+                    if (downloadListener != null) downloadListener.downloadUpdate(progress[did], progress[total]);
+                    ThreadUtil.sleep(1000);
                 }
+            });
+            progressThread.join();
+            progressThread.start();
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+                progress[did] += read;
             }
-        };
-        if (join)
-            downloadRunnable.run();
-        else
-            new Thread(downloadRunnable).start();
+            out.flush();
+            if (downloadListener != null) downloadListener.downloadSuccess();
+        } catch (Exception e) {
+            if (downloadListener != null) downloadListener.downloadFail(e);
+        } finally {
+            close(out);
+            close(in);
+            if (httpConnection != null) httpConnection.disconnect();
+            if (downloadListener != null) downloadListener.downloadEnd();
+        }
     }
 }
