@@ -12,29 +12,29 @@ public abstract class DownloadListener {
     /**
      * 准备下载
      */
-    abstract void downloadStart();
+    public abstract void downloadStart();
 
     /**
      * 进度发生更新
      *
      * @param progress long[]{已下载字节数progress[DownloadListener.TOTAL],总字节数progress[DownloadListener.DID]}
      */
-    abstract void downloadUpdate(long[] progress);
+    public abstract void downloadUpdate(long[] progress);
 
     /**
      * 下载成功
      */
-    abstract void downloadSuccess();
+    public abstract void downloadSuccess();
 
     /**
      * 下载失败
      *
      * @param e 异常
      */
-    abstract void downloadFail(Exception e);
+    public abstract void downloadFail(Exception e);
 
     /**
      * 下载结束
      */
-    abstract void downloadEnd();
+    public abstract void downloadEnd();
 }
