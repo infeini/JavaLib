@@ -1,71 +1,84 @@
 package ljs.shell;
 
-import java.util.logging.Handler;
+import ljs.exception.KnowException;
 
 /**
- * 命令
+ * 执行的命令对象
  */
-public class Command
-{
+public abstract class Command {
     //命令是否运行
-    public boolean running = false;
+    private boolean running = false;
     //命令是否中断
-    public boolean interrupted = false;
+    private boolean interrupted = false;
     //命令是否完成
-    public boolean finish = false;
-    Handler handler;
+    private boolean finished = false;
 
-    String cmd;
+    private String[] cmds;
 
-    public String getCmd()
-    {
-        return cmd;
+    public Command(String cmd) {
+        this.cmds = new String[]{cmd};
     }
 
-    public void setCmd(String cmd)
-    {
-        this.cmd = cmd;
+    public Command(String[] cmds) {
+        this.cmds = cmds;
     }
 
-    public Command(String cmd)
-    {
-        this.cmd = cmd;
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isInterrupted() {
+        return interrupted;
+    }
+
+    public void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    /**
+     * 获取命令
+     */
+    public String[] getCmds() {
+        return cmds;
     }
 
     /**
      * 开始执行命令
      */
-    public void commandStart()
-    {
-    }
+    public abstract void commandStart();
 
     /**
      * 命令输出
      */
-    public void commandOutput(String line)
-    {
-    }
+    public abstract void commandOutput(String line);
 
     /**
      * 命令中断
      */
-    public void commandInterrupted(String error)
-    {
-    }
+    public abstract void commandInterrupted(String line);
 
     /**
      * 命令正常完成
      */
-    public void commandFinish()
-    {
-    }
+    public abstract void commandFinish();
 
     /**
      * 中断命令
      */
-    public void interrupted()
-    {
-        interrupted = true;
+    public void interrupted() {
+        if (running) interrupted = true;
     }
 
     /**
@@ -73,18 +86,18 @@ public class Command
      *
      * @return boolean
      */
-    public boolean isStop()
-    {
-        return interrupted || finish;
+    public boolean isStop() {
+        return interrupted || finished;
     }
 
     /**
-     * 命令是否正在执行
-     *
-     * @return boolean
+     * 重置命令
      */
-    public boolean isRunning()
-    {
-        return !isStop();
+    public void restore() throws KnowException {
+        if (running) throw new KnowException("该命令正在执行不能重置");
+        else {
+            interrupted = false;
+            finished = false;
+        }
     }
 }

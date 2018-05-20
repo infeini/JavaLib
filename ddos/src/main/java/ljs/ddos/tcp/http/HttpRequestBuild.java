@@ -81,24 +81,7 @@ public class HttpRequestBuild implements SocketRequestBuild {
             }
             dataBuffer.append("\r\n\r\n");
         }
-        String hexString = toHexString(dataBuffer.toString().getBytes());
         return dataBuffer.toString().getBytes();
-    }
-
-    public String toHexString(byte[] data) {
-        StringBuffer hexBuffer = new StringBuffer();
-        if (data != null)
-            for (Byte b : data)
-                hexBuffer.append(toHexString(b.intValue()));
-        return hexBuffer.toString();
-    }
-
-    public String toHexString(int value) {
-        String hexString = Integer.toHexString(value);
-        if (hexString.length() == 1)
-            hexString = 0 + hexString;
-        return hexString;
-
     }
 
     @Override
