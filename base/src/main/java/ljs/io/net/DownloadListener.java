@@ -3,34 +3,38 @@ package ljs.io.net;
 /**
  * 下载进度监听器
  */
-public interface DownloadListener {
+public abstract class DownloadListener {
+
+    public static final int TOTAL = 0;
+    public static final int DID = 1;
+    public static final int SPEED = 2;
+
     /**
      * 准备下载
      */
-    void downloadStart();
+    abstract void downloadStart();
 
     /**
      * 进度发生更新
      *
-     * @param did   已下载字节数
-     * @param total 总字节数
+     * @param progress long[]{已下载字节数progress[DownloadListener.TOTAL],总字节数progress[DownloadListener.DID]}
      */
-    void downloadUpdate(long did, long total);
+    abstract void downloadUpdate(long[] progress);
 
     /**
      * 下载成功
      */
-    void downloadSuccess();
+    abstract void downloadSuccess();
 
     /**
      * 下载失败
      *
      * @param e 异常
      */
-    void downloadFail(Exception e);
+    abstract void downloadFail(Exception e);
 
     /**
      * 下载结束
      */
-    void downloadEnd();
+    abstract void downloadEnd();
 }

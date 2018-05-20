@@ -7,6 +7,8 @@ import java.io.File;
 public class NetUtilTest {
     @Test
     public void downloadTest() {
+        String url = "http://bigota.d.miui.com/8.5.8/miui_MIMIX2_8.5.8_41fd7ba4bc_8.0.zip";
+        File saveAs = new File("update.zip");
         DownloadListener downloadListener = new DownloadListener() {
             @Override
             public void downloadStart() {
@@ -14,8 +16,8 @@ public class NetUtilTest {
             }
 
             @Override
-            public void downloadUpdate(long did, long total) {
-                System.out.println("已下载:" + did / 1024 + " KB,剩余:" + (total - did) / 1024 + " KB");
+            public void downloadUpdate(long[] progress) {
+                System.out.println("已下载:" + progress[DownloadListener.DID] / 1024 + " KB,剩余:" + (progress[DownloadListener.TOTAL] - progress[DownloadListener.DID]) / 1024 + " KB,下载速度:" + progress[DownloadListener.SPEED] / (1024f * 1024f) + " MB/秒");
             }
 
             @Override
@@ -33,7 +35,7 @@ public class NetUtilTest {
                 System.out.println("end");
             }
         };
-        HttpUtil.downloadHttp("https://github.com/LiuJiangshan/hex/raw/master/ls/0/arm64-v8a/ls", new File("update.zip"), downloadListener);
+        HttpUtil.downloadHttp(url, saveAs, 250, 5000, downloadListener);
         System.out.println("任务添加完成");
     }
 }

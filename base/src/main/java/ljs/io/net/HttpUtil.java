@@ -19,6 +19,7 @@ import static ljs.io.IOUtil.close;
  */
 public class HttpUtil {
 
+
     /**
      * 通过http协议下载文件,支持进度监听
      *
@@ -27,7 +28,7 @@ public class HttpUtil {
      * @param downloadListener 下载进度监听器
      */
     public static void downloadHttp(String url, File saveAs, DownloadListener downloadListener) {
-        downloadHttp(url, saveAs, 5000, downloadListener);
+        downloadHttp(url, saveAs, 250, 5000, downloadListener);
     }
 
     /**
@@ -37,8 +38,9 @@ public class HttpUtil {
      * @param saveAs           本地文件存储路径
      * @param timeOut          超时时间
      * @param downloadListener 下载进度监听器
+     * @param interval         速度统计间隔时间毫秒
      */
-    public static void downloadHttp(String url, File saveAs, int timeOut, DownloadListener
+    public static void downloadHttp(String url, File saveAs, int interval, int timeOut, DownloadListener
             downloadListener) {
         if (timeOut < 0) timeOut = 5000;
         int finalTimeOut = timeOut;
@@ -59,21 +61,23 @@ public class HttpUtil {
                     throw new KnowException("服务器返回响应码:" + responseCode);
             in = httpConnection.getInputStream();
             byte[] buffer = new byte[2048];
-            long[] progress = {httpConnection.getContentLength(), 0};
-            final int total = 0;
-            final int did = 1;
+            long[] progress = {0, 0, 0};
+            progress[DownloadListener.TOTAL] = httpConnection.getContentLength();
             int read;
             Thread progressThread = new Thread(() -> {
+                long lastDid = progress[DownloadListener.DID];
                 while (true) {
-                    if (downloadListener != null) downloadListener.downloadUpdate(progress[did], progress[total]);
-                    ThreadUtil.sleep(1000);
+                    progress[DownloadListener.SPEED] = (progress[DownloadListener.DID] - lastDid) / interval * 1000;
+                    if (downloadListener != null) downloadListener.downloadUpdate(progress);
+                    lastDid = progress[DownloadListener.DID];
+                    ThreadUtil.sleep(interval);
                 }
             });
             progressThread.join();
             progressThread.start();
             while ((read = in.read(buffer)) != -1) {
                 out.write(buffer, 0, read);
-                progress[did] += read;
+                progress[DownloadListener.DID] += read;
             }
             out.flush();
             if (downloadListener != null) downloadListener.downloadSuccess();
