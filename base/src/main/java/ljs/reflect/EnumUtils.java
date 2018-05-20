@@ -89,7 +89,7 @@ public class EnumUtils {
         haveValue(enumType, valueFieldName);
         for (Object obj : enumType.getEnumConstants()) {
             Object enumValue = FieldUtils.getValueByName(obj, valueFieldName);
-            if (value.equals(enumValue))
+            if (enumValue.equals(value))
                 return (T) obj;
         }
         throw new KnowException(value + "不能转换为枚举:" + enumType.getName());

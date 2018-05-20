@@ -13,15 +13,19 @@ import java.util.HashMap;
 
 public class AutoCode {
     public void run(String dbName) throws Exception {
-        run(dbName, "localhost", "root", "123456");
+        run(dbName, "localhost", "root", "123456", "zlx");
     }
 
-    public void run(String dbName, String host, String user, String password) throws Exception {
+    public void run(String dbName, String host, String user, String passWord, String domain) throws Exception {
+        run(dbName, host, user, passWord, domain + ".base.BasePojo", domain + ".pojo", domain + ".mapper", domain + ".service", domain + ".controller");
+    }
+
+    public void run(String dbName, String host, String user, String password, String supperPojoClassName, String pojoPackage, String mapperPackage, String servicePackage, String controllerPackage) throws Exception {
         DataBase dataBase = new DataBase(dbName, host, 3306, user, password);
         File outDir = new File("./code").getCanonicalFile();
         for (Table table : dataBase.tables) {
             Config config = new Config();
-            config.init(outDir, table, "zlx.base.BasePojo", "zlx.pojo", "zlx.mapper", "zlx.service", "zlx.controller");
+            config.init(outDir, table, supperPojoClassName, pojoPackage, mapperPackage, servicePackage, controllerPackage);
 
             HashMap<Object, Object> model = new HashMap<>();
             model.put("config", config);

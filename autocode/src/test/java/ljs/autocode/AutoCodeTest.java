@@ -6,13 +6,18 @@ public class AutoCodeTest {
     AutoCode autoCode = new AutoCode();
 
     @Test
-    public void autoCodePLM() throws Exception {
-        autoCode.run("plm", "192.168.1.91", "root", "123456");
+    public void autoCodePlmWeb() throws Exception {
+        autoCode.run("plm", "localhost", "root", "123456789", "zlx");
+    }
+
+    @Test
+    public void autoCodePLmAndroid() throws Exception {
+        autoCode.run("plm", "localhost", "root", "123456789", "com.infeini.plm");
     }
 
     @Test
     public void autoCodeBaoCheHui() throws Exception {
-        autoCode.run("baochehui", "192.168.1.91", "root", "123456");
+        autoCode.run("baochehui", "192.168.1.91", "root", "123456", "zlx");
     }
 
     @Test
