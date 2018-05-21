@@ -3,7 +3,6 @@ package ljs.shell;
 import ljs.exception.KnowException;
 import ljs.lib.ListUtils;
 import ljs.os.OsUtils;
-import ljs.task.ThreadUtil;
 import org.junit.Before;
 import org.junit.Test;
 
