@@ -177,6 +177,7 @@ public class Shell {
         IOUtil.close(reader);
         IOUtil.close(error);
         process.destroy();
+        runtime.freeMemory();
     }
 
     /**
