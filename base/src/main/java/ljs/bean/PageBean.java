@@ -1,4 +1,4 @@
-package ljs.web.bean;
+package ljs.bean;
 
 import java.util.ArrayList;
 
