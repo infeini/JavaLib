@@ -1,11 +1,12 @@
 package ljs.bean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 分页工具类
  */
-public class PageBean {
+public class PageBean<T> {
     /**
      * 数据总数
      */
@@ -44,7 +45,7 @@ public class PageBean {
     /**
      * 当前页数据集合,可为数组,集合
      */
-    private Object data;
+    private List<T> data;
     /**
      * 页码集合
      */
@@ -131,11 +132,11 @@ public class PageBean {
         this.haveNext = haveNext;
     }
 
-    public Object getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 
