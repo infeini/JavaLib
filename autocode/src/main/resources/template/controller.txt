@@ -16,15 +16,15 @@ import java.util.Map;
  * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
  **/
 @Controller
-@RequestMapping("/api/${config.pojoName?lower_case}")
+@RequestMapping("/api")
 @Pojo(${config.pojoName}.class)
 public class ${config.controllerName} extends BaseController {
     /**
      * ${table.info}添加
      */
-    @RequestMapping(value = "/add", method = RequestMethod.PUT)
+    @RequestMapping(value = "/${config.pojoName?lower_case}", method = RequestMethod.POST)
     @ResponseBody
-    public Map add(@RequestBody ${config.pojoName} ${table.name.field()}) {
+    public Map restAdd(@RequestBody ${config.pojoName} ${table.name.field()}) {
         try {
             return ${table.name.field()}Service.add(${table.name.field()});
         } catch (Exception e) {
@@ -35,9 +35,9 @@ public class ${config.controllerName} extends BaseController {
     /**
      * ${table.info}删除
      */
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/${config.pojoName?lower_case}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Map delete(@RequestBody Long[] ids) {
+    public Map restDelete(@RequestBody Long[] ids) {
         try {
             ${table.name.field()}Service.delete(ids, ${table.name.field()}Mapper);
             return success(DELETE_OK);
@@ -49,9 +49,9 @@ public class ${config.controllerName} extends BaseController {
     /**
      * ${table.info}修改
      */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/${config.pojoName?lower_case}", method = RequestMethod.PUT)
     @ResponseBody
-    public Map update(@RequestBody ${config.pojoName} ${table.name.field()}) {
+    public Map restUpdate(@RequestBody ${config.pojoName} ${table.name.field()}) {
         try {
             ${table.name.field()}Service.update(${table.name.field()});
             return success(UPDATE_OK);
@@ -63,9 +63,9 @@ public class ${config.controllerName} extends BaseController {
     /**
      * 浏览${table.info}
      */
-    @RequestMapping(value = "search", method = RequestMethod.PUT)
+    @RequestMapping(value = "/${config.pojoName?lower_case}", method = RequestMethod.GET)
     @ResponseBody
-    public Map search(@RequestBody ${config.pojoName} ${table.name.field()}) {
+    public Map restSearch(@RequestBody ${config.pojoName} ${table.name.field()}) {
         try {
             return ${table.name.field()}Service.search(${table.name.field()});
         } catch (Exception e) {
