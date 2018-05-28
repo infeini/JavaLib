@@ -1,13 +1,15 @@
 package ljs.shell;
 
 import ljs.exception.KnowException;
+import ljs.io.IOUtil;
 import ljs.lib.ListUtils;
-import ljs.os.OsUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,25 +17,63 @@ public class ShellTest {
     Shell shell;
 
     @Before
-    public void setUp() throws KnowException, IOException, InterruptedException {
-        String initCmd = null;
-        switch (OsUtils.osType) {
-            case MAC:
-                initCmd = "bash";
-                break;
-            case LINUX:
-                initCmd = "bash";
-                break;
-            case WINDOWS:
-                initCmd = "cmd";
-                break;
-            case UNKNOW:
-                throw new KnowException("未知操作系统");
-        }
-        shell = new Shell(initCmd);
+    public void setUp() throws KnowException {
+        shell = new Shell();
     }
 
-    void exeCmd(String[] cmds) throws KnowException, InterruptedException {
+    @Test
+    public void test() throws IOException {
+
+        Process process = Runtime.getRuntime().exec("bash");
+
+        OutputStream out = process.getOutputStream();
+
+        InputStream in = process.getInputStream();
+
+        out.write("ls\n".getBytes());
+        out.flush();
+
+        out.write("ls\n".getBytes());
+        out.flush();
+
+        System.out.println(IOUtil.toString(in, "GBK", false).toString());
+        System.out.println(IOUtil.toString(in, "GBK", false).toString());
+        System.out.println(IOUtil.toString(in, "GBK", false).toString());
+
+    }
+
+    @Test
+    public void lsTest() throws InterruptedException, IOException, KnowException {
+        Command command = new Command("ls\n") {
+            @Override
+            public void commandStart() {
+                System.out.println("start");
+            }
+
+            @Override
+            public void commandOutput(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void commandOutputError(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void commandFinish() {
+                System.out.println("finish");
+            }
+
+            @Override
+            public void commandError(Throwable throwable) {
+                System.out.println(throwable);
+            }
+        };
+        shell.execute(command);
+    }
+
+    void exeCmd(String[] cmds) throws KnowException, InterruptedException, IOException {
         shell.execute(new Command(cmds) {
             @Override
             public void commandStart() {
@@ -46,7 +86,7 @@ public class ShellTest {
             }
 
             @Override
-            public void commandInterrupted(String line) {
+            public void commandOutputError(String line) {
                 System.err.println("中断:" + line);
             }
 
@@ -57,10 +97,11 @@ public class ShellTest {
                     ShellTest.this.notifyAll();
                 }
             }
+
+            @Override
+            public void commandError(Throwable throwable) {
+            }
         });
-        synchronized (this) {
-            wait();
-        }
     }
 
     boolean havePom(File dir) {

@@ -142,7 +142,6 @@ public class IOUtil {
             try {
                 closeable.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
     }
 

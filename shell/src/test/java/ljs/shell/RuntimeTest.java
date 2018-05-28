@@ -6,9 +6,8 @@ import java.io.IOException;
 
 public class RuntimeTest {
     @Test
-    public void testProgress() throws IOException {Œ
+    public void testProgress() throws IOException {
         Runtime runtime = Runtime.getRuntime();
-        runtime.exec("bash");
-        runtime.exec("bash");
+        Process process = runtime.exec("bash");
     }
 }

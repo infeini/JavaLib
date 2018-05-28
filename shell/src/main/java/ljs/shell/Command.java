@@ -6,12 +6,16 @@ import ljs.exception.KnowException;
  * 执行的命令对象
  */
 public abstract class Command {
+    // 终端字符编码
+    public String Encoding = "GBK";
     //命令是否运行
     private boolean running = false;
     //命令是否中断
     private boolean interrupted = false;
     //命令是否完成
     private boolean finished = false;
+    //命令是否正在读取
+    private boolean reading = false;
 
     private String[] cmds;
 
@@ -29,6 +33,14 @@ public abstract class Command {
 
     public void setRunning(boolean running) {
         this.running = running;
+    }
+
+    public void setReading(boolean reading) {
+        this.reading = reading;
+    }
+
+    public boolean isReading() {
+        return reading;
     }
 
     public boolean isInterrupted() {
@@ -65,14 +77,19 @@ public abstract class Command {
     public abstract void commandOutput(String line);
 
     /**
-     * 命令中断
+     * 命令输出错误
      */
-    public abstract void commandInterrupted(String line);
+    public abstract void commandOutputError(String line);
 
     /**
      * 命令正常完成
      */
     public abstract void commandFinish();
+
+    /**
+     * 命令发生错误
+     */
+    public abstract void commandError(Throwable throwable);
 
     /**
      * 中断命令

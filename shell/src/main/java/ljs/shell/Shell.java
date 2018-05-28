@@ -2,8 +2,8 @@ package ljs.shell;
 
 import ljs.exception.KnowException;
 import ljs.io.IOUtil;
-import ljs.lib.Md5Util;
-import ljs.task.ThreadUtil;
+import ljs.lib.StringUtils;
+import ljs.os.OsUtils;
 
 import java.io.*;
 
@@ -11,172 +11,137 @@ import java.io.*;
  * android终端
  */
 public class Shell {
-    private final String FLAG = Md5Util.getRandMd5();
+    private static final String FLAG = StringUtils.getRandString(5);
     //命令开始标记
-    private final String START_MARK = "cmd_start:" + FLAG;
+    private static final String START_MARK = "cmd_start:" + FLAG;
     //命令结束标记
-    private final String END_MARK = "cmd_end:" + FLAG;
+    private static final String END_MARK = "cmd_end:" + FLAG;
     //是否已经关闭
     private boolean closed = false;
-    //是否正在运行
-    private boolean running = false;
-    //是否正在读取
-    private boolean reading = false;
 
-    private Runtime runtime = Runtime.getRuntime();
-    private Process process;
-    private BufferedWriter writer;
-    private BufferedReader reader;
-    private BufferedReader error;
-    private Command command;
-    private final String ShellEncoding = "GBK";// 终端默认字符编码
+    private Runtime runtime;
 
     class ReadThread extends Thread {
-        ReadThread() {
-            super("ljs_shell:read_thread");
+        private BufferedReader reader;
+        private Command command;
+
+        ReadThread(BufferedReader reader, Command command) {
+            super("shell-read");
+            this.reader = reader;
+            this.command = command;
         }
 
         @Override
         public void run() {
             try {
-                while (true) {
-                    if (command == null || command.isFinished())
-                        synchronized (Shell.this) {
-                            Shell.this.wait();
-                        }
-                    if (closed)
-                        break;
-                    String line = reader.readLine();
-                    if (line == null) {
-                        reading = false;
-                        running = false;
-                        command.setRunning(false);
-                        synchronized (Shell.this) {
-                            Shell.this.wait();
-                        }
-                        break;
-                    } else if (START_MARK.contains(line))
-                        reading = true;
+                command.setReading(true);
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (START_MARK.contains(line)) ;
                     else if (END_MARK.contains(line)) {
-                        running = false;
-                        reading = false;
-                        command.setRunning(false);
-                        command.setFinished(true);
                         command.commandFinish();
-                    } else
-                        command.commandOutput(line);
+                        break;
+                    } else command.commandOutput(line);
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
+                if (command.isRunning())
+                    command.commandError(e);
             } finally {
-                close();
+                command.setReading(false);
+                IOUtil.close(reader);
+                synchronized (command) {
+                    command.notifyAll();
+                }
             }
         }
     }
 
     class WriteThread extends Thread {
-        WriteThread() {
-            super("ljs_shell:write_thread");
+        private BufferedWriter writer;
+        private BufferedReader reader;
+        private BufferedReader error;
+        private Command command;
+
+        WriteThread(BufferedWriter writer, Command command) {
+            super("shell-write");
+            this.writer = writer;
+            this.command = command;
         }
 
         @Override
         public void run() {
             try {
-                while (true) {
-                    if (command == null)
-                        synchronized (Shell.this) {
-                            Shell.this.wait();
-                        }
-                    if (closed)
-                        break;
-                    else if (command == null || command.isRunning())
-                        synchronized (Shell.this) {
-                            try {
-                                Shell.this.wait();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    else {
-                        running = true;
-                        command.setRunning(true);
-                        writer.write("echo " + START_MARK + "\n");
-                        String[] cmds = command.getCmds();
-                        for (String cmd : cmds)
-                            writer.write(cmd + (cmd.endsWith("\n") ? "" : "\n"));
-                        writer.write("echo " + END_MARK + "\n");
-                        writer.flush();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                command.setRunning(true);
+                writer.write("echo " + START_MARK + "\n");
+                String[] cmds = command.getCmds();
+                for (String cmd : cmds)
+                    writer.write(cmd + (cmd.endsWith("\n") ? "" : "\n"));
+                writer.write("echo " + END_MARK + "\n");
+                writer.flush();
+            } catch (IOException e) {
+                command.setInterrupted(true);
+                command.commandError(e);
             } finally {
-                close();
+                command.setRunning(false);
+                synchronized (command) {
+                    command.notifyAll();
+                }
             }
         }
     }
 
     class ErrorReadThread extends Thread {
-        ErrorReadThread() {
-            super("ljs_shell:error_read_thread");
+        private BufferedReader reader;
+        private Command command;
+
+        ErrorReadThread(BufferedReader reader, Command command) {
+            super("shell-error");
+            this.reader = reader;
+            this.command = command;
         }
 
         @Override
         public void run() {
             try {
                 String line;
-                synchronized (Shell.this) {
-                    Shell.this.wait();
+                while ((line = reader.readLine()) != null) command.commandOutputError(line);
+            } catch (IOException e) {
+                if (command.isInterrupted())
+                    command.commandError(e);
+            } finally {
+                IOUtil.close(reader);
+                synchronized (command) {
+                    command.notifyAll();
                 }
-                while ((line = error.readLine()) != null) {
-                    if (command != null && !command.isInterrupted()) {
-                        command.setInterrupted(true);
-                        command.commandInterrupted(line);
-                    }
-                }
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
 
-    private ReadThread readThread;
-    private WriteThread writeThread;
-    private ErrorReadThread errorReadThread;
+    private String initCmd;
 
-    /**
-     * @param initCommand 初始参数
-     */
-    public Shell(String initCommand) throws IOException, InterruptedException {
-        process = runtime.exec(initCommand);
-        writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), ShellEncoding));
-        reader = new BufferedReader(new InputStreamReader(process.getInputStream(), ShellEncoding));
-        error = new BufferedReader(new InputStreamReader(process.getErrorStream(), ShellEncoding));
-
-        readThread = new ReadThread();
-        readThread.join();
-
-        writeThread = new WriteThread();
-        writeThread.join();
-
-        errorReadThread = new ErrorReadThread();
-        errorReadThread.join();
-
-        readThread.start();
-        errorReadThread.start();
-        writeThread.start();
+    public Shell() throws KnowException {
+        runtime = Runtime.getRuntime();
+        switch (OsUtils.osType) {
+            case MAC:
+                initCmd = "bash";
+                break;
+            case LINUX:
+                initCmd = "bash";
+                break;
+            case WINDOWS:
+                initCmd = "cmd";
+                break;
+            case UNKNOW:
+                throw new KnowException("未知操作系统");
+        }
     }
+
 
     /**
      * 关闭Shell
      */
     public void close() {
         closed = true;
-        running = false;
-        reading = false;
-        IOUtil.close(writer);
-        IOUtil.close(reader);
-        IOUtil.close(error);
-        process.destroy();
         runtime.freeMemory();
     }
 
@@ -185,17 +150,43 @@ public class Shell {
      *
      * @param command 需要执行的命令
      */
-    public void execute(Command command) throws KnowException {
+    public void execute(Command command) throws KnowException, IOException, InterruptedException {
         if (closed)
             throw new KnowException("该终端已被关闭");
-        if (reading)
-            throw new KnowException("该终端正在读取");
-        if (running)
-            throw new KnowException("该终端正在执行");
-        this.command = command;
+        else if (command.isRunning())
+            throw new KnowException("该命令正在运行");
+        else if (command.isReading())
+            throw new KnowException("该命令正在读取执行结果");
+        else if (command.isFinished())
+            throw new KnowException("该命令已执行成功");
+        else if (command.isInterrupted())
+            throw new KnowException("该命令已经中断");
+
+        Process process = runtime.exec(initCmd);
+
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream(), command.Encoding));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), command.Encoding));
+        BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream(), command.Encoding));
+
+        ReadThread readThread = new ReadThread(reader, command);
+        readThread.join();
+
+        ErrorReadThread errorReadThread = new ErrorReadThread(error, command);
+        errorReadThread.join();
+
+        WriteThread writeThread = new WriteThread(writer, command);
+
+        readThread.start();
+        errorReadThread.start();
+        writeThread.run();
+
         command.commandStart();
-        synchronized (this) {
-            notifyAll();
+
+        while (command.isRunning() || command.isReading()) {
+            System.out.println(command);
+            synchronized (command) {
+                command.wait();
+            }
         }
     }
 }
