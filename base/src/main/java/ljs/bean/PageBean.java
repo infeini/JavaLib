@@ -6,7 +6,6 @@ import ljs.exception.KnowException;
  * 分页工具类
  */
 public class PageBean {
-    private int total;
     private int pageSize;
     private int page;
     private int offset;
@@ -31,11 +30,6 @@ public class PageBean {
         if (pageSize <= 0) throw new KnowException("pageSize不能小于等于0");
         else if (total < 0) throw new KnowException("total不能小于0");
         this.pageSize = pageSize;
-        this.total = total;
-    }
-
-    public int getTotal() {
-        return total;
     }
 
     public int getPageSize() {
