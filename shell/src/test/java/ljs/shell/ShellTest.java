@@ -18,7 +18,7 @@ public class ShellTest {
 
     @Before
     public void setUp() throws KnowException {
-        shell = new Shell();
+        shell = Shell.newShell();
     }
 
     @Test
@@ -116,10 +116,12 @@ public class ShellTest {
         return havePom;
     }
 
+    int count;
+
     @Test
     public void mvnCleanInstall() throws Exception {
-        List<String> cmds = new ArrayList<>();
         for (File file : getProjectHome()) {
+            List<String> cmds = new ArrayList<>();
             //cd path
             cmds.add("cd " + file.getAbsolutePath());
             cmds.add("echo 进入目录:" + file.getName());
@@ -130,8 +132,25 @@ public class ShellTest {
             //install
             cmds.add("mvn source:jar install");
             cmds.add("echo 安装完成:" + file.getName());
+            new Thread(() -> {
+                try {
+                    count++;
+                    exeCmd(ListUtils.toArray(cmds, String.class));
+                    count--;
+                    synchronized ((ShellTest.this)) {
+                        ShellTest.this.notifyAll();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e);
+                }
+            }).start();
         }
-        exeCmd(ListUtils.toArray(cmds, String.class));
+        while (count != 0) {
+            synchronized (this) {
+                wait();
+            }
+        }
     }
 
     List<File> getProjectHome() {

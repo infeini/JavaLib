@@ -48,7 +48,6 @@ public class Shell {
                     command.commandError(e);
             } finally {
                 command.setReading(false);
-                IOUtil.close(reader);
                 synchronized (command) {
                     command.notifyAll();
                 }
@@ -109,7 +108,6 @@ public class Shell {
                 if (command.isInterrupted())
                     command.commandError(e);
             } finally {
-                IOUtil.close(reader);
                 synchronized (command) {
                     command.notifyAll();
                 }
@@ -119,8 +117,8 @@ public class Shell {
 
     private String initCmd;
 
-    public Shell() throws KnowException {
-        runtime = Runtime.getRuntime();
+    public static Shell newShell() throws KnowException {
+        String initCmd = null;
         switch (OsUtils.osType) {
             case MAC:
                 initCmd = "bash";
@@ -134,6 +132,12 @@ public class Shell {
             case UNKNOW:
                 throw new KnowException("未知操作系统");
         }
+        return new Shell(initCmd);
+    }
+
+    public Shell(String initCmd) {
+        this.runtime = Runtime.getRuntime();
+        this.initCmd = initCmd;
     }
 
 
@@ -188,5 +192,8 @@ public class Shell {
                 command.wait();
             }
         }
+        IOUtil.close(writer);
+        IOUtil.close(reader);
+        IOUtil.close(error);
     }
 }

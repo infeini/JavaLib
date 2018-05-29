@@ -78,10 +78,6 @@
             <arg line="-c"/>
             <arg line="source:jar install"/>
         </exec>
-        <exec dir="web" executable="mvn">
-            <arg line="-c"/>
-            <arg line="source:jar install"/>
-        </exec>
         <exec dir="weixin" executable="mvn">
             <arg line="-c"/>
             <arg line="source:jar install"/>

@@ -20,9 +20,6 @@
         <exec dir="spring" executable="cmd">
             <arg line="/c mvn clean"/>
         </exec>
-        <exec dir="web" executable="cmd">
-            <arg line="/c mvn clean"/>
-        </exec>
         <exec dir="weixin" executable="cmd">
             <arg line="/c mvn clean"/>
         </exec>
