@@ -96,4 +96,11 @@
         DELETE FROM ${table.name.sql()}
         <include refid="queryByExample"/>
     </delete>
+
+    <select id="findByIds" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()} WHERE `id` in
+        <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
+           ${'#{'}id}
+        </foreach>
+    </select>
 </mapper>
