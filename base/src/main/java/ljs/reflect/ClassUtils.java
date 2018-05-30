@@ -1,5 +1,7 @@
 package ljs.reflect;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.regex.Pattern;
 
 public class ClassUtils {
@@ -26,5 +28,14 @@ public class ClassUtils {
             result = new String(names);
         }
         return result;
+    }
+
+    /**
+     * 获取指定对象的带有泛型的父类泛型参数c
+     *
+     * @param target 目标对象
+     */
+    public static Type[] getGenericClass(Object target) {
+        return ((ParameterizedType) target.getClass().getGenericSuperclass()).getActualTypeArguments();
     }
 }
