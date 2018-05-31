@@ -9,12 +9,14 @@ public class PageBean {
     private int pageSize;
     private int page;
     private int offset;
+    private int total;
 
     public static PageBean byPage(int page, int pageSize, int total) throws KnowException {
         if (page <= 0) throw new KnowException("page不能小于等于0");
         PageBean pageBean = new PageBean(pageSize, total);
         pageBean.page = page;
         pageBean.offset = PageUtils.getOffset(page, pageSize);
+        pageBean.total = total;
         return pageBean;
     }
 
@@ -23,6 +25,7 @@ public class PageBean {
         PageBean pageBean = new PageBean(pageSize, total);
         pageBean.offset = offset;
         pageBean.page = PageUtils.getPage(offset, pageSize);
+        pageBean.total = total;
         return pageBean;
     }
 
@@ -42,5 +45,9 @@ public class PageBean {
 
     public int getOffset() {
         return offset;
+    }
+
+    public int getTotal() {
+        return total;
     }
 }
