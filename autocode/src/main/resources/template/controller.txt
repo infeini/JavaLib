@@ -17,7 +17,6 @@ import java.util.Map;
  **/
 @Controller
 @RequestMapping("/api/${config.pojoName?lower_case}")
-@Pojo(${config.pojoName}.class)
 public class ${config.controllerName} extends BaseController {
     /**
      * ${table.info}添加
@@ -55,19 +54,6 @@ public class ${config.controllerName} extends BaseController {
         try {
             ${table.name.field()}Service.update(${table.name.field()});
             return success(UPDATE_OK);
-        } catch (Exception e) {
-            return error(e);
-        }
-    }
-
-    /**
-     * 浏览${table.info}
-     */
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ResponseBody
-    public Map restSearch(@RequestBody ${config.pojoName} ${table.name.field()}) {
-        try {
-            return ${table.name.field()}Service.search(${table.name.field()});
         } catch (Exception e) {
             return error(e);
         }

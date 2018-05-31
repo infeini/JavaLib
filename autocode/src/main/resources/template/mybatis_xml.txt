@@ -98,16 +98,20 @@
     </delete>
 
     <delete id="deleteByIds">
-        DELETE FROM ${table.name.sql()} WHERE `id` in
-        <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
-           ${'#{'}id}
-        </foreach>
+        <if test="ids!=null">
+            DELETE FROM ${table.name.sql()} WHERE `id` in
+            <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
+                ${'#{'}id}
+            </foreach>
+        </if>
     </delete>
 
     <select id="findByIds" resultMap="${table.name.field()}Result">
-        SELECT * FROM ${table.name.sql()} WHERE `id` in
-        <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
-           ${'#{'}id}
-        </foreach>
+        <if test="ids!=null">
+            SELECT * FROM ${table.name.sql()} WHERE `id` in
+            <foreach collection="ids" open="(" close=")" separator="," index="index" item="id">
+                ${'#{'}id}
+            </foreach>
+        </if>
     </select>
 </mapper>

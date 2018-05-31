@@ -35,7 +35,16 @@ public class ClassUtils {
      *
      * @param target 目标对象
      */
-    public static Type[] getGenericClass(Object target) {
-        return ((ParameterizedType) target.getClass().getGenericSuperclass()).getActualTypeArguments();
+    public static Type[] getGenericClassByObj(Object target) {
+        return getGenericClassByType(target.getClass());
+    }
+
+    /**
+     * 获取指定对象的带有泛型的父类泛型参数c
+     *
+     * @param target 目标类型
+     */
+    public static Type[] getGenericClassByType(Class target) {
+        return ((ParameterizedType) target.getGenericSuperclass()).getActualTypeArguments();
     }
 }

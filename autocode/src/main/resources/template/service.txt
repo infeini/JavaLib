@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import zlx.aop.Pojo;
 import ${config.pojoPackage}.${config.pojoName};
+import ljs.exception.KnowException;
 
 import java.util.Map;
 
@@ -16,8 +17,7 @@ import java.util.Map;
  * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
  **/
 @Service
-@Pojo(${config.pojoName}.class)
-public class ${config.serviceName} extends BaseService {
+public class ${config.serviceName} extends BaseService<${config.pojoName}> {
     //添加${table.info}
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public Map<String, Object> add(${config.pojoName} ${table.name.field()}) throws KnowException {
@@ -35,11 +35,5 @@ public class ${config.serviceName} extends BaseService {
     public void update(${config.pojoName} ${table.name.field()}) throws KnowException {
         if (${table.name.field()}.${keyField.name.getMethod()}() == null) throw new KnowException("${table.keyField.info}不能为空");
         ${table.name.field()}Mapper.update(${table.name.field()});
-    }
-
-    //查询${table.info}
-    @Transactional(readOnly = true)
-    public Map<String, Object> search(${config.pojoName} ${table.name.field()}) throws KnowException {
-        return search(${table.name.field()}, ${table.name.field()}Mapper);
     }
 }

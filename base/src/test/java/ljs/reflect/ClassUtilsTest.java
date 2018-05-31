@@ -23,7 +23,7 @@ public class ClassUtilsTest {
 
     @Test
     public void getGenericClassTest() {
-        Type[] types = (Class[]) ClassUtils.getGenericClass(new Class1());
+        Type[] types = ClassUtils.getGenericClassByObj(new Class1());
         System.out.println(types);
     }
 }

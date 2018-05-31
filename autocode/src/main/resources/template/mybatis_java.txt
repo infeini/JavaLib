@@ -15,7 +15,6 @@ import java.util.List;
  *
  * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
  */
-@Pojo(${config.pojoName}.class)
 public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
     /**
      * 通过ID查找对象
