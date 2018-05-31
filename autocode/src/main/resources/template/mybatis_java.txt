@@ -66,6 +66,11 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
     void deleteByExample(@Param("pojo") ${config.pojoName} pojo);
 
     /**
+     * 批量删除数据
+     */
+    void deleteByIds(@Param("ids") Long[] ids);
+
+    /**
      * 批量查询数据
      */
     List<${config.pojoName}> findByIds(@Param("ids") Long[] ids);

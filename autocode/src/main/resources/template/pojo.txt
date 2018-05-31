@@ -17,6 +17,7 @@ import java.util.Date;
  */
 @Table(name = ${"\""+tableName+"\""}, info = ${"\""+tableInfo+"\""})
 @MapperType(${config.mapperPackage}.${config.mapperName}.class)
+@ServiceType(${config.servicePackage}.${config.serviceName}.class)
 public class ${config.pojoName} extends ${config.supperPojoClassName} {
 <#--主键字段声明-->
     /**
