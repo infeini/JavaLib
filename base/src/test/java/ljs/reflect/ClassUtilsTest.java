@@ -21,9 +21,24 @@ public class ClassUtilsTest {
     class Class1 extends ArrayList<StringUtils> {
     }
 
+    class Class2 extends ArrayList {
+    }
+
     @Test
-    public void getGenericClassTest() {
+    public void getGenericClassByObjTest() {
         Type[] types = ClassUtils.getGenericClassByObj(new Class1());
+        System.out.println(types);
+
+        types = ClassUtils.getGenericClassByObj(new Class2());
+        System.out.println(types);
+    }
+
+    @Test
+    public void getGenericClassByTypeTest() {
+        Type[] types = ClassUtils.getGenericClassByType(new Class1().getClass());
+        System.out.println(types);
+
+        types = ClassUtils.getGenericClassByType(new Class2().getClass());
         System.out.println(types);
     }
 }

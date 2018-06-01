@@ -45,6 +45,10 @@ public class ClassUtils {
      * @param target 目标类型
      */
     public static Type[] getGenericClassByType(Class target) {
-        return ((ParameterizedType) target.getGenericSuperclass()).getActualTypeArguments();
+        Type genericSuperclass = target.getGenericSuperclass();
+        if (genericSuperclass instanceof ParameterizedType)
+            return ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        else
+            return new Type[0];
     }
 }
