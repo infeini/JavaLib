@@ -1,5 +1,7 @@
 package ljs.reflect;
 
+import ljs.exception.KnowException;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.regex.Pattern;
@@ -50,5 +52,13 @@ public class ClassUtils {
             return ((ParameterizedType) genericSuperclass).getActualTypeArguments();
         else
             return new Type[0];
+    }
+
+    public static <T> T newInstance(Class<T> type) throws KnowException {
+        try {
+            return type.newInstance();
+        } catch (Exception e) {
+            throw new KnowException("创建对象失败:" + type);
+        }
     }
 }
