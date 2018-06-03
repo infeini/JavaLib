@@ -16,7 +16,7 @@ public class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializer<T> {
 
     private JsonToValue jsonToValue;
 
-    interface JsonToValue {
+    public interface JsonToValue {
         Object get(JsonElement json);
     }
 
