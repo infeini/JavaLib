@@ -105,16 +105,11 @@ public class FieldUtils {
         Field field = null;
         if (type != null && !StringUtils.isEmpty(fieldName)) {
             try {
-                field = type.getField(fieldName);
+                field = type.getDeclaredField(fieldName);
             } catch (NoSuchFieldException e) {
-                try {
-                    field = type.getDeclaredField(fieldName);
-                    field.setAccessible(true);
-                } catch (NoSuchFieldException e1) {
-                    Class superClass = type.getSuperclass();
-                    if (superClass != null)
-                        field = getField(superClass, fieldName);
-                }
+                Class superClass = type.getSuperclass();
+                if (superClass != null)
+                    field = getField(superClass, fieldName);
             }
         }
         return field;
@@ -130,7 +125,7 @@ public class FieldUtils {
         List<Field> fields = new ArrayList<>();
         if (type != null) {
             //公共字段
-            for (Field field : type.getFields())
+            for (Field field : type.getDeclaredFields())
                 fields.add(field);
             //私有字段
             for (Field field : type.getDeclaredFields()) {

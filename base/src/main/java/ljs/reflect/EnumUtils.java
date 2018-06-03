@@ -60,7 +60,7 @@ public class EnumUtils {
         if (StringUtils.isEmpty(valueFieldName))
             throw new KnowException("枚举值存储字段名称不能为空!");
         try {
-            enumType.getField(valueFieldName);
+            enumType.getDeclaredField(valueFieldName);
             re = true;
         } catch (NoSuchFieldException e) {
             throw new KnowException("获取字段:" + valueFieldName + "失败:" + enumType.getName() + ",不存在value字段或字段修饰符不是public");

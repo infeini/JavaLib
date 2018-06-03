@@ -135,15 +135,18 @@ public class IOUtil {
     /**
      * 关闭资源
      *
-     * @param closeable 待关闭的资源
+     * @param closeables 待关闭的资源
      */
-    public static void close(Closeable closeable) {
-        if (closeable != null)
+    public static void close(Closeable... closeables) {
+        if (closeables != null)
             try {
-                closeable.close();
+                for (Closeable closeable : closeables)
+                    if (closeable != null)
+                        closeable.close();
             } catch (IOException e) {
             }
     }
+
 
     /**
      * 将输入流写入输出流
