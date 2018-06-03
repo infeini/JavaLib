@@ -106,6 +106,7 @@ public class FieldUtils {
         if (type != null && !StringUtils.isEmpty(fieldName)) {
             try {
                 field = type.getDeclaredField(fieldName);
+                field.setAccessible(true);
             } catch (NoSuchFieldException e) {
                 Class superClass = type.getSuperclass();
                 if (superClass != null)
@@ -124,10 +125,7 @@ public class FieldUtils {
     public static List<Field> getFields(Class type) {
         List<Field> fields = new ArrayList<>();
         if (type != null) {
-            //公共字段
-            for (Field field : type.getDeclaredFields())
-                fields.add(field);
-            //私有字段
+            //公共字段、私有字段
             for (Field field : type.getDeclaredFields()) {
                 field.setAccessible(true);
                 fields.add(field);
