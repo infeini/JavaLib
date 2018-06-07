@@ -53,6 +53,11 @@
         WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}}
     </select>
 
+    <select id="findByIdInAop" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()}
+        WHERE ${table.keyField.name.sql()}=#${'{'}${table.keyField.name.field()}}
+    </select>
+
     <select id="getExampleCount" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM ${table.name.sql()}
         <include refid="queryByExample"/>

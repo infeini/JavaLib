@@ -22,6 +22,11 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
     ${config.pojoName} findById(@Param("${table.keyField.name.field()}") Long ${table.keyField.name.field()});
 
     /**
+     * 通过ID查找对象
+     */
+    ${config.pojoName} findByIdInAop(@Param("${table.keyField.name.field()}") Long ${table.keyField.name.field()});
+
+    /**
      * 获取与其相似的数据数量
      */
     int getExampleCount(@Param("pojo") ${config.pojoName} pojo);
