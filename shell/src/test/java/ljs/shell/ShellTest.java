@@ -42,68 +42,6 @@ public class ShellTest {
 
     }
 
-    @Test
-    public void lsTest() throws InterruptedException, IOException, KnowException {
-        Command command = new Command("ls\n") {
-            @Override
-            public void commandStart() {
-                System.out.println("start");
-            }
-
-            @Override
-            public void commandOutput(String line) {
-                System.out.println(line);
-            }
-
-            @Override
-            public void commandOutputError(String line) {
-                System.out.println(line);
-            }
-
-            @Override
-            public void commandFinish() {
-                System.out.println("finish");
-            }
-
-            @Override
-            public void commandError(Throwable throwable) {
-                System.out.println(throwable);
-            }
-        };
-        shell.execute(command);
-    }
-
-    void exeCmd(String[] cmds) throws KnowException, InterruptedException, IOException {
-        shell.execute(new Command(cmds) {
-            @Override
-            public void commandStart() {
-                System.out.println("start");
-            }
-
-            @Override
-            public void commandOutput(String line) {
-                System.out.println(line);
-            }
-
-            @Override
-            public void commandOutputError(String line) {
-                System.err.println("中断:" + line);
-            }
-
-            @Override
-            public void commandFinish() {
-                System.out.println("finish");
-                synchronized (ShellTest.this) {
-                    ShellTest.this.notifyAll();
-                }
-            }
-
-            @Override
-            public void commandError(Throwable throwable) {
-            }
-        });
-    }
-
     boolean havePom(File dir) {
         boolean havePom = false;
         if (dir.isDirectory())
@@ -135,7 +73,6 @@ public class ShellTest {
             new Thread(() -> {
                 try {
                     count++;
-                    exeCmd(ListUtils.toArray(cmds, String.class));
                     count--;
                     synchronized ((ShellTest.this)) {
                         ShellTest.this.notifyAll();

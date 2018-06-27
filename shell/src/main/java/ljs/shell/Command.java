@@ -1,30 +1,47 @@
 package ljs.shell;
 
 import ljs.exception.KnowException;
+import ljs.lib.StringUtils;
 
 /**
  * 执行的命令对象
  */
 public abstract class Command {
-    // 终端字符编码
-    public String Encoding = "GBK";
-    //命令是否运行
-    private boolean running = false;
-    //命令是否中断
-    private boolean interrupted = false;
-    //命令是否完成
-    private boolean finished = false;
-    //命令是否正在读取
-    private boolean reading = false;
 
-    private String[] cmds;
+    private final String mark = StringUtils.getRandString(5);
 
-    public Command(String cmd) {
-        this.cmds = new String[]{cmd};
+    public static String getStartMark(String mark) {
+        return "cmd_start:" + mark;
     }
 
-    public Command(String[] cmds) {
-        this.cmds = cmds;
+    public static String getEndMark(String mark) {
+        return "cmd_end:" + mark;
+    }
+
+    //命令开始标记
+    public final String startMark = getStartMark(mark);
+
+    //命令结束标记
+    public final String endMark = getEndMark(mark);
+
+    private final static String defaultEncoding = "GBK";
+
+    // 终端字符编码
+    public String encoding;
+
+    //命令是否运行
+    private boolean running = false;
+
+    private String cmd;
+
+    public Command(String cmd) throws KnowException {
+        this(cmd, defaultEncoding);
+    }
+
+    public Command(String cmd, String encoding) throws KnowException {
+        if (StringUtils.isEmpty(cmd))
+            throw new KnowException("命令不能为空");
+        this.cmd = cmd.endsWith("\n") ? cmd : (cmd + "\n");
     }
 
     public boolean isRunning() {
@@ -35,86 +52,33 @@ public abstract class Command {
         this.running = running;
     }
 
-    public void setReading(boolean reading) {
-        this.reading = reading;
-    }
-
-    public boolean isReading() {
-        return reading;
-    }
-
-    public boolean isInterrupted() {
-        return interrupted;
-    }
-
-    public void setInterrupted(boolean interrupted) {
-        this.interrupted = interrupted;
-    }
-
-    public boolean isFinished() {
-        return finished;
-    }
-
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
-    /**
-     * 获取命令
-     */
-    public String[] getCmds() {
-        return cmds;
+    public String getCmd() {
+        return cmd;
     }
 
     /**
      * 开始执行命令
      */
-    public abstract void commandStart();
+    public abstract void start();
 
     /**
      * 命令输出
      */
-    public abstract void commandOutput(String line);
-
-    /**
-     * 命令输出错误
-     */
-    public abstract void commandOutputError(String line);
-
-    /**
-     * 命令正常完成
-     */
-    public abstract void commandFinish();
+    public abstract void out(String line);
 
     /**
      * 命令发生错误
      */
-    public abstract void commandError(Throwable throwable);
+    public abstract void error(Throwable throwable);
 
     /**
-     * 中断命令
+     * 命令输出错误
      */
-    public void interrupted() {
-        if (running) interrupted = true;
-    }
+    public abstract void error(String ling);
 
     /**
-     * 命令是否结束
-     *
-     * @return boolean
+     * 命令正常完成
      */
-    public boolean isStop() {
-        return interrupted || finished;
-    }
+    public abstract void end();
 
-    /**
-     * 重置命令
-     */
-    public void restore() throws KnowException {
-        if (running) throw new KnowException("该命令正在执行不能重置");
-        else {
-            interrupted = false;
-            finished = false;
-        }
-    }
 }
