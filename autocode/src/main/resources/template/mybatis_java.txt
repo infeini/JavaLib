@@ -5,8 +5,9 @@ package ${config.mapperPackage};
 
 import zlx.base.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import zlx.aop.Pojo;
 import ${config.pojoPackage}.${config.pojoName};
+import zlx.pojo.SqlRelation;
+import zlx.pojo.SqlSearch;
 
 import java.util.List;
 
@@ -78,5 +79,10 @@ public interface ${config.mapperName} extends BaseMapper<${config.pojoName}> {
      * 批量查询数据
      */
     List<${config.pojoName}> findByIds(@Param("ids") Long[] ids);
+
+    /**
+     * 条件查询
+     */
+    List<${config.pojoName}> findBySql(@Param("sqlSearchList") List<SqlSearch> sqlSearchList,@Param("sqlRelationList") List<SqlRelation> sqlRelationList, @Param("start") int start, @Param("length") int length);
 }
 
