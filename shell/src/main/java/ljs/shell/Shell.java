@@ -3,10 +3,12 @@ package ljs.shell;
 import ljs.exception.KnowException;
 import ljs.io.IOUtil;
 import ljs.os.OsUtils;
+import ljs.task.ThreadUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,29 +17,37 @@ import java.util.List;
  */
 public class Shell {
 
-    //是否已经关闭
-    private boolean closed = false;
+    Runtime runtime;
 
-    private Runtime runtime;
-
-    private String initCmd;
+    String initCmd;
 
     //当前shell命令队列
-    private List<Command> commandPool = new ArrayList<>();
+    Command nowCommand;
 
-    private Process process;
+    Process process;
 
-    private OutputStream writerStream;
+    OutputStream writerStream;
 
-    private InputStream readerStream;
+    InputStream readerStream;
 
-    private InputStream errorStream;
+    InputStream errorStream;
 
-    public Shell(String initCmd) throws KnowException {
+    String encoding = Charset.defaultCharset().name();
+
+    ReadThread readThread;
+
+    ErrorReadThread errorReadThread;
+
+    WriteThread writeThread;
+
+    public Shell(String initCmd, String encoding) throws KnowException {
 
         this.runtime = Runtime.getRuntime();
 
         this.initCmd = initCmd;
+
+        if (encoding != null)
+            this.encoding = encoding;
 
         try {
             process = runtime.exec(initCmd);
@@ -48,33 +58,36 @@ public class Shell {
 
             errorStream = process.getErrorStream();
 
-            new ReadThread(this).start();
+            readThread = new ReadThread(this);
+            readThread.start();
 
-            new ErrorReadThread(this).start();
+            errorReadThread = new ErrorReadThread(this);
+            errorReadThread.start();
 
-            new WriteThread(this).start();
+            writeThread = new WriteThread(this);
+            writeThread.start();
         } catch (IOException e) {
             throw new KnowException("创建进程失败");
         }
     }
 
-    public List<Command> getCommandPool() {
-        return commandPool;
+    public static Shell newAndroidShell() throws KnowException {
+        return newAndroidShell(false);
     }
 
-    OutputStream getWriterStream() {
-        return writerStream;
+    public static Shell newAndroidShell(boolean isRoot) throws KnowException {
+        return newAndroidShell(isRoot, null);
     }
 
-    InputStream getErrorStream() {
-        return errorStream;
-    }
-
-    InputStream getReaderStream() {
-        return readerStream;
+    public static Shell newAndroidShell(boolean isRoot, String encoding) throws KnowException {
+        return new Shell(isRoot ? "su" : "bash", encoding);
     }
 
     public static Shell newShell() throws KnowException {
+        return newShell(null);
+    }
+
+    public static Shell newShell(String encoding) throws KnowException {
         String initCmd = null;
         switch (OsUtils.osType) {
             case MAC:
@@ -89,7 +102,7 @@ public class Shell {
             case UNKNOW:
                 throw new KnowException("未知操作系统");
         }
-        return new Shell(initCmd);
+        return new Shell(initCmd, encoding);
     }
 
     /**
@@ -119,12 +132,18 @@ public class Shell {
      *
      * @param command 需要执行的命令
      */
-    public void execute(Command command) throws KnowException {
+    public synchronized void execute(Command command) throws InterruptedException {
 
-        if (closed)
-            throw new KnowException("该终端已被关闭");
-        else if (command.isRunning())
-            throw new KnowException("该命令正在运行");
+        //等待以前的命令执行完成
+        while (nowCommand != null) ThreadUtil.wait(this);
 
+        nowCommand = command;
+
+        ThreadUtil.notify(readThread);
+        ThreadUtil.notify(errorReadThread);
+        ThreadUtil.notify(writeThread);
+
+        //等待当前的命令执行完成
+        while (nowCommand != null) ThreadUtil.wait(this);
     }
 }

@@ -13,4 +13,26 @@ public class ThreadUtil {
             e.printStackTrace();
         }
     }
+
+    public static void wait(Object lock) {
+        synchronized (lock) {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void notify(Object lock) {
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+
+    public static void notifyAll(Object lock) {
+        synchronized (lock) {
+            lock.notifyAll();
+        }
+    }
 }

@@ -7,19 +7,4 @@ public class StreamThread extends Thread {
     public StreamThread(Shell shell) {
         this.shell = shell;
     }
-
-    void wait(Object lock) {
-        synchronized (lock) {
-            try {
-                lock.wait();
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
-    void notifyAll(Object lock) {
-        synchronized (lock) {
-            lock.notifyAll();
-        }
-    }
 }

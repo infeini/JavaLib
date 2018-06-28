@@ -1,43 +1,60 @@
 package ljs.shell;
 
+import ljs.task.ThreadUtil;
+
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 public class WriteThread extends StreamThread {
 
     public WriteThread(Shell shell) {
         super(shell);
+        setName("shell write");
     }
 
     @Override
     public void run() {
+        OutputStream writerStream;
+        while ((writerStream = shell.writerStream) == null)
+            ThreadUtil.wait(shell);
 
         while (true) {
 
-            wait(shell);
-
-            List<Command> commandPool = shell.getCommandPool();
-
-            OutputStream writeStream = shell.getWriterStream();
-
-            if (commandPool.isEmpty()) wait(shell);
-            else if (writeStream == null) break;
+            Command nowCommand = shell.nowCommand;
+            if (nowCommand == null)
+                ThreadUtil.wait(this);
             else {
-                Command command = commandPool.get(0);
 
+                //start mark
                 try {
-
-                    writeStream.write(command.startMark.getBytes(command.encoding));
-
-                    writeStream.write(command.getCmd().getBytes(command.encoding));
-
-                    writeStream.write(command.endMark.getBytes(command.encoding));
-
+                    writerStream.write(format("echo " + nowCommand.startMark));
+                    writerStream.flush();
                 } catch (IOException e) {
-                    command.error(e);
+                    e.printStackTrace();
                 }
+
+                //run
+                try {
+                    writerStream.write(format(nowCommand.cmd));
+                    writerStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //end mark
+                try {
+                    writerStream.write(format("echo " + nowCommand.endMark));
+                    writerStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                ThreadUtil.wait(this);
             }
         }
+    }
+
+    byte[] format(String cmd) {
+        return (cmd + System.lineSeparator()).getBytes();
     }
 }

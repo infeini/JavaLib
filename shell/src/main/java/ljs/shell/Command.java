@@ -24,32 +24,13 @@ public abstract class Command {
     //命令结束标记
     public final String endMark = getEndMark(mark);
 
-    private final static String defaultEncoding = "GBK";
-
     // 终端字符编码
     public String encoding;
 
-    //命令是否运行
-    private boolean running = false;
+    String cmd;
 
-    private String cmd;
-
-    public Command(String cmd) throws KnowException {
-        this(cmd, defaultEncoding);
-    }
-
-    public Command(String cmd, String encoding) throws KnowException {
-        if (StringUtils.isEmpty(cmd))
-            throw new KnowException("命令不能为空");
-        this.cmd = cmd.endsWith("\n") ? cmd : (cmd + "\n");
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-    public void setRunning(boolean running) {
-        this.running = running;
+    public Command(String cmd) {
+        this.cmd = cmd;
     }
 
     public String getCmd() {
@@ -67,14 +48,9 @@ public abstract class Command {
     public abstract void out(String line);
 
     /**
-     * 命令发生错误
-     */
-    public abstract void error(Throwable throwable);
-
-    /**
      * 命令输出错误
      */
-    public abstract void error(String ling);
+    public abstract void error(String errorLine);
 
     /**
      * 命令正常完成
