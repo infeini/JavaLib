@@ -119,4 +119,63 @@
             </foreach>
         </if>
     </select>
+
+    <select id="findBySql" resultMap="${table.name.field()}Result">
+        SELECT * FROM ${table.name.sql()}
+        <where>
+            <!--遍历普通条件-->
+            <foreach collection="sqlSearchList" index="index" item="sqlList">
+                <choose>
+                    <when test='sqlSearchList[index].type=="&amp;"'>AND</when>
+                    <when test='sqlSearchList[index].type=="|"'>OR</when>
+                </choose>
+                ${'${'}sqlList.field}
+                <choose>
+                    <when test='sqlSearchList[index].condition=="="'>=</when>
+                    <when test='sqlSearchList[index].condition=="&lt;"'>&lt;</when>
+                    <when test='sqlSearchList[index].condition=="&gt;"'>&gt;</when>
+                    <when test='sqlSearchList[index].condition=="&lt;="'>&lt;=</when>
+                    <when test='sqlSearchList[index].condition=="&gt;="'>&gt;=</when>
+                    <when test='sqlSearchList[index].condition=="like"'>LIKE '%${'${'}sqlList.value}%'</when>
+                </choose>
+                <if test='sqlSearchList[index].condition!="like"'>${'#{'}sqlList.value}</if>
+            </foreach>
+            <!--遍历关系条件-->
+            <foreach collection="sqlRelationList" index="index" item="sqlList">
+                <choose>
+                    <when test='sqlRelationList[index].totalType=="&amp;"'>AND</when>
+                    <when test='sqlRelationList[index].totalType=="|"'>OR</when>
+                </choose>
+                (
+                 ${'${'}sqlList.first}
+                <choose>
+                    <when test='sqlRelationList[index].firstCondition=="="'>=</when>
+                    <when test='sqlRelationList[index].firstCondition=="&lt;"'>&lt;</when>
+                    <when test='sqlRelationList[index].firstCondition=="&gt;"'>&gt;</when>
+                    <when test='sqlRelationList[index].firstCondition=="&lt;="'>&lt;=</when>
+                    <when test='sqlRelationList[index].firstCondition=="&gt;="'>&gt;=</when>
+                    <when test='sqlRelationList[index].firstCondition=="like"'>LIKE '%${'${'}sqlList.firstValue}%'</when>
+                </choose>
+                <if test='sqlRelationList[index].firstCondition!="like"'>${'#{'}sqlList.firstValue}</if>
+
+                <choose>
+                    <when test='sqlRelationList[index].type=="&amp;"'>AND</when>
+                    <when test='sqlRelationList[index].type=="|"'>OR</when>
+                </choose>
+
+                ${'${'}sqlList.last}
+                <choose>
+                    <when test='sqlRelationList[index].lastCondition=="="'>=</when>
+                    <when test='sqlRelationList[index].lastCondition=="&lt;"'>&lt;</when>
+                    <when test='sqlRelationList[index].lastCondition=="&gt;"'>&gt;</when>
+                    <when test='sqlRelationList[index].lastCondition=="&lt;="'>&lt;=</when>
+                    <when test='sqlRelationList[index].lastCondition=="&gt;="'>&gt;=</when>
+                    <when test='sqlRelationList[index].lastCondition=="like"'>LIKE '%${'${'}sqlList.lastValue}%'</when>
+                </choose>
+                <if test='sqlRelationList[index].lastCondition!="like"'>${'#{'}sqlList.lastValue}</if>
+                )
+            </foreach>
+        </where>
+        LIMIT #${'{'}start},#${'{'}length}
+    </select>
 </mapper>
