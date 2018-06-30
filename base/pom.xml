@@ -5,22 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ljs</groupId>
-        <artifactId>JavaLib</artifactId>
+        <artifactId>LjsLib</artifactId>
         <version>1.0</version>
     </parent>
     <groupId>ljs</groupId>
     <artifactId>base</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>1.0</version>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

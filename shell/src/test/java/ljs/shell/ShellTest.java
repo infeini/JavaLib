@@ -134,4 +134,31 @@ public class ShellTest {
         }
         return homes;
     }
+
+    @Test
+    public void installAl() throws InterruptedException {
+        shell.execute(new Command("cd ..") {
+
+            @Override
+            public void out(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void error(String errorLine) {
+                System.err.println(errorLine);
+            }
+        });
+        shell.execute(new Command("mvn clean source:jar install -DskipTests") {
+            @Override
+            public void out(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void error(String errorLine) {
+                System.err.println(errorLine);
+            }
+        });
+    }
 }
