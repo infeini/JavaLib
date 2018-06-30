@@ -6,7 +6,7 @@
     <groupId>ljs</groupId>
     <artifactId>JavaLib</artifactId>
     <version>1.0</version>
-
+    <name>JavaLib</name>
     <modules>
         <module>autocode</module>
         <module>base</module>
