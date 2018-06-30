@@ -10,6 +10,7 @@
     </parent>
     <groupId>ljs</groupId>
     <artifactId>gson</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
     <build>
         <plugins>
