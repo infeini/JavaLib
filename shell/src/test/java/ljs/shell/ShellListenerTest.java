@@ -20,4 +20,20 @@ public class ShellListenerTest {
         });
         ThreadUtil.sleep(10000);
     }
+
+    @Test
+    public void winTest() throws KnowException {
+        Shell shell = Shell.newShell("GBK", new ShellListener() {
+            @Override
+            public void onCreated(String msg) {
+                System.out.println("created:" + msg);
+            }
+
+            @Override
+            public void onCreateFail(String error) {
+                System.out.println("create fail:" + error);
+            }
+        });
+        ThreadUtil.sleep(10000);
+    }
 }
