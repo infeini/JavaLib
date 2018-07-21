@@ -34,10 +34,13 @@ public class ErrorReadThread extends StreamThread {
 
                 while ((line = reader.readLine()) != null) {
 
-                    Command nowCommand = shell.nowCommand;
+                    if (shell.inited) {
 
-                    if (nowCommand != null)
-                        nowCommand.error(line);
+                        Command nowCommand = shell.nowCommand;
+
+                        if (nowCommand != null)
+                            nowCommand.error(line);
+                    } else if (shell.shellListener != null) shell.shellListener.onCreateFail(line);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

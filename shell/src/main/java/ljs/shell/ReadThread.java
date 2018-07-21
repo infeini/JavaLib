@@ -28,29 +28,32 @@ public class ReadThread extends StreamThread {
 
         while (true) {
 
-
             String line;
 
             try {
 
                 while ((line = reader.readLine()) != null) {
 
-                    Command nowCommand = shell.nowCommand;
+                    if (shell.inited) {
+                        Command nowCommand = shell.nowCommand;
 
-                    if (nowCommand != null) {
-                        if (nowCommand.startMark.equals(line))
-                            nowCommand.start();
+                        if (nowCommand != null) {
+                            if (nowCommand.startMark.equals(line))
+                                nowCommand.start();
 
-                        else if (nowCommand.endMark.equals(line)) {
+                            else if (nowCommand.endMark.equals(line)) {
 
-                            nowCommand.end();
+                                nowCommand.end();
 
-                            shell.nowCommand = null;
+                                shell.nowCommand = null;
 
-                            ThreadUtil.notifyAll(shell);
-                        } else
-                            nowCommand.out(line);
-                    }
+                                ThreadUtil.notifyAll(shell);
+                            } else nowCommand.out(line);
+                        }
+                    } else if (shell.initMark.equals(line)) {
+                        shell.inited = true;
+                        if (shell.shellListener != null) shell.shellListener.onCreated(shell.welcome.toString());
+                    } else shell.welcome.append(line + System.lineSeparator());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

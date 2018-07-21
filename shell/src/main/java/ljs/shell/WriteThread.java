@@ -54,7 +54,7 @@ public class WriteThread extends StreamThread {
         }
     }
 
-    byte[] format(String cmd) {
+    static byte[] format(String cmd) {
         return (cmd + System.lineSeparator()).getBytes();
     }
 }

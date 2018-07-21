@@ -2,6 +2,7 @@ package ljs.shell;
 
 import ljs.exception.KnowException;
 import ljs.io.IOUtil;
+import ljs.lib.StringUtils;
 import ljs.os.OsUtils;
 import ljs.task.ThreadUtil;
 
@@ -17,9 +18,19 @@ import java.util.List;
  */
 public class Shell {
 
+    private final String mark = StringUtils.getRandString(5);
+
+    String initMark = "inited:" + mark;
+
     Runtime runtime;
 
     String initCmd;
+
+    StringBuffer welcome = new StringBuffer();
+
+    boolean inited;
+
+    ShellListener shellListener;
 
     //当前shell命令队列
     Command nowCommand;
@@ -40,11 +51,13 @@ public class Shell {
 
     WriteThread writeThread;
 
-    public Shell(String initCmd, String encoding) throws KnowException {
+    public Shell(String initCmd, String encoding, ShellListener shellListener) throws KnowException {
 
         this.runtime = Runtime.getRuntime();
 
         this.initCmd = initCmd;
+
+        this.shellListener = shellListener;
 
         if (encoding != null)
             this.encoding = encoding;
@@ -53,6 +66,8 @@ public class Shell {
             process = runtime.exec(initCmd);
 
             writerStream = process.getOutputStream();
+            writerStream.write(WriteThread.format("echo " + initMark));
+            writerStream.flush();
 
             readerStream = process.getInputStream();
 
@@ -72,22 +87,38 @@ public class Shell {
     }
 
     public static Shell newAndroidShell() throws KnowException {
-        return newAndroidShell(false);
+        return newAndroidShell(false, null);
+    }
+
+    public static Shell newAndroidShell(ShellListener shellListener) throws KnowException {
+        return newAndroidShell(false, shellListener);
     }
 
     public static Shell newAndroidShell(boolean isRoot) throws KnowException {
         return newAndroidShell(isRoot, null);
     }
 
-    public static Shell newAndroidShell(boolean isRoot, String encoding) throws KnowException {
-        return new Shell(isRoot ? "su" : "bash", encoding);
+    public static Shell newAndroidShell(boolean isRoot, ShellListener shellListener) throws KnowException {
+        return newAndroidShell(isRoot, null, shellListener);
+    }
+
+    public static Shell newAndroidShell(boolean isRoot, String encoding, ShellListener shellListener) throws KnowException {
+        return new Shell(isRoot ? "su" : "bash", encoding, shellListener);
     }
 
     public static Shell newShell() throws KnowException {
-        return newShell(null);
+        return newShell(null, null);
+    }
+
+    public static Shell newShell(ShellListener shellListener) throws KnowException {
+        return newShell(null, shellListener);
     }
 
     public static Shell newShell(String encoding) throws KnowException {
+        return newShell(encoding, null);
+    }
+
+    public static Shell newShell(String encoding, ShellListener shellListener) throws KnowException {
         String initCmd = null;
         switch (OsUtils.osType) {
             case MAC:
@@ -102,7 +133,7 @@ public class Shell {
             case UNKNOW:
                 throw new KnowException("未知操作系统");
         }
-        return new Shell(initCmd, encoding);
+        return new Shell(initCmd, encoding, shellListener);
     }
 
     /**
