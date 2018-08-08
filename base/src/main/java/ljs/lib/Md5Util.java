@@ -1,33 +1,39 @@
 package ljs.lib;
 
 import ljs.SingletonHolder;
+import ljs.io.IOUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Md5Util {
+
+    public static String getMd5(File file) throws IOException {
+        InputStream in = null;
+        try {
+            return getMd5(in = new FileInputStream(file));
+        } finally {
+            IOUtil.close(in);
+        }
+    }
+
     /**
      * 获取文件md5
      *
-     * @param file 需要获取文件的md5
+     * @param in 需要获取文件流的md5
      * @return 该文件md5, 失败返回null
      */
-    public static String getMd5(File file) throws IOException {
+    public static String getMd5(InputStream in) throws IOException {
         // 缓冲区大小（这个可以抽出一个参数）
         int bufferSize = 256 * 1024;
-        FileInputStream fileInputStream = null;
         DigestInputStream digestInputStream = null;
         try {
             // 拿到一个MD5转换器（同样，这里可以换成SHA1）
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
             // 使用DigestInputStream
-            fileInputStream = new FileInputStream(file);
-            digestInputStream = new DigestInputStream(fileInputStream, messageDigest);
+            digestInputStream = new DigestInputStream(in, messageDigest);
             // read的过程中进行MD5处理，直到读完文件
             byte[] buffer = new byte[bufferSize];
             while (digestInputStream.read(buffer) > 0) ;
@@ -40,14 +46,7 @@ public class Md5Util {
         } catch (NoSuchAlgorithmException e) {
             return null;
         } finally {
-            try {
-                digestInputStream.close();
-            } catch (Exception e) {
-            }
-            try {
-                fileInputStream.close();
-            } catch (Exception e) {
-            }
+            IOUtil.close(digestInputStream);
         }
     }
 
