@@ -82,7 +82,8 @@ public class Shell {
             writeThread = new WriteThread(this);
             writeThread.start();
         } catch (IOException e) {
-            throw new KnowException("创建进程失败");
+            if (shellListener != null) shellListener.onCreateFail(e.getMessage());
+            else throw new KnowException("创建进程失败");
         }
     }
 
@@ -103,7 +104,7 @@ public class Shell {
     }
 
     public static Shell newAndroidShell(boolean isRoot, String encoding, ShellListener shellListener) throws KnowException {
-        return new Shell(isRoot ? "su" : "bash", encoding, shellListener);
+        return new Shell(isRoot ? "su" : "sh", encoding, shellListener);
     }
 
     public static Shell newShell() throws KnowException {
