@@ -24,14 +24,14 @@ public class ${config.pojoName} extends ${config.supperPojoClassName} {
     /**
      * ${keyField.info}
      */
-    @Field(length = ${keyField.length}, nullable = ${keyField.nullable?c}, key = ${keyField.key?c})
+    @Field(length = ${keyField.length}, nullable = ${keyField.nullable?c}, key = ${keyField.key?c}, desc = "${keyField.info}")
     private ${keyField.type.javaSimpleName()} ${keyField.name.field()};
 <#--非主键字段声明-->
 <#list fields as field>
     /**
      * ${field.info}
      */
-    @Field(length = ${field.length}, nullable = ${field.nullable?c})
+    @Field(length = ${field.length}, nullable = ${field.nullable?c}, desc = "${field.info}")
     private ${field.type.javaSimpleName()} ${field.name.field()};
 </#list>
 <#--主键Getter、Setter声明代码-->
