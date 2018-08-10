@@ -85,13 +85,12 @@ public class IOUtil {
      */
     public static StringBuffer toString(InputStream in, String encoding, boolean close) {
         StringBuffer stringBuffer = new StringBuffer();
-
         if (in == null) ;
         else {
             try {
                 byte[] buffer = new byte[1024];
-                int read = in.read(buffer);
-                if (read != -1) stringBuffer.append(new String(buffer, 0, read, encoding));
+                int read;
+                while ((read = in.read(buffer)) != -1) stringBuffer.append(new String(buffer, 0, read, encoding));
             } catch (IOException e) {
             } finally {
                 if (close) close(in);
@@ -144,6 +143,7 @@ public class IOUtil {
                     if (closeable != null)
                         closeable.close();
             } catch (IOException e) {
+                e.printStackTrace();
             }
     }
 
