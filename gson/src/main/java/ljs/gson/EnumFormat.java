@@ -20,12 +20,12 @@ public class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializer<T> {
         Object get(JsonElement json);
     }
 
-    public EnumFormat(JsonToValue jsonToValue) {
+    public EnumFormat(JsonToValue jsonToValue) throws KnowException {
         this(EnumUtils.DefaultValueFieldName, jsonToValue);
     }
 
-    public EnumFormat(String valueFieldName, JsonToValue jsonToValue) {
-        type = (Class<T>) ClassUtils.getGenericClassByObj(this)[0];
+    public EnumFormat(String valueFieldName, JsonToValue jsonToValue) throws KnowException {
+        type = (Class<T>) ClassUtils.getSuperInterFaceT(this, JsonDeserializer.class)[0];
         this.valueFieldName = valueFieldName;
         this.jsonToValue = jsonToValue;
     }
