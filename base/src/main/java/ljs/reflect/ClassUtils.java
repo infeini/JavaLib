@@ -1,6 +1,7 @@
 package ljs.reflect;
 
 import ljs.exception.KnowException;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -33,25 +34,50 @@ public class ClassUtils {
     }
 
     /**
-     * 获取指定对象的带有泛型的父类泛型参数c
+     * 获取指定对象的带有泛型的父类泛型参数
      *
      * @param target 目标对象
      */
-    public static Type[] getGenericClassByObj(Object target) {
-        return getGenericClassByType(target.getClass());
+    public static Type[] getSuperClassT(Object target, Class tType) throws KnowException {
+        return getSuperClassT(target.getClass(), tType);
     }
 
     /**
-     * 获取指定对象的带有泛型的父类泛型参数c
+     * 获取指定对象的带有泛型的父类泛型参数
      *
      * @param target 目标类型
      */
-    public static Type[] getGenericClassByType(Class target) {
+    public static Type[] getSuperClassT(Class target, Class tType) throws KnowException {
         Type genericSuperclass = target.getGenericSuperclass();
-        if (genericSuperclass instanceof ParameterizedType)
-            return ((ParameterizedType) genericSuperclass).getActualTypeArguments();
-        else
-            return new Type[0];
+        if (genericSuperclass instanceof ParameterizedType) {
+            if (((ParameterizedType) genericSuperclass).getRawType() == tType)
+                return ((ParameterizedType) genericSuperclass).getActualTypeArguments();
+        }
+        throw new KnowException("未发现父类泛型");
+    }
+
+    /**
+     * 获取指定对象的带有泛型的接口泛型参数
+     *
+     * @param target 目标对象
+     */
+    public static Type[] getSuperInterFaceT(Object target, Class tType) throws KnowException {
+        return getSuperClassT(target.getClass(), tType);
+    }
+
+    /**
+     * 获取指定对象的带有泛型的接口泛型参数
+     *
+     * @param target 目标类型
+     */
+    public static Type[] getSuperInterFaceT(Class target, Class tType) throws KnowException {
+        Type[] genericSuperclasses = target.getGenericInterfaces();
+        for (Type genericSuperclass : genericSuperclasses)
+            if (genericSuperclass instanceof ParameterizedTypeImpl) {
+                if (((ParameterizedTypeImpl) genericSuperclass).getRawType() == tType)
+                    return ((ParameterizedTypeImpl) genericSuperclass).getActualTypeArguments();
+            }
+        throw new KnowException("未发现接口泛型");
     }
 
     public static <T> T newInstance(Class<T> type) throws KnowException {

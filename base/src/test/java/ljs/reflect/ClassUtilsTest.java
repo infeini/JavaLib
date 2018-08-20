@@ -1,7 +1,9 @@
 package ljs.reflect;
 
+import ljs.exception.KnowException;
 import ljs.lib.StringUtils;
 import org.junit.Test;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
@@ -24,21 +26,33 @@ public class ClassUtilsTest {
     class Class2 extends ArrayList {
     }
 
-    @Test
-    public void getGenericClassByObjTest() {
-        Type[] types = ClassUtils.getGenericClassByObj(new Class1());
-        System.out.println(types);
+    interface Book<T> {
+    }
 
-        types = ClassUtils.getGenericClassByObj(new Class2());
+    class MyBook implements Book<String> {
+    }
+
+    @Test
+    public void getSuperInterFaceTTest() throws KnowException {
+        Type[] types = ClassUtils.getSuperInterFaceT(MyBook.class, Book.class);
         System.out.println(types);
     }
 
     @Test
-    public void getGenericClassByTypeTest() {
-        Type[] types = ClassUtils.getGenericClassByType(new Class1().getClass());
+    public void getGenericClassByObjTest() throws KnowException {
+        Type[] types = ClassUtils.getSuperClassT(new Class1(), ArrayList.class);
         System.out.println(types);
 
-        types = ClassUtils.getGenericClassByType(new Class2().getClass());
+        types = ClassUtils.getSuperClassT(new Class2(), ArrayList.class);
+        System.out.println(types);
+    }
+
+    @Test
+    public void getGenericClassByTypeTest() throws KnowException {
+        Type[] types = ClassUtils.getSuperClassT(new Class1().getClass(), ArrayList.class);
+        System.out.println(types);
+
+        types = ClassUtils.getSuperClassT(new Class2().getClass(), ArrayList.class);
         System.out.println(types);
     }
 }
