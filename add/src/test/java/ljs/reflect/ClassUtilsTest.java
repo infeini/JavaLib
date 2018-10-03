@@ -3,7 +3,6 @@ package ljs.reflect;
 import ljs.exception.KnowException;
 import ljs.lib.StringUtils;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;

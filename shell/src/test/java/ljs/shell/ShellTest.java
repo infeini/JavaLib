@@ -72,7 +72,7 @@ public class ShellTest {
             cmds.add("mvn clean");
             cmds.add("echo 发布至本地Maven仓库:" + file.getName());
             //install
-            cmds.add("mvn source:jar install");
+            cmds.add("mvn source:jar install -Dmaven.test.skip=true");
             cmds.add("echo 发布完成:" + file.getName());
 
             new Thread(() -> {
