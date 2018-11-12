@@ -9,6 +9,7 @@ import ljs.lib.StringUtils;
 /**
  * 支持继承至map的bean序列化与反序列化FastJsonHttpMessageConverter
  */
+@Deprecated
 public class MapBeanHttpMessageConverter extends FastJsonHttpMessageConverter {
 
     public MapBeanHttpMessageConverter(String[] classes) throws KnowException {

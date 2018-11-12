@@ -1,10 +1,15 @@
 package ljs.io.file;
 
 
+import ljs.SingletonHolder;
+import ljs.io.IOUtil;
+import ljs.task.ThreadUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilesUtilTest {
@@ -17,27 +22,57 @@ public class FilesUtilTest {
 
     @Test
     public void getRelativePath() throws IOException {
-        File rootDir = new File(".");
-        File targetPath = new File("src/test.ljs.io.IOUtil.java");
+        File rootDir = new File("./src");
+        File targetPath = new File("src/test/java/" + getClass().getName().replaceAll("\\.", File.separator) + ".java");
         String str = FileUtils.getRelativePath(rootDir, targetPath);
         System.out.println(str);
     }
 
     @Test
-    public void test() throws Exception {
-        File testZip = new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34");
-        System.out.println(testZip.exists());
-        FileUtils.cleanDir(testZip);
+    public void deleteTest() throws IOException {
+        //删除文件夹测试
+        File folder = new File("删除文件夹测试" + SingletonHolder.Random.INSTANCE.nextInt());
+        Assert.assertTrue(folder.mkdir());
+        Assert.assertTrue(folder.exists());
+        FileUtils.delete(folder);
+        Assert.assertFalse(folder.exists());
+
+        //删除文件测试
+        File file = new File("删除文件测试" + SingletonHolder.Random.INSTANCE.nextInt());
+        IOUtil.write("hello", file);
+        Assert.assertTrue(file.exists());
+        FileUtils.delete(file);
+        Assert.assertFalse(file.exists());
+
+        //删除非空文件夹测试
+        File noNullFolder = new File("非空文件夹" + SingletonHolder.Random.INSTANCE.nextInt());
+        Assert.assertTrue(noNullFolder.mkdir());
+        File subFile = new File(noNullFolder, "子文件" + SingletonHolder.Random.INSTANCE.nextInt());
+        IOUtil.write("hello", subFile);
+        Assert.assertTrue(subFile.exists());
+        File subFolder = new File(noNullFolder, "子文件夹" + SingletonHolder.Random.INSTANCE.nextInt());
+        Assert.assertTrue(subFolder.mkdir());
+        FileUtils.delete(noNullFolder);
+        Assert.assertFalse(noNullFolder.exists());
+        Assert.assertFalse(subFile.exists());
+        Assert.assertFalse(subFolder.exists());
     }
 
     @Test
-    public void delete() throws Exception {
-        FileUtils.delete(new File("D:\\Users\\LiuJiangshan\\Desktop\\a.zip"));
-    }
+    public void cleanDir() throws IOException {
+        File folder = new File("待清理文件夹" + SingletonHolder.Random.INSTANCE.nextInt());
+        Assert.assertTrue(folder.mkdir());
+        for (int i = 0; i < 10; i++) {
 
-    @Test
-    public void cleanDir() throws Exception {
-        FileUtils.cleanDir(new File("D:\\Users\\LiuJiangshan\\Desktop\\File\\ZLX\\training_web_api\\Training\\out\\artifacts\\Training_war_exploded\\html\\34"));
+            Assert.assertTrue(new File(folder, "子文件夹" + SingletonHolder.Random.INSTANCE.nextInt()).mkdir());
+
+            File file = new File(folder, "子文件" + SingletonHolder.Random.INSTANCE.nextInt());
+            IOUtil.write("hello", file);
+            Assert.assertTrue(file.exists());
+        }
+        FileUtils.cleanDir(folder);
+        Assert.assertEquals(0, folder.list().length);
+        FileUtils.delete(folder);
     }
 
     @Test

@@ -58,20 +58,29 @@ public class IOUtil {
         return result;
     }
 
+    /**
+     * 将文件转换为string
+     *
+     * @param ofFile 待转换的文件对象
+     * @return 转换后的字符串缓存对象
+     */
+    public static StringBuffer toString(File ofFile) {
+        return toString(ofFile, "UTF-8");
+    }
 
     /**
      * 将文件转换为string
      *
      * @param ofFile   待转换的文件对象
      * @param encoding 编码方式
-     * @return 转换后的字符串缓存对象, 转换失败返回null
+     * @return 转换后的字符串缓存对象
      */
     public static StringBuffer toString(File ofFile, String encoding) {
         try {
             return toString(new FileInputStream(ofFile), encoding, true);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return null;
+            return new StringBuffer();
         }
     }
 
@@ -176,6 +185,17 @@ public class IOUtil {
         if (StringUtils.isEmpty(encoding))
             encoding = "UTF-8";
         write(stringBuffer.toString(), outFile, encoding);
+    }
+
+    /**
+     * 将字符写入文件流
+     *
+     * @param str     待写入的字符
+     * @param outFile 输出的文件
+     * @throws IOException
+     */
+    public static void write(String str, File outFile) throws IOException {
+        write(str, new FileOutputStream(outFile), "UTF-8", true);
     }
 
     /**

@@ -38,6 +38,7 @@ public class ClassUtils {
      *
      * @param target 目标对象
      */
+    @Deprecated
     public static Type[] getSuperClassT(Object target, Class tType) throws KnowException {
         return getSuperClassT(target.getClass(), tType);
     }
@@ -47,6 +48,7 @@ public class ClassUtils {
      *
      * @param target 目标类型
      */
+    @Deprecated
     public static Type[] getSuperClassT(Class target, Class tType) throws KnowException {
         Type genericSuperclass = target.getGenericSuperclass();
         if (genericSuperclass instanceof ParameterizedType) {
@@ -61,6 +63,7 @@ public class ClassUtils {
      *
      * @param target 目标对象
      */
+    @Deprecated
     public static Type[] getSuperInterFaceT(Object target, Class tType) throws KnowException {
         return getSuperClassT(target.getClass(), tType);
     }
@@ -70,6 +73,7 @@ public class ClassUtils {
      *
      * @param target 目标类型
      */
+    @Deprecated
     public static Type[] getSuperInterFaceT(Class target, Class tType) throws KnowException {
         Type[] genericSuperclasses = target.getGenericInterfaces();
         for (Type genericSuperclass : genericSuperclasses)

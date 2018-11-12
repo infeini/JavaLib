@@ -2,14 +2,16 @@ package ljs.gson;
 
 import com.google.gson.*;
 import ljs.exception.KnowException;
-import ljs.reflect.ClassUtils;
 import ljs.reflect.EnumUtils;
 import ljs.reflect.FieldUtils;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Type;
 
-public class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializer<T> {
-
+/**
+ * gson枚举序列化、反序列化工具
+ */
+public abstract class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializer<T> {
     private Class<T> type;
 
     private String valueFieldName;
@@ -20,12 +22,22 @@ public class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializer<T> {
         Object get(JsonElement json);
     }
 
-    public EnumFormat(JsonToValue jsonToValue) throws KnowException {
+    public EnumFormat() {
+        this(JsonElement::getAsInt);
+    }
+
+    public EnumFormat(JsonToValue jsonToValue) {
         this(EnumUtils.DefaultValueFieldName, jsonToValue);
     }
 
-    public EnumFormat(String valueFieldName, JsonToValue jsonToValue) throws KnowException {
-        type = (Class<T>) ClassUtils.getSuperInterFaceT(this, JsonDeserializer.class)[0];
+    public EnumFormat(String valueFieldName, JsonToValue jsonToValue) {
+
+        ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) getClass().getGenericSuperclass();
+
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+        type = (Class<T>) actualTypeArguments[0];
+
         this.valueFieldName = valueFieldName;
         this.jsonToValue = jsonToValue;
     }

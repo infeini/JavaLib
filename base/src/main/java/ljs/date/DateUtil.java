@@ -21,13 +21,12 @@ public class DateUtil {
      */
     private static String patchZero(long number, int length) {
         String addition = "";
-        String result = number + "";
+        StringBuilder result = new StringBuilder(number + "");
         if (number < 0) {
             addition = "-";
-            number = -number;
         }
         while (result.length() < length)
-            result = "0" + result;
+            result.insert(0, "0");
         return addition + result;
     }
 }
