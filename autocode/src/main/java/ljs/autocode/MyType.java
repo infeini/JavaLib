@@ -1,7 +1,5 @@
 package ljs.autocode;
 
-import ljs.lib.ArrayUtils;
-
 import java.util.Date;
 
 public class MyType {
@@ -26,11 +24,11 @@ public class MyType {
 
     public MyType(String jdbcType, boolean isKeyField, MyString name) {
         this.jdbcType = jdbcType;
-        if (isKeyField && ArrayUtils.getIndex(new String[]{"int", "bigint"}, jdbcType) != -1)
+        if (isKeyField && (jdbcType.startsWith("int") || jdbcType.startsWith("bigint")))
             this.type = Long.class;
         else if (jdbcType.startsWith("int"))
             this.type = Integer.class;
-        else if (jdbcType.startsWith("varchar") || jdbcType.startsWith("text"))
+        else if (jdbcType.startsWith("varchar") || jdbcType.startsWith("text") || jdbcType.startsWith("longtext"))
             this.type = String.class;
         else if (jdbcType.startsWith("tinyint"))
             this.type = Boolean.class;
@@ -38,8 +36,6 @@ public class MyType {
             this.type = Date.class;
         else if (jdbcType.startsWith("bigint"))
             this.type = Long.class;
-        else if (jdbcType.startsWith("longtext"))
-            this.type = String.class;
         else
             throw new RuntimeException("不能匹配jdbc类型:" + jdbcType);
     }
