@@ -1,5 +1,7 @@
 package ljs.autocode;
 
+import ljs.lib.ArrayUtils;
+
 import java.util.Date;
 
 public class MyType {
@@ -24,7 +26,7 @@ public class MyType {
 
     public MyType(String jdbcType, boolean isKeyField, MyString name) {
         this.jdbcType = jdbcType;
-        if (isKeyField)
+        if (isKeyField && ArrayUtils.getIndex(new String[]{"int", "bigint"}, jdbcType) != -1)
             this.type = Long.class;
         else if (jdbcType.startsWith("int"))
             this.type = Integer.class;
