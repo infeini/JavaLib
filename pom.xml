@@ -20,7 +20,6 @@
         <module>tree</module>
         <module>weixin</module>
         <module>zip</module>
-        <module>add</module>
     </modules>
 
     <build>

@@ -39,7 +39,7 @@
         </dependency>
         <dependency>
             <groupId>ljs</groupId>
-            <artifactId>add</artifactId>
+            <artifactId>base</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

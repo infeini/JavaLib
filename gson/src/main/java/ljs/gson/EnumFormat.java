@@ -2,9 +2,9 @@ package ljs.gson;
 
 import com.google.gson.*;
 import ljs.exception.KnowException;
+import ljs.reflect.ClassUtils;
 import ljs.reflect.EnumUtils;
 import ljs.reflect.FieldUtils;
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.lang.reflect.Type;
 
@@ -32,11 +32,7 @@ public abstract class EnumFormat<T> implements JsonDeserializer<T>, JsonSerializ
 
     public EnumFormat(String valueFieldName, JsonToValue jsonToValue) {
 
-        ParameterizedTypeImpl parameterizedType = (ParameterizedTypeImpl) getClass().getGenericSuperclass();
-
-        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-
-        type = (Class<T>) actualTypeArguments[0];
+        type = (Class<T>) ClassUtils.getSuperclassTypeParameter(this)[0];
 
         this.valueFieldName = valueFieldName;
         this.jsonToValue = jsonToValue;
