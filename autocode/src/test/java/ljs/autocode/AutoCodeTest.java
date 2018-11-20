@@ -7,12 +7,12 @@ public class AutoCodeTest {
 
     @Test
     public void autoCodePlmWeb() throws Exception {
-        autoCode.run("plm", "localhost", "root", "123456789", "zlx");
+        autoCode.run("plm", "localhost", "root", "123456", "zlx");
     }
 
     @Test
     public void autoCodePLmAndroid() throws Exception {
-        autoCode.run("plm", "localhost", "root", "123456789", "com.infeini.plm");
+        autoCode.run("plm", "localhost", "root", "123456", "com.infeini.plm");
     }
 
     @Test

@@ -1,0 +1,13 @@
+##### 实体信息
+
+|实体名称|对应表|实体详情|
+|:${r"---"}|:${r"---"}:|${r"---"}:|
+|${table.name.type()}|${tableName}|${tableInfo}|
+
+##### 字段信息
+
+|字段名称|对应java类型|对应jdbc类型|对应表字段|字段详情|
+|:${r"---"}|:${r"---"}:|:${r"---"}:|:${r"---"}:|${r"---"}:|
+<#list fields as field>
+|${field.name.field()}|${field.type.javaName()}|${field.type.jdbcType()}|${tableName}.${field.name.table()}|${field.info}|
+</#list>

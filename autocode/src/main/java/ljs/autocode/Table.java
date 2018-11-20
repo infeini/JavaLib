@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Table {
-    public MyString name;
+    public StringWrap name;
     public Field keyField;
     public ArrayList<Field> fields;
     public String info;
@@ -20,11 +20,11 @@ public class Table {
         return info;
     }
 
-    public MyString getName() {
+    public StringWrap getName() {
         return name;
     }
 
-    public void setName(MyString name) {
+    public void setName(StringWrap name) {
         this.name = name;
     }
 
@@ -44,7 +44,7 @@ public class Table {
         this.fields = fields;
     }
 
-    private Table(MyString name, String info, Field keyField, ArrayList<Field> fields) {
+    private Table(StringWrap name, String info, Field keyField, ArrayList<Field> fields) {
         this.name = name;
         this.info = info;
         this.keyField = keyField;
@@ -58,14 +58,14 @@ public class Table {
         statement.execute(sql);
         ResultSet resultSet = statement.getResultSet();
 
-        MyString tName = new MyString(tableName);
+        StringWrap tName = new StringWrap(tableName);
         Field tKeyField = null;
         ArrayList<Field> tFields = new ArrayList<>();
 
         while (resultSet.next()) {
             boolean isKey = resultSet.getString("Key").equals("PRI");
             boolean isForeign = resultSet.getString("Key").equals("MUL");
-            MyString name = new MyString(resultSet.getString("Field"));
+            StringWrap name = new StringWrap(resultSet.getString("Field"));
             Field field = new Field(
                     name,
                     new MyType(resultSet.getString("Type"), isKey || isForeign, name),

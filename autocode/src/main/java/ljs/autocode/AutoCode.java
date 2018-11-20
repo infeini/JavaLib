@@ -28,13 +28,20 @@ public class AutoCode {
             config.init(outDir, table, supperPojoClassName, pojoPackage, mapperPackage, servicePackage, controllerPackage);
 
             HashMap<Object, Object> model = new HashMap<>();
+            // 配置信息
             model.put("config", config);
+            // 表信息
             model.put("table", table);
-
+            // 表主键信息
             model.put("keyField", table.getKeyField());
+            // 表所有字段信息
             model.put("fields", table.getFields());
-            model.put("tableName", table.getName().table());
+            // 表注解信息
             model.put("tableInfo", table.getInfo());
+
+            // 快捷字段
+            model.put("tableName", config.tableName);//表名称
+
             //生成pojo
             write(model, config.pojoModel, config.getPojoSaveAs());
             //生成simplePojo

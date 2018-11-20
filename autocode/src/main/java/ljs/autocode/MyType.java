@@ -22,7 +22,7 @@ public class MyType {
     private Class type;
     private String jdbcType;
 
-    public MyType(String jdbcType, boolean isKeyField, MyString name) {
+    public MyType(String jdbcType, boolean isKeyField, StringWrap name) {
         this.jdbcType = jdbcType;
         if (isKeyField && (jdbcType.startsWith("int") || jdbcType.startsWith("bigint")))
             this.type = Long.class;

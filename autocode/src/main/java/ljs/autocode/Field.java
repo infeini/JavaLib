@@ -6,18 +6,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Field {
-    public MyString name;
+    public StringWrap name;
     public MyType type;
     public Boolean key;
     public String info;
     public Integer length;
     public Boolean nullable;
 
-    public MyString getName() {
+    public StringWrap getName() {
         return name;
     }
 
-    public void setName(MyString name) {
+    public void setName(StringWrap name) {
         this.name = name;
     }
 
@@ -45,7 +45,7 @@ public class Field {
         this.info = info;
     }
 
-    public Field(MyString name, MyType type, Boolean key, String info, Boolean nullable) {
+    public Field(StringWrap name, MyType type, Boolean key, String info, Boolean nullable) {
         this.name = name;
         this.type = type;
         this.key = key;

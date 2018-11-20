@@ -30,7 +30,7 @@ public class DataBase {
             while (resultSet.next()) {
                 String tableName = resultSet.getString(resultSet.findColumn("Name"));
                 String tableInfo = resultSet.getString(resultSet.findColumn("Comment"));
-                if (MyString.checkFormat(tableName))
+                if (StringWrap.checkFormat(tableName))
                     tables.add(Table.load(jdbc, tableName, tableInfo));
                 else
                     throw new Exception("数据表:" + tableName + ",命名格式不规范");

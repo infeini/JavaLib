@@ -14,19 +14,21 @@ public class Config {
     public String supperPojoClassName;
     //实体名称
     public String pojoName;
+    //表名称
+    public String tableName;
     //实体存储路径
     public File pojoSaveAs;
     //简单实体存储路径
     public File simplePojoSaveAs;
     private String templatePackage = "template/";
     //简单实体模板文件
-    public String simplePojoModel = templatePackage + "simplePojo.txt";
+    public String simplePojoModel = templatePackage + "simplePojo.java.vm";
     //实体模板文件
-    public String pojoModel = templatePackage + "pojo.txt";
+    public String pojoModel = templatePackage + "pojo.java.vm";
 
     public File pojoInfoSaveAs;
     //实体介绍模板文件
-    public String pojoInfoModel = templatePackage + "pojoInfo.txt";
+    public String pojoInfoModel = templatePackage + "pojoInfo.md.vm";
 
     //mapper包名
     public String mapperPackage;
@@ -35,11 +37,11 @@ public class Config {
     //mapper java接口存储路径
     public File mapperJavaSaveAs;
     //mapper 接口模板文件
-    public String mapperJavaModel = templatePackage + "mybatis_java.txt";
+    public String mapperJavaModel = templatePackage + "mapper.java.vm";
     //mapper xml存储路径
     public File mapperXmlSaveAs;
     //mapper xml模板文件
-    public String mapperXmlModel = templatePackage + "mybatis_xml.txt";
+    public String mapperXmlModel = templatePackage + "mybatis.xml.vm";
 
     //service包名
     public String servicePackage;
@@ -48,7 +50,7 @@ public class Config {
     //service存储路径
     public File serviceSaveAs;
     //service模板文件
-    public String serviceModel = templatePackage + "service.txt";
+    public String serviceModel = templatePackage + "service.java.vm";
 
     //controller包名
     public String controllerPackage;
@@ -57,7 +59,7 @@ public class Config {
     //controller存储路径
     public File controllerSaveAs;
     //controller模板文件
-    public String controllerModel = templatePackage + "controller.txt";
+    public String controllerModel = templatePackage + "controller.java.vm";
 
     public void init(File outDir, Table table, String supperPojoClassName, String pojoPackage, String mapperPackage, String servicePackage, String controllerPackage) {
         this.outDir = outDir;
@@ -65,6 +67,7 @@ public class Config {
         this.supperPojoClassName = supperPojoClassName;
         this.pojoPackage = pojoPackage;
         this.pojoName = table.name.type();
+        this.tableName = table.name.table();
         this.mapperPackage = mapperPackage;
         this.mapperName = pojoName + "Mapper";
         this.servicePackage = servicePackage;
@@ -74,48 +77,48 @@ public class Config {
     }
 
     public File getPojoSaveAs() {
-        if (pojoSaveAs == null)
-            pojoSaveAs = new File(FileUtils.getFile(outDir, pojoPackage.split("\\.")), pojoName + ".java");
+        pojoSaveAs = new File(FileUtils.getFile(outDir, pojoPackage.split("\\." )), pojoName + ".java" );
         return pojoSaveAs;
     }
 
     public File getSimplePojoSaveAs() {
         if (simplePojoSaveAs == null)
-            simplePojoSaveAs = new File(FileUtils.getFile(outDir, "simplePojo"), pojoName + ".java");
+            simplePojoSaveAs = new File(FileUtils.getFile(outDir, "simplePojo" ), pojoName + ".java" );
         return simplePojoSaveAs;
     }
 
     public File getPojoInfoSaveAs() {
         if (pojoInfoSaveAs == null)
-            pojoInfoSaveAs = new File(FileUtils.getFile(outDir, "pojoInfo"), pojoName + ".txt");
+            pojoInfoSaveAs = new File(FileUtils.getFile(outDir, "pojoInfo" ), pojoName + ".md" );
         return pojoInfoSaveAs;
     }
 
     public File getMapperJavaSaveAs() {
         if (mapperJavaSaveAs == null)
-            mapperJavaSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), "java"), mapperName + ".java");
+            mapperJavaSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\." )), "java" ), mapperName + ".java" );
         return mapperJavaSaveAs;
     }
 
     public File getMapperXmlSaveAs() {
 
         if (mapperXmlSaveAs == null)
-            mapperXmlSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\.")), "xml"), mapperName + ".xml");
+            mapperXmlSaveAs = new File(new File(FileUtils.getFile(outDir, mapperPackage.split("\\." )), "xml" ), mapperName + ".xml" );
         return mapperXmlSaveAs;
     }
 
     public File getServiceSaveAs() {
         if (serviceSaveAs == null)
-            serviceSaveAs = new File(FileUtils.getFile(outDir, servicePackage.split("\\.")), serviceName + ".java");
+            serviceSaveAs = new File(FileUtils.getFile(outDir, servicePackage.split("\\." )), serviceName + ".java" );
         return serviceSaveAs;
     }
 
     public File getControllerSaveAs() {
         if (controllerSaveAs == null)
-            controllerSaveAs = new File(FileUtils.getFile(outDir, controllerPackage.split("\\.")), controllerName + ".java");
+            controllerSaveAs = new File(FileUtils.getFile(outDir, controllerPackage.split("\\." )), controllerName + ".java" );
         return controllerSaveAs;
     }
 
+    // getter
     public String getSupperPojoClassName() {
         return supperPojoClassName;
     }
