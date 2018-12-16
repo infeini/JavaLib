@@ -2,6 +2,9 @@ package ljs.shell;
 
 import ljs.lib.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 执行的命令对象
  */
@@ -24,12 +27,18 @@ public class Command {
     public final String endMark = getEndMark(mark);
 
     // 终端字符编码
-    public String encoding;
+    private String encoding;
 
-    String cmd;
+    private String cmd;
+
+    private List<String> outErrors = new ArrayList<>();
 
     public Command(String cmd) {
         this.cmd = cmd;
+    }
+
+    public String getEncoding() {
+        return encoding;
     }
 
     public String getCmd() {
@@ -52,11 +61,19 @@ public class Command {
      * 命令输出错误
      */
     public void error(String errorLine) {
+        outErrors.add(errorLine);
     }
 
     /**
      * 命令正常完成
      */
     public void end() {
+    }
+
+    /**
+     * 命令是否有错误流输出
+     */
+    public boolean hasError() {
+        return !outErrors.isEmpty();
     }
 }

@@ -14,15 +14,13 @@ public class WriteThread extends StreamThread {
 
     @Override
     public void run() {
-        OutputStream writerStream;
-        while ((writerStream = shell.writerStream) == null)
-            ThreadUtil.wait(shell);
+        OutputStream writerStream = shell.writerStream;
 
-        while (true) {
+        while (shell.writerStream != null) {
 
             Command nowCommand = shell.nowCommand;
-            if (nowCommand == null)
-                ThreadUtil.wait(this);
+
+            if (nowCommand == null) ThreadUtil.wait(this);
             else {
 
                 //start mark
@@ -30,15 +28,15 @@ public class WriteThread extends StreamThread {
                     writerStream.write(format("echo " + nowCommand.startMark));
                     writerStream.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    shell.sendWriteError(new Exception("写入命令开始标记失败", e));
                 }
 
                 //run
                 try {
-                    writerStream.write(format(nowCommand.cmd));
+                    writerStream.write(format(nowCommand.getCmd()));
                     writerStream.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    shell.sendWriteError(new Exception("写入命令失败:" + nowCommand.getCmd(), e));
                 }
 
                 //end mark
@@ -46,7 +44,7 @@ public class WriteThread extends StreamThread {
                     writerStream.write(format("echo " + nowCommand.endMark));
                     writerStream.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    shell.sendWriteError(new Exception("写入命令结束标记失败", e));
                 }
 
                 ThreadUtil.wait(this);

@@ -14,19 +14,12 @@ public class ReadThread extends StreamThread {
     @Override
     public void run() {
 
-        InputStream readerStream;
 
-        while ((readerStream = shell.readerStream) == null)
-            ThreadUtil.wait(this);
+        BufferedReader reader = getBufferedReader(shell.readerStream);
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(readerStream, shell.encoding));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        if (reader == null) return;
 
-        while (true) {
+        while (shell.readerStream != null) {
 
             String line;
 
@@ -37,7 +30,8 @@ public class ReadThread extends StreamThread {
                     if (shell.inited) {
                         Command nowCommand = shell.nowCommand;
 
-                        if (nowCommand != null) {
+                        if (nowCommand == null) ThreadUtil.wait(this);
+                        else {
                             if (nowCommand.startMark.equals(line))
                                 nowCommand.start();
 
@@ -56,7 +50,7 @@ public class ReadThread extends StreamThread {
                     } else shell.welcome.append(line + System.lineSeparator());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                shell.sendReadError(new Exception("读取输出流发生错误:", e));
             }
         }
     }

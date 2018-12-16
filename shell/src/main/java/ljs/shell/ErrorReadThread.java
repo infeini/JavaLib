@@ -1,8 +1,7 @@
 package ljs.shell;
 
-import ljs.task.ThreadUtil;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class ErrorReadThread extends StreamThread {
 
@@ -14,19 +13,11 @@ public class ErrorReadThread extends StreamThread {
     @Override
     public void run() {
 
-        InputStream errorStream;
+        BufferedReader reader = getBufferedReader(shell.errorStream);
 
-        while ((errorStream = shell.errorStream) == null)
-            ThreadUtil.wait(this);
+        if (reader == null) return;
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(errorStream, shell.encoding));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        while (true) {
+        while (shell.errorStream != null) {
 
             String line;
 
@@ -43,7 +34,7 @@ public class ErrorReadThread extends StreamThread {
                     } else if (shell.shellListener != null) shell.shellListener.onCreateFail(line);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                shell.sendErrorReadError(new Exception("读取错误流发生异常", e));
             }
         }
     }

@@ -51,6 +51,8 @@ public class Shell {
 
     WriteThread writeThread;
 
+    private ShellErrorHandler errorHandler;
+
     public Shell(String initCmd, String encoding, ShellListener shellListener) throws KnowException {
 
         this.runtime = Runtime.getRuntime();
@@ -150,6 +152,10 @@ public class Shell {
 
         readerStream = null;
 
+        ThreadUtil.notify(readThread);
+        ThreadUtil.notify(errorReadThread);
+        ThreadUtil.notify(writeThread);
+
         process.destroy();
 
         process = null;
@@ -164,18 +170,36 @@ public class Shell {
      *
      * @param command 需要执行的命令
      */
-    public synchronized void execute(Command command) throws InterruptedException {
+    public synchronized void execute(Command command) {
+        if (process != null) {
+            //等待以前的命令执行完成
+            while (nowCommand != null) ThreadUtil.wait(this);
 
-        //等待以前的命令执行完成
-        while (nowCommand != null) ThreadUtil.wait(this);
+            nowCommand = command;
 
-        nowCommand = command;
+            ThreadUtil.notify(readThread);
+            ThreadUtil.notify(errorReadThread);
+            ThreadUtil.notify(writeThread);
+        }
+    }
 
-        ThreadUtil.notify(readThread);
-        ThreadUtil.notify(errorReadThread);
-        ThreadUtil.notify(writeThread);
+    void sendWriteError(Throwable e) {
+        if (writerStream != null) sendError(e);
+    }
 
-        //等待当前的命令执行完成
-        while (nowCommand != null) ThreadUtil.wait(this);
+    void sendReadError(Throwable e) {
+        if (readerStream != null) sendError(e);
+    }
+
+    void sendErrorReadError(Throwable e) {
+        if (errorStream != null) sendError(e);
+    }
+
+    void sendError(Throwable e) {
+        if (errorHandler != null) errorHandler.error(e);
+    }
+
+    public void setErrorHandler(ShellErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
     }
 }

@@ -7,7 +7,7 @@ import org.junit.Test;
 public class ShellListenerTest {
     @Test
     public void test() throws KnowException {
-        Shell shell = Shell.newShell(new ShellListener() {
+        Shell.newShell(new ShellListener() {
             @Override
             public void onCreated(String msg) {
                 System.out.println("created:" + msg);
@@ -18,12 +18,12 @@ public class ShellListenerTest {
                 System.out.println("create fail:" + error);
             }
         });
-        ThreadUtil.sleep(10000);
+        ThreadUtil.wait(this);
     }
 
     @Test
     public void winTest() throws KnowException {
-        Shell shell = Shell.newShell("GBK", new ShellListener() {
+        Shell.newShell("GBK", new ShellListener() {
             @Override
             public void onCreated(String msg) {
                 System.out.println("created:" + msg);
@@ -34,6 +34,6 @@ public class ShellListenerTest {
                 System.out.println("create fail:" + error);
             }
         });
-        ThreadUtil.sleep(10000);
+        ThreadUtil.wait(this);
     }
 }

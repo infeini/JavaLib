@@ -1,17 +1,12 @@
 package ljs.shell;
 
 import ljs.exception.KnowException;
-import ljs.io.IOUtil;
-import ljs.lib.ListUtils;
+import ljs.task.SleepHandler;
 import ljs.task.ThreadUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,27 +17,6 @@ public class ShellTest {
     @Before
     public void setUp() throws KnowException {
         shell = Shell.newShell();
-    }
-
-    @Test
-    public void test() throws IOException {
-
-        Process process = Runtime.getRuntime().exec("bash");
-
-        OutputStream out = process.getOutputStream();
-
-        InputStream in = process.getInputStream();
-
-        out.write("ls\n".getBytes());
-        out.flush();
-
-        out.write("ls\n".getBytes());
-        out.flush();
-
-        System.out.println(IOUtil.toString(in, "GBK", false).toString());
-        System.out.println(IOUtil.toString(in, "GBK", false).toString());
-        System.out.println(IOUtil.toString(in, "GBK", false).toString());
-
     }
 
     boolean havePom(File dir) {
@@ -160,5 +134,77 @@ public class ShellTest {
                 System.err.println(errorLine);
             }
         });
+    }
+
+    @Test
+    public void closeShellTest() {
+        shell.execute(new Command("ping localhost") {
+            @Override
+            public void out(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void error(String errorLine) {
+                super.error(errorLine);
+                System.out.println(errorLine);
+            }
+        });
+        new Thread(() -> {
+            ThreadUtil.sleep(2000, laveMillis -> {
+                if (laveMillis % 1000 == 0)
+                    System.out.println(laveMillis);
+            });
+            shell.close();
+        }).start();
+        ThreadUtil.wait(this);
+    }
+
+    @Test
+    public void executeTest() {
+        shell.execute(new Command("ping localhost") {
+            @Override
+            public void out(String line) {
+                System.out.println(line);
+            }
+
+            @Override
+            public void error(String errorLine) {
+                super.error(errorLine);
+                System.out.println(errorLine);
+            }
+        });
+        ThreadUtil.wait(this);
+    }
+
+    @Test
+    public void restartTest() {
+
+        Command command = new Command("ping localhost") {
+            @Override
+            public void out(String line) {
+                System.out.println(line);
+                if (line.contains("127")) {
+                    shell.close();
+                    try {
+                        shell = Shell.newShell();
+                        System.out.println("重新执行");
+                        shell.execute(this);
+                    } catch (KnowException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void error(String errorLine) {
+                super.error(errorLine);
+                System.out.println(errorLine);
+            }
+        };
+
+        shell.execute(command);
+
+        ThreadUtil.wait(this);
     }
 }
