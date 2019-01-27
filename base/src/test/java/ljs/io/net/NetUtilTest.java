@@ -7,8 +7,8 @@ import java.io.File;
 public class NetUtilTest {
     @Test
     public void downloadTest() {
-        String url = "http://bigota.d.miui.com/8.5.8/miui_MIMIX2_8.5.8_41fd7ba4bc_8.0.zip";
-        File saveAs = new File("update.zip");
+        String url = "https://www.baidu.com/img/bd_logo.png";
+        File saveAs = new File(new File("target"), "bd_logo.png");
         DownloadListener downloadListener = new DownloadListener() {
             @Override
             public void downloadStart() {
@@ -36,6 +36,5 @@ public class NetUtilTest {
             }
         };
         HttpUtil.downloadHttp(url, saveAs, 250, 5000, downloadListener);
-        System.out.println("任务添加完成");
     }
 }

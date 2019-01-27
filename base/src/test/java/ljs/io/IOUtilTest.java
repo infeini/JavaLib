@@ -16,40 +16,28 @@ public class IOUtilTest {
     @Test
     public void toObj() {
         Object objectOfRam = "JAVA";
-        Object objectOfFile = null;
-
-        File ofFile = new File("obj");
-        if (ljs.io.IOUtil.toFile(objectOfRam, ofFile))
-            System.out.println(ljs.io.IOUtil.toObj(ofFile) == null ? "反序列化成功!" : "反序列化成功!");
-        ofFile.delete();
+        File ofFile = new File(new File("target"), "obj");
+        IOUtil.toFile(objectOfRam, ofFile);
     }
 
     @Test
-    public void toFile() {
+    public void toFileFormObj() {
         Object object = "JAVA";
-        File toFile = new File("obj");
+        File toFile = new File(new File("target"), "obj");
         System.out.println(ljs.io.IOUtil.toFile(object, toFile) ? "序列化成功!" : "序列化失败!");
         toFile.delete();
     }
 
-
     @Test
-    public void toString1() {
-        File ofFile = new File("D:\\Users\\LiuJiangshan\\Desktop\\a.txt");
-        StringBuffer stringBuffer = ljs.io.IOUtil.toString(ofFile, "UTF-8");
-        System.out.println(stringBuffer.toString());
-    }
-
-    @Test
-    public void toString2() throws FileNotFoundException {
-        File ofFile = new File("ljs/test.ljs.io.IOUtilTest.java");
+    public void toStringFromFile() throws FileNotFoundException {
+        File ofFile = new File("src/test/java/ljs/io/IOUtilTest.java");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(new FileInputStream(ofFile), "UTF-8", true);
         System.out.println(stringBuffer.toString());
     }
 
     @Test
-    public void toString3() throws Exception {
-        URL url = new URL("http://www.scbz.hrss.gov.cn/index.php/letter-view-id-2178");
+    public void toStringFromNetwork() throws Exception {
+        URL url = new URL("http://www.baidu.com");
         StringBuffer stringBuffer = ljs.io.IOUtil.toString(url, "gb2312", 5000);
         System.out.println(stringBuffer.toString());
     }

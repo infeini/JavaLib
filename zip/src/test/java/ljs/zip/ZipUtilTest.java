@@ -1,6 +1,7 @@
 package ljs.zip;
 
-import ljs.task.ThreadUtil;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,15 +11,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ZipUtilTest {
-    @Test
-    public void test() {
-        ZipEntry zipEntry = new ZipEntry("ljs\\");
-        System.out.println(zipEntry.isDirectory());
-    }
+    File tempFolder = new File("target");
+    File tempFile = new File(tempFolder, "a.zip");
 
-    @Test
-    public void toZip() throws IOException {
-        ZipUtil.toZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\测试").listFiles(), new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\a.zip"));
+    @Before
+    public void setUp() throws IOException {
+        if (!tempFolder.exists()) Assert.assertTrue(tempFolder.mkdir());
+        ZipUtil.toZip(new File("src").listFiles(), tempFile);
     }
 
     @Test
@@ -49,26 +48,24 @@ public class ZipUtilTest {
                 System.out.println("任务结束");
             }
         };
-        ZipUtil.unZip(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\a.zip"), new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板"), false, unPackZipListener);
-        System.out.println("任务添加完成");
+        ZipUtil.unZip(tempFile, tempFolder, true, unPackZipListener);
     }
 
     @Test
     public void unzipStream() throws Exception {
-        ZipUtil.unZip(new FileInputStream(new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\a.zip")), 1, new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板"), true, true, null);
+        ZipUtil.unZip(new FileInputStream(tempFile), 1, tempFolder, true, true, null);
     }
 
     @Test
     public void getPackFileNumber() throws Exception {
-        ZipFile zipFile = new ZipFile(new File("update.zip"));
+        ZipFile zipFile = new ZipFile(tempFile);
         int size = zipFile.size();
         System.out.println("size:" + size);
     }
 
     @Test
     public void unZip() throws Exception {
-        File zipFile = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\MB1.zip");
-        ZipUtil.unZip(zipFile, zipFile.getParentFile(), true, new UnPackZipListener() {
+        ZipUtil.unZip(tempFile, tempFolder, true, new UnPackZipListener() {
             @Override
             public void unPackStart() {
                 System.out.println("开始解压");
@@ -94,7 +91,5 @@ public class ZipUtilTest {
                 System.out.println("解压结束");
             }
         });
-        while (true)
-            ThreadUtil.sleep(1000);
     }
 }

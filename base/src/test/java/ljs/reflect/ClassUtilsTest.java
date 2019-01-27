@@ -9,7 +9,12 @@ import java.util.Date;
 public class ClassUtilsTest {
     @Test
     public void checkPackageTest() {
-        System.out.println(ClassUtils.checkPackage("zlx.sasaA777"));
+        Assert.assertTrue(ClassUtils.checkPackage("ljs.test"));
+        Assert.assertTrue(ClassUtils.checkPackage("zlx.lll"));
+
+        Assert.assertFalse(ClassUtils.checkPackage("zlx.1d"));
+        Assert.assertFalse(ClassUtils.checkPackage("zlx./d"));
+        Assert.assertFalse(ClassUtils.checkPackage("zlx.d."));
     }
 
     @Test

@@ -1,11 +1,10 @@
 package ljs.reflect;
 
 import ljs.exception.KnowException;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class EnumUtilsTest {
-
-
     @Test
     public void toValueTest() throws KnowException {
         System.out.println(EnumUtils.toValue(EnumType.A, "value"));
@@ -16,23 +15,24 @@ public class EnumUtilsTest {
         System.out.println(EnumUtils.toValue(EnumType.C));
     }
 
+    enum EnumType {
+        A(EnumType.class), B(Integer.class), C(Long.class);
+
+        public Object value;
+
+        EnumType(Object value) {
+            this.value = value;
+        }
+    }
+
     @Test
     public void parseTest() throws KnowException {
-        System.out.println(EnumUtils.parse(EnumType.class, EnumType.class, "value"));
-        System.out.println(EnumUtils.parse(1, EnumType.class, "value"));
-        System.out.println(EnumUtils.parse(2, EnumType.class, "value"));
-        System.out.println(EnumUtils.parse(0, EnumType.class));
-        System.out.println(EnumUtils.parse(1, EnumType.class));
-        System.out.println(EnumUtils.parse(2, EnumType.class));
+        Assert.assertTrue(EnumUtils.parse(EnumType.class, EnumType.class, "value") == EnumType.A);
     }
 
     @Test
     public void canParseTest() {
-        System.out.println(EnumUtils.canParse(EnumType.class, EnumType.class, "value"));
-        System.out.println(EnumUtils.canParse(1, EnumType.class, "value"));
-        System.out.println(EnumUtils.canParse(2, EnumType.class, "value"));
-        System.out.println(EnumUtils.canParse(0, EnumType.class));
-        System.out.println(EnumUtils.canParse(1, EnumType.class));
-        System.out.println(EnumUtils.canParse(2, EnumType.class));
+        Assert.assertTrue(EnumUtils.canParse(EnumType.class, EnumType.class, "value"));
+        Assert.assertFalse(EnumUtils.canParse(1, EnumType.class, "value"));
     }
 }

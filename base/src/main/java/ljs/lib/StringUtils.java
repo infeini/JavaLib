@@ -75,15 +75,11 @@ public class StringUtils {
     public static char getRandChar() {
         int c = random.nextInt(62);
         if (c <= 9)// 0-9>>[0-9]
-        {
             c += '0';
-        } else if (c < 36)// a-z>>[10,35]
-        {
+        else if (c < 36)// a-z>>[10,35]
             c += ('a' - 10);
-        } else if (c < 62)// A-Z>>[36,61]
-        {
+        else if (c < 62)// A-Z>>[36,61]
             c += ('A' - 36);
-        }
         return (char) c;
     }
 

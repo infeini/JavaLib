@@ -3,29 +3,19 @@ package ljs.io.file;
 
 import ljs.SingletonHolder;
 import ljs.io.IOUtil;
-import ljs.task.ThreadUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class FilesUtilTest {
     @Test
     public void list() throws IOException {
-        List<File> files = FileUtils.list(new File("./src"));
+        List<File> files = FileUtils.list(new File("src"));
         for (File file : files)
             System.out.println(file.getAbsolutePath());
-    }
-
-    @Test
-    public void getRelativePath() throws IOException {
-        File rootDir = new File("./src");
-        File targetPath = new File("src/test/java/" + getClass().getName().replaceAll("\\.", File.separator) + ".java");
-        String str = FileUtils.getRelativePath(rootDir, targetPath);
-        System.out.println(str);
     }
 
     @Test
@@ -76,13 +66,6 @@ public class FilesUtilTest {
     }
 
     @Test
-    public void copyFileOrDir() throws IOException {
-        File copyForm = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\from\\Model.html");
-        File copyTo = new File("D:\\Users\\LiuJiangshan\\Desktop\\html模板\\MB1\\to\\testd\\Model.html");
-        FileUtils.copyFileOrDir(copyForm, copyTo);
-    }
-
-    @Test
     public void getFile() throws Exception {
         String[] ary = getClass().getPackage().getName().split("\\.");
         File file = FileUtils.getFile(new File("ljs"), ary);
@@ -100,10 +83,5 @@ public class FilesUtilTest {
         System.out.println(FileUtils.getSuffix(".sdasm.mp4"));
         System.out.println(FileUtils.getSuffix(".sdasm.mp4.doc"));
         System.out.println(FileUtils.getSuffix(".sdasm....ps"));
-    }
-
-    @Test
-    public void getHash() throws Exception {
-        System.out.println(FileUtils.getHash(new File("D:\\MyCode\\intellij\\java\\LjsJavaLib\\lib\\src\\test\\java\\test\\io\\file\\FilesUtilTest.java")).length());
     }
 }

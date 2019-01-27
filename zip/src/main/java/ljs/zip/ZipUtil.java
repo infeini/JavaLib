@@ -137,8 +137,7 @@ public class ZipUtil {
                 }
             }
         } finally {
-            //关闭，不然流不会关闭，将不能删除该文件
-            zFile.close();
+            IOUtil.close(zFile);
         }
     }
 
