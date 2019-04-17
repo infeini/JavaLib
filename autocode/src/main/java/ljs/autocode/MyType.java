@@ -1,6 +1,8 @@
 package ljs.autocode;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyType {
     public Class getType() {
@@ -21,23 +23,32 @@ public class MyType {
 
     private Class type;
     private String jdbcType;
+    static Map<String, Class> typeMap = new HashMap<>();
+
+    static {
+        typeMap.put("int", Long.class);
+        typeMap.put("bigint", Long.class);
+        typeMap.put("char", String.class);
+        typeMap.put("varchar", String.class);
+        typeMap.put("tinytext", String.class);
+        typeMap.put("longtext", String.class);
+        typeMap.put("text", String.class);
+        typeMap.put("tinyint", Boolean.class);
+        typeMap.put("datetime", Date.class);
+        typeMap.put("float", Float.class);
+    }
 
     public MyType(String jdbcType, boolean isKeyField, StringWrap name) {
+
+        jdbcType = jdbcType.toLowerCase();
+
+        if (jdbcType.contains("(") && jdbcType.contains(")"))
+            jdbcType = jdbcType.substring(0, jdbcType.indexOf("("));
+
         this.jdbcType = jdbcType;
-        if (isKeyField && (jdbcType.startsWith("int") || jdbcType.startsWith("bigint")))
-            this.type = Long.class;
-        else if (jdbcType.startsWith("int"))
-            this.type = Integer.class;
-        else if (jdbcType.startsWith("varchar") || jdbcType.startsWith("text") || jdbcType.startsWith("longtext"))
-            this.type = String.class;
-        else if (jdbcType.startsWith("tinyint"))
-            this.type = Boolean.class;
-        else if (jdbcType.startsWith("datetime"))
-            this.type = Date.class;
-        else if (jdbcType.startsWith("bigint"))
-            this.type = Long.class;
-        else
-            throw new RuntimeException("不能匹配jdbc类型:" + jdbcType);
+
+        type = typeMap.get(this.jdbcType);
+        if (type == null) throw new RuntimeException("不能匹配jdbc类型:" + jdbcType);
     }
 
     public String javaName() {

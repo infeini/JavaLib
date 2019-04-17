@@ -37,7 +37,7 @@ public class Config {
     //mapper java接口存储路径
     public File mapperJavaSaveAs;
     //mapper 接口模板文件
-    public String mapperJavaModel = templatePackage + "mapper.java.vm";
+    public String mapperJavaModel = templatePackage + "mybatis.java.vm";
     //mapper xml存储路径
     public File mapperXmlSaveAs;
     //mapper xml模板文件

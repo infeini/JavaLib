@@ -1,0 +1,13 @@
+/**
+ * ${table.info}
+ * @author 代码生成器<p>https://github.com/LiuJiangshan/LjsJavaLib/tree/master/autocode</p>
+ * */
+export default interface ${config.pojoName} {
+    ${keyField.name.field()}?: string
+        <#list fields as field>
+    /**
+     * ${field.info}
+     */
+    ${field.name.field()}?: string
+        </#list>
+}
